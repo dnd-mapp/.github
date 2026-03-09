@@ -1,5 +1,5 @@
 ---
-name: "🏗️ Refactor / Tech Debt"
+name: "♻️ Refactor / Tech Debt"
 about: Propose code improvements or technical debt cleanup
 title: "[REFACTOR] "
 labels: tech-debt, enhancement
