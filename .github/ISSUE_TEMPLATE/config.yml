@@ -1,0 +1,25 @@
+# Set to `true` to allow users to open regular issues without a template.
+# Set to `false` to force users to choose one of your structured templates.
+blank_issues_enabled: false
+
+# Contact links provide a way to redirect users to other places for support.
+contact_links:
+    - name: "💬 Community Discord"
+      url: https://discord.gg/VSrKsDjFs6
+      about: "Join our Discord for quick questions, map sharing, and real-time chat."
+
+    - name: "📚 Documentation"
+      url: https://docs.dndmapp.nl.eu.org
+      about: "Check out the official guides and API documentation for dnd-mapp."
+
+    - name: "❓ GitHub Discussions"
+      url: https://github.com/orgs/dnd-mapp/discussions
+      about: "Have a general question or want to start a conversation? Use Discussions."
+
+    - name: "📊 View Project Board"
+      url: https://github.com/orgs/dnd-mapp/projects/2
+      about: "See our current roadmap and what's currently in progress."
+
+    - name: "🛡️ Security Policy"
+      url: https://github.com/dnd-mapp/.github/security/policy
+      about: "If you found a security vulnerability, please report it here instead of an issue."
