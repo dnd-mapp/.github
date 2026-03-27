@@ -2,7 +2,7 @@
 name: "🏗️ Epic"
 about: A high-level initiative or large feature comprising multiple tasks
 title: "[EPIC] "
-labels: epic
+type: epic
 ---
 
 ## 🎯 Objective
