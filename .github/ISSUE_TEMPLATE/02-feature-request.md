@@ -2,8 +2,7 @@
 name: "🚀 Feature Request"
 about: Propose a new idea for dnd-mapp
 title: "[FEAT] "
-labels: enhancement
-assignees: ""
+type: feature
 ---
 
 ## 💡 Is your feature request related to a problem?
