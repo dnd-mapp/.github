@@ -2,7 +2,7 @@
 name: "✅ Task"
 about: A single, actionable unit of work or implementation step
 title: "[TASK] "
-labels: task, triage
+type: task
 ---
 
 ## 📋 Summary

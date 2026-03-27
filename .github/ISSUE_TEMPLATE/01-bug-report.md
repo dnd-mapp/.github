@@ -2,8 +2,7 @@
 name: "🐛 Bug Report"
 about: Create a report to help us improve dnd-mapp
 title: "[BUG] "
-labels: bug, triage
-assignees: ""
+type: bug
 ---
 
 ## 📝 Description
