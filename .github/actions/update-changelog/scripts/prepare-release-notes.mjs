@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 function getVersion() {
     const version = process.env['CLEAN_VERSION'];
@@ -11,9 +12,11 @@ function getVersion() {
 }
 
 function resolvePaths() {
+    const actionDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+
     return {
         changelog: join(process.cwd(), 'CHANGELOG.md'),
-        template: join(process.cwd(), 'docs', 'release-notes-template.md'),
+        template: join(actionDir, 'release-notes-template.md'),
         releaseNotesOutput: join(process.cwd(), '.github', 'release-notes.md'),
     };
 }
