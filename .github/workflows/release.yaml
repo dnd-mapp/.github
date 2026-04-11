@@ -26,7 +26,7 @@ jobs:
                   install-dependencies: false
 
             - name: Bump version
-              uses: dnd-mapp/.github/.github/actions/bump-version@main
+              uses: dnd-mapp/.github/.github/actions/bump-version@22a12387feb43bb47c01dcdb5ad250bc91f7be43
               with:
                   app-id: ${{ secrets.app-id }}
                   app-private-key: ${{ secrets.app-private-key }}
