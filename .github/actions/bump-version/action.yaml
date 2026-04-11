@@ -36,7 +36,7 @@ runs:
 
         - name: Configure git bot
           id: git-bot
-          uses: dnd-mapp/.github/.github/actions/configure-git-bot@main
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@74c387fd0c74dead7694fa0e04a4a5a80a0d2383
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
@@ -62,7 +62,7 @@ runs:
               echo "clean-version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
 
         - name: Update changelog
-          uses: dnd-mapp/.github/.github/actions/update-changelog@main
+          uses: dnd-mapp/.github/.github/actions/update-changelog@07986efbcf0cd7c6d78e5619a14413b78f1cb8d2
           with:
               token: ${{ steps.git-bot.outputs.token }}
               clean-version: ${{ steps.bump-version.outputs.clean-version }}
