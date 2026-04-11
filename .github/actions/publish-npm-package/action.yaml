@@ -1,0 +1,30 @@
+name: Publish npm package
+description: Derives the npm dist-tag from the git ref and publishes the package
+
+inputs:
+    working-directory:
+        description: The directory to publish from
+        default: .
+    pre-publish-command:
+        description: Optional command to run before publishing (e.g. pnpm prepublishOnly)
+        default: ''
+
+runs:
+    using: composite
+    steps:
+        - name: Publish package
+          shell: bash
+          working-directory: ${{ inputs.working-directory }}
+          run: |
+              if [[ "$GITHUB_REF_NAME" == *"-"* ]]; then
+                  TAG="${GITHUB_REF_NAME#*-}"
+                  TAG="${TAG%%.*}"
+              else
+                  TAG="latest"
+              fi
+
+              if [[ -n "${{ inputs.pre-publish-command }}" ]]; then
+                  ${{ inputs.pre-publish-command }}
+              fi
+
+              pnpm publish --no-git-checks --tag "$TAG"

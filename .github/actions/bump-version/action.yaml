@@ -1,0 +1,105 @@
+name: Bump version
+description: Validates release inputs, bumps the package version, and creates a GitHub release
+
+inputs:
+    app-id:
+        description: The GitHub App ID for authentication
+        required: true
+    app-private-key:
+        description: The GitHub App private key for authentication
+        required: true
+    version:
+        description: The version bump type (major, minor, patch, premajor, preminor, prepatch, prerelease)
+        required: true
+    prerelease-id:
+        description: The prerelease identifier (alpha, beta, rc, none)
+        default: none
+
+outputs:
+    raw-version:
+        description: The new version with 'v' prefix (e.g. v1.2.3)
+        value: ${{ steps.bump-version.outputs.raw-version }}
+    clean-version:
+        description: The new version without 'v' prefix (e.g. 1.2.3)
+        value: ${{ steps.bump-version.outputs.clean-version }}
+
+runs:
+    using: composite
+    steps:
+        - name: Validate inputs
+          id: validate-inputs
+          shell: bash
+          env:
+              VERSION: ${{ inputs.version }}
+              PRERELEASE_ID: ${{ inputs.prerelease-id }}
+          run: node ${{ github.action_path }}/scripts/validate-release-inputs.mjs
+
+        - name: Configure git bot
+          id: git-bot
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@74c387fd0c74dead7694fa0e04a4a5a80a0d2383
+          with:
+              app-id: ${{ inputs.app-id }}
+              app-private-key: ${{ inputs.app-private-key }}
+
+        - name: Bump version
+          id: bump-version
+          shell: bash
+          run: |
+              VERSION_INPUT="${{ inputs.version }}"
+              PRERELEASE_ID_INPUT="${{ inputs.prerelease-id }}"
+
+              if [[ "$PRERELEASE_ID_INPUT" == "none" ]]; then
+                  RAW_VERSION=$(pnpm version "$VERSION_INPUT" --no-commit-hooks --no-workspaces-update --no-git-tag-version)
+              else
+                  RAW_VERSION=$(pnpm version "$VERSION_INPUT" --no-commit-hooks --no-workspaces-update --no-git-tag-version --preid "$PRERELEASE_ID_INPUT")
+              fi
+
+              RAW_VERSION=$(echo "$RAW_VERSION" | xargs)
+              RAW_VERSION="${RAW_VERSION##* }"
+              CLEAN_VERSION="${RAW_VERSION#v}"
+
+              echo "raw-version=$RAW_VERSION" >> $GITHUB_OUTPUT
+              echo "clean-version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+
+        - name: Update changelog
+          uses: dnd-mapp/.github/.github/actions/update-changelog@07986efbcf0cd7c6d78e5619a14413b78f1cb8d2
+          with:
+              token: ${{ steps.git-bot.outputs.token }}
+              clean-version: ${{ steps.bump-version.outputs.clean-version }}
+
+        - name: Update package manifest
+          id: commit-manifest
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+          run: |
+              REPO="${{ github.repository }}"
+              BRANCH="${{ github.ref_name }}"
+              COMMIT_MESSAGE="${{ steps.bump-version.outputs.clean-version }}"
+              MANIFEST_PATH="package.json"
+
+              # Get the current file SHA (required by the Contents API for updates)
+              FILE_SHA=$(gh api repos/$REPO/contents/$MANIFEST_PATH --jq '.sha')
+
+              # Base64-encode the file content
+              CONTENT=$(base64 -w0 "$MANIFEST_PATH")
+
+              # Commit via the Contents API — GitHub signs this automatically
+              NEW_COMMIT_SHA=$(gh api repos/$REPO/contents/$MANIFEST_PATH --method PUT -f message="$COMMIT_MESSAGE" \
+                  -f content="$CONTENT" -f sha="$FILE_SHA" -f branch="$BRANCH" \
+              --jq '.commit.sha')
+
+              echo "commit-sha=$NEW_COMMIT_SHA" >> $GITHUB_OUTPUT
+
+        - name: Create Release
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+          run: |
+              NEW_TAG_NAME="${{ steps.bump-version.outputs.raw-version }}"
+
+              gh release create "$NEW_TAG_NAME" --title "$NEW_TAG_NAME" \
+                  --target "${{ steps.commit-manifest.outputs.commit-sha }}" \
+                  --notes-file .github/release-notes.md \
+                  --latest=${{ steps.validate-inputs.outputs.is-prerelease == 'false' }} \
+                  --prerelease=${{ steps.validate-inputs.outputs.is-prerelease == 'true' }}
