@@ -6,7 +6,7 @@ To maintain the quality of our projects and ensure a smooth development process,
 
 ## Code of Conduct
 
-By participating in this organization, you agree to abide by our [Code of Conduct](https://github.com/dnd-mapp/.github/tree/main?tab=coc-ov-file). Please report any unacceptable behavior to [mail.dndmapp@gmail.com](mailto:mail.dndmapp@gmail.com).
+By participating in this organization, you agree to abide by our [Code of Conduct](https://github.com/dnd-mapp/.github/tree/main?tab=coc-ov-file). Please report any unacceptable behavior to [conduct@dndmapp.nl.eu.org](mailto:conduct@dndmapp.nl.eu.org).
 
 ## How Can I Contribute?
 

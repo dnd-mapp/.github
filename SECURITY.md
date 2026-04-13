@@ -13,7 +13,7 @@ The D&D Mapp team takes the security of our software and our users' data serious
 ### How to Report
 
 1. **Private Vulnerability Reporting:** The preferred method is using GitHub's [Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidelines-for-reporting-a-vulnerability/reporting-a-vulnerability-to-a-repository) feature on the specific repository.
-2. **Email:** Alternatively, you can send an email to [security@security@dndmapp.nl.eu.org](mailto:security@dndmapp.nl.eu.org). (Replace with your actual security contact email).
+2. **Email:** Alternatively, you can send an email to [security@dndmapp.nl.eu.org](mailto:security@dndmapp.nl.eu.org). (Replace with your actual security contact email).
 
 ### What to Include
 
