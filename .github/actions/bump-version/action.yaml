@@ -91,6 +91,30 @@ runs:
 
               echo "commit-sha=$NEW_COMMIT_SHA" >> $GITHUB_OUTPUT
 
+        - name: Create signed tag
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+          run: |
+              REPO="${{ github.repository }}"
+              NEW_TAG_NAME="${{ steps.bump-version.outputs.raw-version }}"
+              COMMIT_SHA="${{ steps.commit-manifest.outputs.commit-sha }}"
+
+              # Create an annotated tag object — GitHub signs this automatically
+              TAG_SHA=$(gh api repos/$REPO/git/tags \
+                  --method POST \
+                  -f tag="$NEW_TAG_NAME" \
+                  -f message="$NEW_TAG_NAME" \
+                  -f object="$COMMIT_SHA" \
+                  -f type="commit" \
+                  --jq '.sha')
+
+              # Create the ref that points to the tag object
+              gh api repos/$REPO/git/refs \
+                  --method POST \
+                  -f ref="refs/tags/$NEW_TAG_NAME" \
+                  -f sha="$TAG_SHA"
+
         - name: Create Release
           shell: bash
           env:
@@ -99,7 +123,6 @@ runs:
               NEW_TAG_NAME="${{ steps.bump-version.outputs.raw-version }}"
 
               gh release create "$NEW_TAG_NAME" --title "$NEW_TAG_NAME" \
-                  --target "${{ steps.commit-manifest.outputs.commit-sha }}" \
                   --notes-file .github/release-notes.md \
                   --latest=${{ steps.validate-inputs.outputs.is-prerelease == 'false' }} \
                   --prerelease=${{ steps.validate-inputs.outputs.is-prerelease == 'true' }}
