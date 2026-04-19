@@ -16,4 +16,4 @@ Briefly list the steps or settings you've already checked.
 ## 📌 Note
 
 **Is this a bug?** If so, please use the **Bug Report** template instead.
-*Consider joining our [Discord](https://discord.gg/VSrKsDjFs6) for faster real-time support!*
+*Consider joining our [Discord](https://discord.gg/B9m6usp4qx) for faster real-time support!*
