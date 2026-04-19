@@ -29,13 +29,17 @@ runs:
           shell: bash
           env:
               GH_TOKEN: ${{ steps.app-token.outputs.token }}
+              APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
           run: |
-              USER_ID=$(gh api /users/${{ steps.app-token.outputs.app-slug }}[bot] --jq '.id')
-              echo "name=${{ steps.app-token.outputs.app-slug }}[bot]" >> "$GITHUB_OUTPUT"
-              echo "email=${USER_ID}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
+              USER_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
+              echo "name=${APP_SLUG}[bot]" >> "$GITHUB_OUTPUT"
+              echo "email=${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
 
         - name: Configure git
           shell: bash
+          env:
+              BOT_NAME: ${{ steps.bot-user.outputs.name }}
+              BOT_EMAIL: ${{ steps.bot-user.outputs.email }}
           run: |
-              git config user.name "${{ steps.bot-user.outputs.name }}"
-              git config user.email "${{ steps.bot-user.outputs.email }}"
+              git config user.name "$BOT_NAME"
+              git config user.email "$BOT_EMAIL"

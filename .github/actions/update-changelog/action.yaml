@@ -16,21 +16,25 @@ runs:
           shell: bash
           env:
               CLEAN_VERSION: ${{ inputs.clean-version }}
-          run: node ${{ github.action_path }}/scripts/prepare-release-notes.mjs
+              ACTION_PATH: ${{ github.action_path }}
+          run: node "$ACTION_PATH/scripts/prepare-release-notes.mjs"
 
         - name: Update changelog
           shell: bash
           env:
               GH_TOKEN: ${{ inputs.token }}
+              REPO: ${{ github.repository }}
+              BRANCH: ${{ github.ref_name }}
+              CLEAN_VERSION: ${{ inputs.clean-version }}
           run: |
-              REPO="${{ github.repository }}"
-              BRANCH="${{ github.ref_name }}"
               CHANGELOG_PATH="CHANGELOG.md"
-              COMMIT_MESSAGE="Chore: Update changelog for ${{ inputs.clean-version }}"
+              COMMIT_MESSAGE="Chore: Update changelog for $CLEAN_VERSION"
 
               CURRENT_SHA=$(gh api "repos/$REPO/contents/$CHANGELOG_PATH" \
                   --jq '.sha' -H "Accept: application/vnd.github.v3+json")
 
-              gh api "repos/$REPO/contents/$CHANGELOG_PATH" --method PUT -f message="$COMMIT_MESSAGE" \
-                  -f content="$(base64 -w0 "$CHANGELOG_PATH")" -f sha="$CURRENT_SHA" -f branch="$BRANCH" \
-              --jq '.commit.sha'
+              gh api "repos/$REPO/contents/$CHANGELOG_PATH" --method PUT \
+                  -f message="$COMMIT_MESSAGE" \
+                  -f content="$(base64 -w0 "$CHANGELOG_PATH")" \
+                  -f sha="$CURRENT_SHA" -f branch="$BRANCH" \
+                  --jq '.commit.sha'

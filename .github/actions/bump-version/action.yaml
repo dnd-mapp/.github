@@ -32,7 +32,8 @@ runs:
           env:
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
-          run: node ${{ github.action_path }}/scripts/validate-release-inputs.mjs
+              ACTION_PATH: ${{ github.action_path }}
+          run: node "$ACTION_PATH/scripts/validate-release-inputs.mjs"
 
         - name: Configure git bot
           id: git-bot
@@ -44,10 +45,10 @@ runs:
         - name: Bump version
           id: bump-version
           shell: bash
+          env:
+              VERSION_INPUT: ${{ inputs.version }}
+              PRERELEASE_ID_INPUT: ${{ inputs.prerelease-id }}
           run: |
-              VERSION_INPUT="${{ inputs.version }}"
-              PRERELEASE_ID_INPUT="${{ inputs.prerelease-id }}"
-
               if [[ "$PRERELEASE_ID_INPUT" == "none" ]]; then
                   RAW_VERSION=$(pnpm version "$VERSION_INPUT" --no-commit-hooks --no-workspaces-update --no-git-tag-version)
               else
@@ -72,34 +73,59 @@ runs:
           shell: bash
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              REPO: ${{ github.repository }}
+              BRANCH: ${{ github.ref_name }}
+              COMMIT_MESSAGE: ${{ steps.bump-version.outputs.clean-version }}
           run: |
-              REPO="${{ github.repository }}"
-              BRANCH="${{ github.ref_name }}"
-              COMMIT_MESSAGE="${{ steps.bump-version.outputs.clean-version }}"
               MANIFEST_PATH="package.json"
 
-              # Get the current file SHA (required by the Contents API for updates)
-              FILE_SHA=$(gh api repos/$REPO/contents/$MANIFEST_PATH --jq '.sha')
-
-              # Base64-encode the file content
+              FILE_SHA=$(gh api "repos/$REPO/contents/$MANIFEST_PATH" --jq '.sha')
               CONTENT=$(base64 -w0 "$MANIFEST_PATH")
 
-              # Commit via the Contents API — GitHub signs this automatically
-              NEW_COMMIT_SHA=$(gh api repos/$REPO/contents/$MANIFEST_PATH --method PUT -f message="$COMMIT_MESSAGE" \
+              NEW_COMMIT_SHA=$(gh api "repos/$REPO/contents/$MANIFEST_PATH" --method PUT \
+                  -f message="$COMMIT_MESSAGE" \
                   -f content="$CONTENT" -f sha="$FILE_SHA" -f branch="$BRANCH" \
-              --jq '.commit.sha')
+                  --jq '.commit.sha')
 
               echo "commit-sha=$NEW_COMMIT_SHA" >> $GITHUB_OUTPUT
+
+        - name: Create signed tag
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              REPO: ${{ github.repository }}
+              NEW_TAG_NAME: ${{ steps.bump-version.outputs.raw-version }}
+              COMMIT_SHA: ${{ steps.commit-manifest.outputs.commit-sha }}
+          run: |
+              TAG_SHA=$(gh api "repos/$REPO/git/tags" \
+                  --method POST \
+                  -f tag="$NEW_TAG_NAME" \
+                  -f message="$NEW_TAG_NAME" \
+                  -f object="$COMMIT_SHA" \
+                  -f type="commit" \
+                  --jq '.sha')
+
+              gh api "repos/$REPO/git/refs" \
+                  --method POST \
+                  -f ref="refs/tags/$NEW_TAG_NAME" \
+                  -f sha="$TAG_SHA"
 
         - name: Create Release
           shell: bash
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              NEW_TAG_NAME: ${{ steps.bump-version.outputs.raw-version }}
+              IS_PRERELEASE: ${{ steps.validate-inputs.outputs.is-prerelease }}
           run: |
-              NEW_TAG_NAME="${{ steps.bump-version.outputs.raw-version }}"
+              if [[ "$IS_PRERELEASE" == "true" ]]; then
+                  LATEST_FLAG="false"
+                  PRERELEASE_FLAG="true"
+              else
+                  LATEST_FLAG="true"
+                  PRERELEASE_FLAG="false"
+              fi
 
               gh release create "$NEW_TAG_NAME" --title "$NEW_TAG_NAME" \
-                  --target "${{ steps.commit-manifest.outputs.commit-sha }}" \
                   --notes-file .github/release-notes.md \
-                  --latest=${{ steps.validate-inputs.outputs.is-prerelease == 'false' }} \
-                  --prerelease=${{ steps.validate-inputs.outputs.is-prerelease == 'true' }}
+                  --latest="$LATEST_FLAG" \
+                  --prerelease="$PRERELEASE_FLAG"
