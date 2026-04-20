@@ -1,0 +1,13 @@
+packages:
+    - '!dist/**/*'
+blockExoticSubdeps: true
+ignoreDepScripts: true
+managePackageManagerVersions: false
+minimumReleaseAge: 2880
+packageManagerStrictVersion: true
+savePrefix: '~'
+strictDepBuilds: true
+strictPeerDependencies: true
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 10080
+verifyDepsBeforeRun: prompt
