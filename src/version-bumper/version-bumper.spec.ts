@@ -1,5 +1,4 @@
 import { readFile, unlink, writeFile } from 'fs/promises';
-import { tmpdir } from 'os';
 import { join } from 'path';
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from './version-bumper';
 
@@ -71,7 +70,7 @@ describe('writePackageVersion', () => {
     let tmpFile: string;
 
     beforeEach(async () => {
-        tmpFile = join(tmpdir(), `package-${Date.now()}.json`);
+        tmpFile = join(`package-${Date.now()}.json`);
         await writeFile(tmpFile, JSON.stringify({ name: 'test', version: '1.0.0', private: true }, null, 2) + '\n');
     });
 
