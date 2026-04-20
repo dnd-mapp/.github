@@ -29,6 +29,6 @@
         "strictNullChecks": true,
         "target": "esnext",
         "useUnknownInCatchVariables": true,
-        "types": ["node"]
+        "types": ["node", "semver"]
     }
 }
