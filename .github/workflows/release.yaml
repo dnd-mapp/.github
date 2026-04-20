@@ -22,8 +22,6 @@ jobs:
 
             - name: Set up tools
               uses: dnd-mapp/.github/.github/actions/setup-tools@bfe2c97e0f3d0292ab1b7519dee66fd6e69a46a5
-              with:
-                  install-dependencies: false
 
             - name: Bump version
               uses: dnd-mapp/.github/.github/actions/bump-version@22a12387feb43bb47c01dcdb5ad250bc91f7be43
