@@ -1,14 +1,14 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 {
     "references": [{ "path": "./tsconfig.spec.json" }],
-    "include": [],
-    "exclude": ["node_modules/"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules/", "**/*.spec.ts"],
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
         "isolatedModules": true,
-        "lib": ["ES2024"],
-        "module": "ESNext",
+        "lib": ["ESNext"],
+        "module": "esnext",
         "moduleResolution": "bundler",
         "newLine": "lf",
         "noFallthroughCasesInSwitch": true,
@@ -27,7 +27,7 @@
         "strictBuiltinIteratorReturn": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
-        "target": "ESNext",
+        "target": "esnext",
         "useUnknownInCatchVariables": true,
         "types": ["node"]
     }
