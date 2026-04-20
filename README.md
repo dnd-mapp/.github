@@ -10,12 +10,12 @@ Files located here are automatically applied to all repositories within the orga
 
 ## 🗂️ Repository Structure
 
-*   `./workflow-templates/`: Shared GitHub Action templates for CI/CD consistency.
-*   `./ISSUE_TEMPLATE/`: Standardized templates for bug reports, feature requests, and support.
-*   `./profile/`: Contains the `README.md` that appears on the `dnd-mapp` organization profile page.
-*   `CONTRIBUTING.md`: Global guidelines for contributing to our projects.
-*   `CODE_OF_CONDUCT.md`: Our standards for community behavior.
-*   `SECURITY.md`: Instructions on how to report security vulnerabilities.
+- `./workflow-templates/`: Shared GitHub Action templates for CI/CD consistency.
+- `./ISSUE_TEMPLATE/`: Standardized templates for bug reports, feature requests, and support.
+- `./profile/`: Contains the `README.md` that appears on the `dnd-mapp` organization profile page.
+- `CONTRIBUTING.md`: Global guidelines for contributing to our projects.
+- `CODE_OF_CONDUCT.md`: Our standards for community behavior.
+- `SECURITY.md`: Instructions on how to report security vulnerabilities.
 
 ## 🚀 Usage
 

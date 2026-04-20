@@ -4,22 +4,22 @@ blank_issues_enabled: false
 
 # Contact links provide a way to redirect users to other places for support.
 contact_links:
-    - name: "💬 Community Discord"
+    - name: '💬 Community Discord'
       url: https://discord.gg/B9m6usp4qx
-      about: "Join our Discord for quick questions, map sharing, and real-time chat."
+      about: 'Join our Discord for quick questions, map sharing, and real-time chat.'
 
-    - name: "📚 Documentation"
+    - name: '📚 Documentation'
       url: https://docs.dndmapp.nl.eu.org
-      about: "Check out the official guides and API documentation for dnd-mapp."
+      about: 'Check out the official guides and API documentation for dnd-mapp.'
 
-    - name: "❓ GitHub Discussions"
+    - name: '❓ GitHub Discussions'
       url: https://github.com/orgs/dnd-mapp/discussions
-      about: "Have a general question or want to start a conversation? Use Discussions."
+      about: 'Have a general question or want to start a conversation? Use Discussions.'
 
-    - name: "📊 View Project Board"
+    - name: '📊 View Project Board'
       url: https://github.com/orgs/dnd-mapp/projects/2
       about: "See our current roadmap and what's currently in progress."
 
-    - name: "🛡️ Security Policy"
+    - name: '🛡️ Security Policy'
       url: https://github.com/dnd-mapp/.github/security/policy
-      about: "If you found a security vulnerability, please report it here instead of an issue."
+      about: 'If you found a security vulnerability, please report it here instead of an issue.'
