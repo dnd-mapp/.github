@@ -1,5 +1,4 @@
 import { readFile, unlink, writeFile } from 'fs/promises';
-import { tmpdir } from 'os';
 import { join } from 'path';
 import {
     extractPrereleaseDelta,
@@ -74,7 +73,7 @@ const CHANGELOG_STANDALONE = `# Changelog
 `;
 
 async function createTempChangelog(content: string): Promise<string> {
-    const path = join(tmpdir(), `CHANGELOG-${Date.now()}.md`);
+    const path = join(`CHANGELOG-${Date.now()}.md`);
 
     await writeFile(path, content, { encoding: 'utf-8' });
 
