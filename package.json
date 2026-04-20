@@ -1,0 +1,52 @@
+{
+    "name": "@dnd-mapp/dot-github",
+    "version": "0.0.0",
+    "description": "TypeScript-based automation, CI/CD logic, and shared configurations for the dnd-mapp organization.",
+    "author": "NoNamer777",
+    "private": true,
+    "license": "MIT",
+    "packageManager": "pnpm@10.33.0",
+    "scripts": {
+        "test": "pnpm exec vitest run",
+        "test:development": "pnpm exec vitest --ui --watch",
+        "lint": "pnpm lint:eslint && pnpm lint:markdownlint",
+        "lint:eslint": "pnpm exec eslint \"**/*\" --cache",
+        "lint:markdownlint": "pnpm exec markdownlint \"**/*.md\"",
+        "format:check": "pnpm exec prettier -l .",
+        "format:write": "pnpm exec prettier -w ."
+    },
+    "engines": {
+        "node": "~24.15"
+    },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "~24.15",
+            "onFail": "error"
+        },
+        "packageManager": [
+            {
+                "name": "pnpm",
+                "version": "10.33.0",
+                "onFail": "error"
+            }
+        ]
+    },
+    "devDependencies": {
+        "@eslint/js": "~10.0.1",
+        "@types/node": "~24.12.2",
+        "@vitest/coverage-v8": "~4.1.4",
+        "@vitest/ui": "~4.1.4",
+        "eslint": "~10.2.0",
+        "eslint-config-prettier": "~10.1.8",
+        "globals": "~17.5.0",
+      "markdownlint": "~0.40.0",
+      "markdownlint-cli": "~0.48.0",
+        "prettier": "~3.8.3",
+        "prettier-plugin-organize-imports": "~4.3.0",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "~8.58.2",
+        "vite": "~8.0.8",
+        "vitest": "~4.1.4"
+    }
+}
