@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="format:check" type="js.build_tools.npm" folderName="Formatting" nameIsGenerated="true">
+  <configuration default="false" name="test:development" type="js.build_tools.npm" folderName="Testing" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="format:check" />
+      <script value="test:development" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
