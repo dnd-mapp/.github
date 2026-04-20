@@ -45,6 +45,4 @@ Most of our projects are licensed under the **MIT License**. We believe in keepi
 
 ---
 
-<p style="text-align: center">
-    Built with ❤️ by the D&D Mapp Team • <i>"Roll for initiative!"</i>
-</p>
+Built with ❤️ by the D&D Mapp Team • _"Roll for initiative!"_

@@ -49,19 +49,19 @@ Each service has a `gen:ssl-certs` script in its `package.json` that runs the co
 
 The script expands to the following `mkcert` invocations. Each certificate also covers `localhost` and `127.0.0.1` so the service remains accessible via plain loopback if needed:
 
-**dnd-mapp**
+### dnd-mapp
 
 ```bash
 mkcert -cert-file ssl-cert.pem -key-file ssl-key.pem localhost.www.dndmapp.dev localhost 127.0.0.1
 ```
 
-**auth-server**
+### auth-server
 
 ```bash
 mkcert -cert-file ssl-cert.pem -key-file ssl-key.pem localhost.auth.dndmapp.dev localhost 127.0.0.1
 ```
 
-**email-service**
+### email-service
 
 ```bash
 mkcert -cert-file ssl-cert.pem -key-file ssl-key.pem localhost.email.dndmapp.dev localhost 127.0.0.1
@@ -95,20 +95,20 @@ Start each service and open its URL in a browser. The address bar should show a 
 
 ## Troubleshooting
 
-**Certificate not trusted / "Your connection is not private"**
+### Certificate not trusted / "Your connection is not private"
 
 `mkcert -install` was not run, or was run under a different OS user account than the one currently logged in. Re-run `mkcert -install` as the current user and restart the browser.
 
-**`ERR_CERT_COMMON_NAME_INVALID`**
+### `ERR_CERT_COMMON_NAME_INVALID`
 
 The hostname in the browser address bar does not appear in the certificate's Subject Alternative Names (SANs). This usually means `pnpm gen:ssl-certs` was run in the wrong directory, generating a certificate for a different service's hostname. Re-run `pnpm gen:ssl-certs` inside the correct service directory.
 
 Also confirm that the hostname resolves correctly by checking the [Local DNS Setup](./local-dns-setup.md) guide.
 
-**Service fails to start — certificate file not found**
+### Service fails to start — certificate file not found
 
 `ssl-cert.pem` or `ssl-key.pem` is missing from the service root. Run `pnpm gen:ssl-certs` inside the affected service directory to generate them.
 
-**`mkcert: command not found`**
+### `mkcert: command not found`
 
 mkcert is not installed or not on your `PATH`. Follow the [installation instructions](#installing-mkcert) above.
