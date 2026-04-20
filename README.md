@@ -1,5 +1,7 @@
 # .github 🛡️
 
+[![Push to main](https://github.com/dnd-mapp/.github/actions/workflows/push-main.yaml/badge.svg)](https://github.com/dnd-mapp/.github/actions/workflows/push-main.yaml)
+
 Central repository for the **dnd-mapp** organization's community health files, global GitHub Actions, and shared documentation.
 
 ## 📌 Overview
@@ -26,6 +28,19 @@ The templates defined in this repository are automatically picked up by other re
 ### Overriding Defaults
 
 If a specific project requires a unique configuration (e.g., a different `CONTRIBUTING.md`), you can create that file within that specific repository's `.github/` folder to override these global defaults.
+
+## 🛠️ Prerequisites
+
+- [mise](https://mise.jdx.dev/) — toolchain manager used to install the correct runtime versions
+- Node.js `~24.15`
+- pnpm `10.33.0`
+
+## 💻 Local Setup
+
+```bash
+mise install
+pnpm install
+```
 
 ## 🤝 Contributing
 
