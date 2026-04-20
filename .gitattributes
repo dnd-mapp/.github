@@ -4,6 +4,14 @@
 *.yml   text eol=lf
 *.json  text eol=lf
 
+*.ts    text eol=lf
+*.mts   text eol=lf
+*.cts   text eol=lf
+*.js    text eol=lf
+*.mjs   text eol=lf
+*.cjs   text eol=lf
+
+*.xml   text eol=lf
 
 *.md    text eol=lf
 
@@ -12,4 +20,3 @@
 *.jpeg  binary
 *.gif   binary
 *.pdf   binary
-
