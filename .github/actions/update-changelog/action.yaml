@@ -8,6 +8,9 @@ inputs:
     clean-version:
         description: The new version without 'v' prefix (e.g. 1.2.3)
         required: true
+    branch:
+        description: The branch to commit the changelog update to
+        default: ${{ github.ref_name }}
 
 runs:
     using: composite
@@ -24,7 +27,7 @@ runs:
           env:
               GH_TOKEN: ${{ inputs.token }}
               REPO: ${{ github.repository }}
-              BRANCH: ${{ github.ref_name }}
+              BRANCH: ${{ inputs.branch }}
               CLEAN_VERSION: ${{ inputs.clean-version }}
           run: |
               CHANGELOG_PATH="CHANGELOG.md"
