@@ -67,6 +67,7 @@ runs:
           with:
               token: ${{ steps.git-bot.outputs.token }}
               clean-version: ${{ steps.bump-version.outputs.clean-version }}
+              is-prerelease: ${{ steps.bump-version.outputs.release-branch-name != '' }}
               branch: ${{ steps.bump-version.outputs.release-branch-name || github.ref_name }}
 
         - name: Update package manifest
