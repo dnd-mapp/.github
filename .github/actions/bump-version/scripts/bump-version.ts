@@ -1,5 +1,5 @@
-import { appendFile, readFile } from 'fs/promises';
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
+import { appendFile, readFile } from 'fs/promises';
 
 const versionInput = process.env['VERSION']!;
 const prereleaseIdInput = process.env['PRERELEASE_ID']!;

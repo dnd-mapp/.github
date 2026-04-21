@@ -1,5 +1,5 @@
-import { createGithubClient } from '@/github-client';
 import { createReleaseBranch } from '@/branch-manager';
+import { createGithubClient } from '@/github-client';
 
 const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
 

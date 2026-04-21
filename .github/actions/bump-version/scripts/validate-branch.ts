@@ -1,6 +1,6 @@
-import { appendFile, readFile } from 'fs/promises';
-import { createGithubClient } from '@/github-client';
 import { validateRelease } from '@/branch-validator';
+import { createGithubClient } from '@/github-client';
+import { appendFile, readFile } from 'fs/promises';
 
 const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
 const manifest = JSON.parse(await readFile('package.json', 'utf-8')) as { version: string };
