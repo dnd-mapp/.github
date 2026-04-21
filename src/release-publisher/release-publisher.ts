@@ -1,16 +1,15 @@
 import { Octokit } from '@octokit/rest';
 
-export async function publishRelease(
-    octokit: Octokit,
-    params: {
-        owner: string;
-        repo: string;
-        tagName: string;
-        commitSha: string;
-        releaseNotes: string;
-        isPrerelease: boolean;
-    }
-): Promise<void> {
+interface PublishReleaseParams {
+    owner: string;
+    repo: string;
+    tagName: string;
+    commitSha: string;
+    releaseNotes: string;
+    isPrerelease: boolean;
+}
+
+export async function publishRelease(octokit: Octokit, params: PublishReleaseParams): Promise<void> {
     const { data: tagData } = await octokit.git.createTag({
         owner: params.owner,
         repo: params.repo,

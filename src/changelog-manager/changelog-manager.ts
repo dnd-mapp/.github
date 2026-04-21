@@ -1,19 +1,24 @@
 import { readFile, writeFile } from 'fs/promises';
 
+interface SplitChangelogResult {
+    before: string;
+    section: string;
+    after: string;
+}
+
 const WATERMARK_REGEX = /<!-- prerelease: .+? -->/;
 
 function makeWatermark(version: string): string {
     return `<!-- prerelease: ${version} -->`;
 }
 
-function splitChangelog(content: string): { before: string; section: string; after: string } {
+function splitChangelog(content: string): SplitChangelogResult {
     const headerText = '## [Unreleased]';
     const start = content.indexOf(headerText);
 
     if (start === -1) {
         throw new Error('No [Unreleased] section found in changelog.');
     }
-
     const afterHeader = start + headerText.length;
     const separatorIdx = content.indexOf('\n---', afterHeader);
     const nextSectionIdx = content.indexOf('\n## [', afterHeader);
@@ -27,7 +32,6 @@ function splitChangelog(content: string): { before: string; section: string; aft
     } else {
         end = content.length;
     }
-
     return {
         before: content.slice(0, start),
         section: content.slice(start, end),
