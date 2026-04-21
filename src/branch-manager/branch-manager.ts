@@ -1,9 +1,31 @@
 import { Octokit } from '@octokit/rest';
 
-export async function createReleaseBranch(
-    octokit: Octokit,
-    params: { owner: string; repo: string; branchName: string }
-): Promise<void> {
+interface CreateReleaseBranchParams {
+    owner: string;
+    repo: string;
+    branchName: string;
+}
+
+interface CommitFilesParams {
+    owner: string;
+    repo: string;
+    branch: string;
+    files: { path: string; content: string; message: string }[];
+}
+
+interface MergeReleaseBranchParams {
+    owner: string;
+    repo: string;
+    releaseBranch: string;
+}
+
+interface DeleteReleaseBranchParams {
+    owner: string;
+    repo: string;
+    branch: string;
+}
+
+export async function createReleaseBranch(octokit: Octokit, params: CreateReleaseBranchParams): Promise<void> {
     const { data: ref } = await octokit.git.getRef({
         owner: params.owner,
         repo: params.repo,
@@ -18,15 +40,7 @@ export async function createReleaseBranch(
     });
 }
 
-export async function commitFiles(
-    octokit: Octokit,
-    params: {
-        owner: string;
-        repo: string;
-        branch: string;
-        files: { path: string; content: string; message: string }[];
-    }
-): Promise<void> {
+export async function commitFiles(octokit: Octokit, params: CommitFilesParams): Promise<void> {
     for (const file of params.files) {
         const { data } = await octokit.repos.getContent({
             owner: params.owner,
@@ -49,10 +63,7 @@ export async function commitFiles(
     }
 }
 
-export async function mergeReleaseBranch(
-    octokit: Octokit,
-    params: { owner: string; repo: string; releaseBranch: string }
-): Promise<void> {
+export async function mergeReleaseBranch(octokit: Octokit, params: MergeReleaseBranchParams): Promise<void> {
     try {
         await octokit.repos.merge({
             owner: params.owner,
@@ -72,10 +83,7 @@ export async function mergeReleaseBranch(
     }
 }
 
-export async function deleteReleaseBranch(
-    octokit: Octokit,
-    params: { owner: string; repo: string; branch: string }
-): Promise<void> {
+export async function deleteReleaseBranch(octokit: Octokit, params: DeleteReleaseBranchParams): Promise<void> {
     await octokit.git.deleteRef({
         owner: params.owner,
         repo: params.repo,
