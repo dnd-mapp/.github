@@ -26,14 +26,15 @@ outputs:
 runs:
     using: composite
     steps:
-        - name: Validate inputs
-          id: validate-inputs
+        - name: Validate branch
+          id: validate-branch
           shell: bash
           env:
+              GITHUB_TOKEN: ${{ github.token }}
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
               ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/validate-release-inputs.mjs"
+          run: pnpm exec tsx "$ACTION_PATH/scripts/validate-branch.ts"
 
         - name: Configure git bot
           id: git-bot
@@ -46,27 +47,27 @@ runs:
           id: bump-version
           shell: bash
           env:
-              VERSION_INPUT: ${{ inputs.version }}
-              PRERELEASE_ID_INPUT: ${{ inputs.prerelease-id }}
-          run: |
-              if [[ "$PRERELEASE_ID_INPUT" == "none" ]]; then
-                  RAW_VERSION=$(pnpm version "$VERSION_INPUT" --no-commit-hooks --no-workspaces-update --no-git-tag-version)
-              else
-                  RAW_VERSION=$(pnpm version "$VERSION_INPUT" --no-commit-hooks --no-workspaces-update --no-git-tag-version --preid "$PRERELEASE_ID_INPUT")
-              fi
+              VERSION: ${{ inputs.version }}
+              PRERELEASE_ID: ${{ inputs.prerelease-id }}
+              ACTION_PATH: ${{ github.action_path }}
+          run: pnpm exec tsx "$ACTION_PATH/scripts/bump-version.ts"
 
-              RAW_VERSION=$(echo "$RAW_VERSION" | xargs)
-              RAW_VERSION="${RAW_VERSION##* }"
-              CLEAN_VERSION="${RAW_VERSION#v}"
-
-              echo "raw-version=$RAW_VERSION" >> $GITHUB_OUTPUT
-              echo "clean-version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+        - name: Create release branch
+          id: create-release-branch
+          if: steps.bump-version.outputs.release-branch-name != ''
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              RELEASE_BRANCH_NAME: ${{ steps.bump-version.outputs.release-branch-name }}
+              ACTION_PATH: ${{ github.action_path }}
+          run: pnpm exec tsx "$ACTION_PATH/scripts/create-release-branch.ts"
 
         - name: Update changelog
           uses: dnd-mapp/.github/.github/actions/update-changelog@07986efbcf0cd7c6d78e5619a14413b78f1cb8d2
           with:
               token: ${{ steps.git-bot.outputs.token }}
               clean-version: ${{ steps.bump-version.outputs.clean-version }}
+              branch: ${{ steps.bump-version.outputs.release-branch-name || github.ref_name }}
 
         - name: Update package manifest
           id: commit-manifest
@@ -74,7 +75,7 @@ runs:
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               REPO: ${{ github.repository }}
-              BRANCH: ${{ github.ref_name }}
+              BRANCH: ${{ steps.bump-version.outputs.release-branch-name || github.ref_name }}
               COMMIT_MESSAGE: ${{ steps.bump-version.outputs.clean-version }}
           run: |
               MANIFEST_PATH="package.json"
@@ -88,44 +89,3 @@ runs:
                   --jq '.commit.sha')
 
               echo "commit-sha=$NEW_COMMIT_SHA" >> $GITHUB_OUTPUT
-
-        - name: Create signed tag
-          shell: bash
-          env:
-              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
-              REPO: ${{ github.repository }}
-              NEW_TAG_NAME: ${{ steps.bump-version.outputs.raw-version }}
-              COMMIT_SHA: ${{ steps.commit-manifest.outputs.commit-sha }}
-          run: |
-              TAG_SHA=$(gh api "repos/$REPO/git/tags" \
-                  --method POST \
-                  -f tag="$NEW_TAG_NAME" \
-                  -f message="$NEW_TAG_NAME" \
-                  -f object="$COMMIT_SHA" \
-                  -f type="commit" \
-                  --jq '.sha')
-
-              gh api "repos/$REPO/git/refs" \
-                  --method POST \
-                  -f ref="refs/tags/$NEW_TAG_NAME" \
-                  -f sha="$TAG_SHA"
-
-        - name: Create Release
-          shell: bash
-          env:
-              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
-              NEW_TAG_NAME: ${{ steps.bump-version.outputs.raw-version }}
-              IS_PRERELEASE: ${{ steps.validate-inputs.outputs.is-prerelease }}
-          run: |
-              if [[ "$IS_PRERELEASE" == "true" ]]; then
-                  LATEST_FLAG="false"
-                  PRERELEASE_FLAG="true"
-              else
-                  LATEST_FLAG="true"
-                  PRERELEASE_FLAG="false"
-              fi
-
-              gh release create "$NEW_TAG_NAME" --title "$NEW_TAG_NAME" \
-                  --notes-file .github/release-notes.md \
-                  --latest="$LATEST_FLAG" \
-                  --prerelease="$PRERELEASE_FLAG"
