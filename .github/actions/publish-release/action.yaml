@@ -1,0 +1,38 @@
+name: Publish release
+description: Creates a signed annotated tag and GitHub Release, and merges the release branch into main for stable releases
+
+inputs:
+    app-id:
+        description: The GitHub App ID for authentication
+        required: true
+    app-private-key:
+        description: The GitHub App private key for authentication
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - name: Configure git bot
+          id: git-bot
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@74c387fd0c74dead7694fa0e04a4a5a80a0d2383
+          with:
+              app-id: ${{ inputs.app-id }}
+              app-private-key: ${{ inputs.app-private-key }}
+
+        - name: Publish release
+          id: publish-release
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              CHANGELOG_PATH: CHANGELOG.md
+              ACTION_PATH: ${{ github.action_path }}
+          run: pnpm exec tsx "$ACTION_PATH/scripts/publish-release.ts"
+
+        - name: Merge release branch
+          if: startsWith(github.ref_name, 'release/') && steps.publish-release.outputs.is-prerelease == 'false'
+          shell: bash
+          env:
+              GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              RELEASE_BRANCH: ${{ github.ref_name }}
+              ACTION_PATH: ${{ github.action_path }}
+          run: pnpm exec tsx "$ACTION_PATH/scripts/merge-release-branch.ts"
