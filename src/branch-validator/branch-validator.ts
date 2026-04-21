@@ -16,6 +16,23 @@ interface ParsedVersion {
     prerelease: string[];
 }
 
+type PrereleaseTrack = 'premajor' | 'preminor' | 'prepatch' | null;
+
+interface ValidateInputShapeParams {
+    versionInput: string;
+    prereleaseIdInput: string;
+    currentVersion: string;
+}
+
+interface ValidateReleaseParams {
+    owner: string;
+    repo: string;
+    currentBranch: string;
+    versionInput: string;
+    prereleaseIdInput: string;
+    currentVersion: string;
+}
+
 function parseSemVer(version: string): ParsedVersion {
     const plusIndex = version.indexOf('+');
     const base = plusIndex === -1 ? version : version.slice(0, plusIndex);
@@ -33,14 +50,14 @@ function parseSemVer(version: string): ParsedVersion {
         return Number(n);
     });
 
-    return { major, minor, patch, prerelease: prereleasePart ? prereleasePart.split('.') : [] };
+    return { major: major!, minor: minor!, patch: patch!, prerelease: prereleasePart ? prereleasePart.split('.') : [] };
 }
 
 function isPrereleaseVersion(parsed: ParsedVersion): boolean {
     return parsed.prerelease.length > 0;
 }
 
-function getPrereleaseTrack(parsed: ParsedVersion): 'premajor' | 'preminor' | 'prepatch' | null {
+function getPrereleaseTrack(parsed: ParsedVersion): PrereleaseTrack {
     if (!isPrereleaseVersion(parsed)) return null;
     if (parsed.minor === 0 && parsed.patch === 0) return 'premajor';
     if (parsed.patch === 0) return 'preminor';
@@ -62,7 +79,9 @@ function validateEnum(value: string, allowed: string[], inputName: string): void
 
 // --- Input-shape validation (Rules 1–9) ---
 
-function validateInputShape(versionInput: string, prereleaseIdInput: string, currentVersion: string): void {
+function validateInputShape(params: ValidateInputShapeParams): void {
+    const { versionInput, prereleaseIdInput, currentVersion } = params;
+
     validateEnum(versionInput, ALLOWED_VERSIONS, 'version');
     validateEnum(prereleaseIdInput, ALLOWED_PRERELEASE_IDS, 'prerelease-id');
 
@@ -115,8 +134,8 @@ function validateInputShape(versionInput: string, prereleaseIdInput: string, cur
     // Rules 7/8/9
     if (versionInput === 'prerelease' && isCurrentPrerelease && currentPrereleaseId !== null) {
         if (prereleaseIdInput !== 'none') {
-            const currentWeight = PRERELEASE_ID_WEIGHT[currentPrereleaseId];
-            const nextWeight = PRERELEASE_ID_WEIGHT[prereleaseIdInput];
+            const currentWeight = PRERELEASE_ID_WEIGHT[currentPrereleaseId]!;
+            const nextWeight = PRERELEASE_ID_WEIGHT[prereleaseIdInput]!;
 
             if (nextWeight < currentWeight) {
                 throw new Error(
@@ -131,16 +150,13 @@ function validateInputShape(versionInput: string, prereleaseIdInput: string, cur
 
 export async function validateRelease(
     octokit: Octokit,
-    params: {
-        owner: string;
-        repo: string;
-        currentBranch: string;
-        versionInput: string;
-        prereleaseIdInput: string;
-        currentVersion: string;
-    }
+    params: ValidateReleaseParams
 ): Promise<{ isPrerelease: boolean }> {
-    validateInputShape(params.versionInput, params.prereleaseIdInput, params.currentVersion);
+    validateInputShape({
+        versionInput: params.versionInput,
+        prereleaseIdInput: params.prereleaseIdInput,
+        currentVersion: params.currentVersion,
+    });
 
     const { data: branches } = await octokit.repos.listBranches({
         owner: params.owner,
@@ -176,5 +192,5 @@ export async function validateRelease(
 
     const isPrerelease = PRERELEASE_INIT_TYPES.includes(params.versionInput) || params.versionInput === 'prerelease';
 
-    return { isPrerelease };
+    return { isPrerelease: isPrerelease };
 }
