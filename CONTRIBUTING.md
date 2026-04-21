@@ -67,6 +67,8 @@ Our release process is automated via a release pipeline.
 1. **Manual Changelog:** Before triggering a release, the `CHANGELOG.md` must be manually updated to include all "Unreleased" changes.
 2. **Trigger:** Once the changelog is ready and merged, the release pipeline can be manually triggered to deploy the new version.
 
+For a full explanation of how the pipeline works, the versioning rules, and the prerelease workflow, see the [Release Pipeline](https://github.com/dnd-mapp/.github/blob/main/docs/release-pipeline.md) guide.
+
 ## License
 
 Projects within the D&D Mapp organization are licensed under the **MIT License**. You can find the full license text in our [LICENSE file](https://github.com/dnd-mapp/.github/tree/main?tab=MIT-1-ov-file).
