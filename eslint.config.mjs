@@ -19,10 +19,7 @@ export default defineConfig(
             },
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: [
-                        '.github/actions/bump-version/scripts/*.mjs',
-                        '.github/actions/update-changelog/scripts/*.mjs',
-                    ],
+                    allowDefaultProject: ['.github/actions/update-changelog/scripts/*.mjs'],
                 },
             },
         },
