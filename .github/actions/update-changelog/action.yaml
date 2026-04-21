@@ -8,6 +8,9 @@ inputs:
     clean-version:
         description: The new version without 'v' prefix (e.g. 1.2.3)
         required: true
+    is-prerelease:
+        description: Whether this is a prerelease version bump
+        required: true
     branch:
         description: The branch to commit the changelog update to
         default: ${{ github.ref_name }}
@@ -18,9 +21,11 @@ runs:
         - name: Prepare release notes
           shell: bash
           env:
+              IS_PRERELEASE: ${{ inputs.is-prerelease }}
               CLEAN_VERSION: ${{ inputs.clean-version }}
+              CHANGELOG_PATH: CHANGELOG.md
               ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/prepare-release-notes.mjs"
+          run: pnpm exec tsx "$ACTION_PATH/scripts/update-changelog.ts"
 
         - name: Update changelog
           shell: bash
