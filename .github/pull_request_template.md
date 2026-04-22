@@ -1,15 +1,17 @@
-## 📥 PR Description
-
-**Summary:**
+## Summary
 
 _Provide a general summary of your changes._
 
-**Checklist:**
+---
 
-- [ ] My code follows the style guidelines of this project.
-- [ ] I have performed a self-review of my own code.
-- [ ] I have commented my code, particularly in hard-to-understand areas.
+## Why
 
-**Related Issue:**
+_Provide information on why the changes were made._
 
-- Closes #
+---
+
+## Related issues
+
+_If applicable, link related issues_
+
+Closes: [#issue-number]
