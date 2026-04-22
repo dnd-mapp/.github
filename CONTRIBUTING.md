@@ -60,6 +60,10 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 * Example: `feat(api): add new map layer support`
 * Example: `fix(ui): resolve alignment issue on mobile`
 
+### Pull Requests
+
+When opening a pull request, GitHub will automatically apply the default template from `.github/pull_request_template.md`.
+
 ### Release Process
 
 Our release process is automated via a release pipeline.
