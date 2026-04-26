@@ -38,7 +38,7 @@ runs:
 
         - name: Configure git bot
           id: git-bot
-          uses: dnd-mapp/.github/.github/actions/configure-git-bot@74c387fd0c74dead7694fa0e04a4a5a80a0d2383
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@6897b02ea4fdb4d4b51a40043592087effe8cc3d
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
@@ -63,7 +63,7 @@ runs:
           run: node "$ACTION_PATH/scripts/create-release-branch.mts"
 
         - name: Update changelog
-          uses: dnd-mapp/.github/.github/actions/update-changelog@07986efbcf0cd7c6d78e5619a14413b78f1cb8d2
+          uses: dnd-mapp/.github/.github/actions/update-changelog@6897b02ea4fdb4d4b51a40043592087effe8cc3d
           with:
               token: ${{ steps.git-bot.outputs.token }}
               clean-version: ${{ steps.bump-version.outputs.clean-version }}
