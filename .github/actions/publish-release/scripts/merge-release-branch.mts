@@ -1,5 +1,5 @@
-import { deleteReleaseBranch, mergeReleaseBranch } from '@/branch-manager';
-import { createGithubClient } from '@/github-client';
+import { deleteReleaseBranch, mergeReleaseBranch } from '../../../../src/branch-manager/branch-manager.ts';
+import { createGithubClient } from '../../../../src/github-client/github-client.ts';
 
 const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
 const releaseBranch = process.env['RELEASE_BRANCH']!;

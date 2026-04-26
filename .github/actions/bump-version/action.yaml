@@ -34,7 +34,7 @@ runs:
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
               ACTION_PATH: ${{ github.action_path }}
-          run: pnpm exec tsx "$ACTION_PATH/scripts/validate-branch.ts"
+          run: node "$ACTION_PATH/scripts/validate-branch.mts"
 
         - name: Configure git bot
           id: git-bot
@@ -50,7 +50,7 @@ runs:
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
               ACTION_PATH: ${{ github.action_path }}
-          run: pnpm exec tsx "$ACTION_PATH/scripts/bump-version.ts"
+          run: node "$ACTION_PATH/scripts/bump-version.mts"
 
         - name: Create release branch
           id: create-release-branch
@@ -60,7 +60,7 @@ runs:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               RELEASE_BRANCH_NAME: ${{ steps.bump-version.outputs.release-branch-name }}
               ACTION_PATH: ${{ github.action_path }}
-          run: pnpm exec tsx "$ACTION_PATH/scripts/create-release-branch.ts"
+          run: node "$ACTION_PATH/scripts/create-release-branch.mts"
 
         - name: Update changelog
           uses: dnd-mapp/.github/.github/actions/update-changelog@07986efbcf0cd7c6d78e5619a14413b78f1cb8d2

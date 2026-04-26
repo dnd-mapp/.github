@@ -25,7 +25,7 @@ runs:
               CLEAN_VERSION: ${{ inputs.clean-version }}
               CHANGELOG_PATH: CHANGELOG.md
               ACTION_PATH: ${{ github.action_path }}
-          run: pnpm exec tsx "$ACTION_PATH/scripts/update-changelog.ts"
+          run: node "$ACTION_PATH/scripts/update-changelog.mts"
 
         - name: Update changelog
           shell: bash
