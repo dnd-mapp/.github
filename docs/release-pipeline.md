@@ -150,7 +150,7 @@ All actions are located in `.github/actions/` in the `dnd-mapp/.github` reposito
 
 ## TypeScript Modules
 
-The automation logic is implemented as TypeScript modules under `src/` in the `dnd-mapp/.github` repository. Scripts inside each composite action invoke these modules via `pnpm exec tsx`.
+The automation logic is implemented as TypeScript modules under `src/` in the `dnd-mapp/.github` repository. Scripts inside each composite action invoke these modules via `node` (Node 24 strips TypeScript types by default).
 
 | Module              | Key exports                                                                               |
 |:--------------------|:------------------------------------------------------------------------------------------|
