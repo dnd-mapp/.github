@@ -1,18 +1,9 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 {
     "references": [{ "path": "./tsconfig.spec.json" }],
-    "include": ["src/**/*.ts", ".github/actions/**/*.ts"],
+    "include": ["src/**/*.ts", ".github/actions/**/*.ts", ".github/actions/**/*.mts"],
     "exclude": ["node_modules/", "**/*.spec.ts"],
     "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/branch-manager": ["src/branch-manager/index.ts"],
-            "@/branch-validator": ["src/branch-validator/index.ts"],
-            "@/changelog-manager": ["src/changelog-manager/index.ts"],
-            "@/github-client": ["src/github-client/index.ts"],
-            "@/release-publisher": ["src/release-publisher/index.ts"],
-            "@/version-bumper": ["src/version-bumper/index.ts"]
-        },
         "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
         "isolatedModules": true,

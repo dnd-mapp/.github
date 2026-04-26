@@ -1,6 +1,6 @@
-import { validateRelease } from '@/branch-validator';
-import { createGithubClient } from '@/github-client';
 import { appendFile, readFile } from 'fs/promises';
+import { validateRelease } from '../../../../src/branch-validator/branch-validator.ts';
+import { createGithubClient } from '../../../../src/github-client/github-client.ts';
 
 const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
 const manifest = JSON.parse(await readFile('package.json', 'utf-8')) as { version: string };
