@@ -8,6 +8,7 @@
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "build": "node build.mts",
+    "build:check": "node build.mts && git diff --exit-code -- .github/actions/bump-version/dist .github/actions/publish-release/dist .github/actions/update-changelog/dist",
     "test": "pnpm exec vitest run",
     "test:development": "pnpm exec vitest --ui --watch",
     "lint": "pnpm lint:eslint && pnpm lint:markdownlint",
