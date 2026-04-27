@@ -1,7 +1,7 @@
 import { createReleaseBranch } from '@/branch-manager';
 import { createGithubClient } from '@/github-client';
 import { Octokit } from '@octokit/rest';
-import { run } from './create-release-branch.mts';
+import { run } from './create-release-branch';
 
 vi.mock('@/branch-manager', () => ({
     createReleaseBranch: vi.fn(),

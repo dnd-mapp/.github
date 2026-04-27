@@ -2,7 +2,7 @@ import { validateRelease } from '@/branch-validator';
 import { createGithubClient } from '@/github-client';
 import { Octokit } from '@octokit/rest';
 import { appendFile, readFile } from 'fs/promises';
-import { run } from './validate-branch.mts';
+import { run } from './validate-branch';
 
 vi.mock('fs/promises', () => ({
     readFile: vi.fn(),
@@ -21,7 +21,7 @@ const mockOctokit = {} as unknown as Octokit;
 
 beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(readFile).mockResolvedValue('{"version":"1.0.0"}' as unknown as Buffer);
+    vi.mocked(readFile).mockResolvedValue('{"version":"1.0.0"}');
     vi.mocked(validateRelease).mockResolvedValue({ isPrerelease: false });
     vi.mocked(createGithubClient).mockReturnValue(mockOctokit);
     vi.mocked(appendFile).mockResolvedValue();

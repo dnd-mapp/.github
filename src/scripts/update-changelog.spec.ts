@@ -4,7 +4,7 @@ import {
     insertOrUpdateWatermark,
     stampStableVersion,
 } from '@/changelog-manager';
-import { run } from './update-changelog.mts';
+import { run } from './update-changelog';
 
 vi.mock('@/changelog-manager', () => ({
     extractPrereleaseDelta: vi.fn(),

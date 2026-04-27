@@ -1,7 +1,7 @@
 import { deleteReleaseBranch, mergeReleaseBranch } from '@/branch-manager';
 import { createGithubClient } from '@/github-client';
 import { Octokit } from '@octokit/rest';
-import { run } from './merge-release-branch.mts';
+import { run } from './merge-release-branch';
 
 vi.mock('@/branch-manager', () => ({
     mergeReleaseBranch: vi.fn(),

@@ -21,7 +21,7 @@ export default defineConfig({
         coverage: {
             enabled: true,
             exclude: ['*/index.ts'],
-            include: ['src/**/*.ts', 'src/**/*.mts'],
+            include: ['src/**/*.ts'],
             provider: 'v8',
             reportOnFailure: true,
             reporter: [['html', { subdir: '.' }], 'text-summary'],

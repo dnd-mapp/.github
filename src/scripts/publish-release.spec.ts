@@ -3,7 +3,7 @@ import { createGithubClient } from '@/github-client';
 import { publishRelease } from '@/release-publisher';
 import { Octokit } from '@octokit/rest';
 import { appendFile, readFile } from 'fs/promises';
-import { run } from './publish-release.mts';
+import { run } from './publish-release';
 
 vi.mock('fs/promises', () => ({
     readFile: vi.fn(),
@@ -51,7 +51,7 @@ afterEach(() => {
 
 describe('publish-release script — prerelease version', () => {
     beforeEach(() => {
-        vi.mocked(readFile).mockResolvedValue('{"version":"2.0.0-alpha.0"}' as unknown as Buffer);
+        vi.mocked(readFile).mockResolvedValue('{"version":"2.0.0-alpha.0"}');
     });
 
     it('calls extractPrereleaseDelta (not extractStableNotes)', async () => {
@@ -93,7 +93,7 @@ describe('publish-release script — prerelease version', () => {
 
 describe('publish-release script — stable version', () => {
     beforeEach(() => {
-        vi.mocked(readFile).mockResolvedValue('{"version":"1.2.3"}' as unknown as Buffer);
+        vi.mocked(readFile).mockResolvedValue('{"version":"1.2.3"}');
     });
 
     it('calls extractStableNotes (not extractPrereleaseDelta)', async () => {

@@ -1,6 +1,6 @@
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
 import { appendFile, readFile } from 'fs/promises';
-import { run } from './bump-version.mts';
+import { run } from './bump-version';
 
 vi.mock('fs/promises', () => ({
     readFile: vi.fn(),
@@ -16,11 +16,13 @@ vi.mock('@/version-bumper', () => ({
 
 beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(readFile).mockResolvedValue('{"version":"1.0.0"}' as unknown as Buffer);
+
+    vi.mocked(readFile).mockResolvedValue('{"version":"1.0.0"}');
     vi.mocked(bumpVersion).mockReturnValue('1.1.0');
     vi.mocked(deriveReleaseBranchName).mockReturnValue(null);
     vi.mocked(writePackageVersion).mockResolvedValue();
     vi.mocked(appendFile).mockResolvedValue();
+
     process.env['GITHUB_WORKSPACE'] = '/workspace';
     process.env['GITHUB_OUTPUT'] = '/output';
     process.env['VERSION'] = 'minor';
