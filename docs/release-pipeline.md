@@ -138,7 +138,7 @@ All actions are located in `.github/actions/` in the `dnd-mapp/.github` reposito
 | Action                | Responsibility                                                                                                |
 |:----------------------|:--------------------------------------------------------------------------------------------------------------|
 | `setup-tools`         | Installs Node.js and pnpm                                                                                     |
-| `ci`                  | Runs format check, ESLint, Markdownlint, and Vitest                                                           |
+| `ci`                  | Runs format check, ESLint, Markdownlint, build artifact check, and Vitest                                     |
 | `configure-git-bot`   | Generates a GitHub App installation token and configures git identity                                         |
 | `bump-version`        | Validates inputs → calculates version → creates branch → updates changelog → commits `package.json`           |
 | `update-changelog`    | Inserts/updates the prerelease watermark or stamps the stable version with a date                             |
@@ -150,7 +150,7 @@ All actions are located in `.github/actions/` in the `dnd-mapp/.github` reposito
 
 ## TypeScript Modules
 
-The automation logic is implemented as TypeScript modules under `src/` in the `dnd-mapp/.github` repository. Scripts inside each composite action invoke these modules via `node` (Node 24 strips TypeScript types by default).
+The automation logic is implemented as TypeScript modules under `src/` in the `dnd-mapp/.github` repository. Entry-point scripts in `src/scripts/` import these modules and are bundled with esbuild into self-contained `.mjs` files committed to each composite action's `dist/` directory. Bundling inlines all source modules and npm dependencies so consumer repos need no `node_modules/` of their own to run the scripts.
 
 | Module              | Key exports                                                                               |
 |:--------------------|:------------------------------------------------------------------------------------------|

@@ -14,7 +14,7 @@ runs:
     steps:
         - name: Configure git bot
           id: git-bot
-          uses: dnd-mapp/.github/.github/actions/configure-git-bot@6897b02ea4fdb4d4b51a40043592087effe8cc3d
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@4b623e52868311b7371d0c064b3315367aa0a6b5
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
@@ -22,17 +22,17 @@ runs:
         - name: Publish release
           id: publish-release
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
-              CHANGELOG_PATH: CHANGELOG.md
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/publish-release.mts"
+              CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
+          run: node dist/publish-release.mjs
 
         - name: Merge release branch
           if: startsWith(github.ref_name, 'release/') && steps.publish-release.outputs.is-prerelease == 'false'
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               RELEASE_BRANCH: ${{ github.ref_name }}
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/merge-release-branch.mts"
+          run: node dist/merge-release-branch.mjs

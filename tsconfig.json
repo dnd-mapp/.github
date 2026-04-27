@@ -1,7 +1,7 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 {
     "references": [{ "path": "./tsconfig.spec.json" }],
-    "include": ["src/**/*.ts", ".github/actions/**/*.ts", ".github/actions/**/*.mts"],
+    "include": ["build.mts", "src/**/*.ts", ".github/actions/**/*.ts"],
     "exclude": ["node_modules/", "**/*.spec.ts"],
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
@@ -21,6 +21,14 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "dist/out-tsc",
+        "paths": {
+            "@/branch-manager": ["./src/branch-manager/index.ts"],
+            "@/branch-validator": ["./src/branch-validator/index.ts"],
+            "@/changelog-manager": ["./src/changelog-manager/index.ts"],
+            "@/github-client": ["./src/github-client/index.ts"],
+            "@/release-publisher": ["./src/release-publisher/index.ts"],
+            "@/version-bumper": ["./src/version-bumper/index.ts"]
+        },
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "strictBindCallApply": true,
