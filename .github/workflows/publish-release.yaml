@@ -16,7 +16,7 @@ jobs:
                   fetch-depth: 2
 
             - name: Set up tools
-              uses: dnd-mapp/.github/.github/actions/setup-tools@2f1bc675b3fc1bc7318f8dc79ddb25eb36d97658
+              uses: dnd-mapp/.github/.github/actions/setup-tools@4b623e52868311b7371d0c064b3315367aa0a6b5
 
             - name: Check version change
               id: version-check
@@ -33,7 +33,7 @@ jobs:
 
             - name: Publish release
               if: steps.version-check.outputs.changed == 'true'
-              uses: dnd-mapp/.github/.github/actions/publish-release@2f1bc675b3fc1bc7318f8dc79ddb25eb36d97658
+              uses: dnd-mapp/.github/.github/actions/publish-release@4b623e52868311b7371d0c064b3315367aa0a6b5
               with:
                   app-id: ${{ secrets.app-id }}
                   app-private-key: ${{ secrets.app-private-key }}
