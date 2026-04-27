@@ -8,7 +8,6 @@ const shared: BuildOptions = {
     target: 'node24',
     format: 'esm',
     outExtension: { '.js': '.mjs' },
-    sourcemap: 'inline',
 };
 
 await Promise.all([
