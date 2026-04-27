@@ -29,12 +29,12 @@ runs:
         - name: Validate branch
           id: validate-branch
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               GITHUB_TOKEN: ${{ github.token }}
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/validate-branch.mts"
+          run: node dist/validate-branch.mjs
 
         - name: Configure git bot
           id: git-bot
@@ -46,21 +46,21 @@ runs:
         - name: Bump version
           id: bump-version
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/bump-version.mts"
+          run: node dist/bump-version.mjs
 
         - name: Create release branch
           id: create-release-branch
           if: steps.bump-version.outputs.release-branch-name != ''
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               RELEASE_BRANCH_NAME: ${{ steps.bump-version.outputs.release-branch-name }}
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/create-release-branch.mts"
+          run: node dist/create-release-branch.mjs
 
         - name: Update changelog
           uses: dnd-mapp/.github/.github/actions/update-changelog@6897b02ea4fdb4d4b51a40043592087effe8cc3d

@@ -20,12 +20,12 @@ runs:
     steps:
         - name: Prepare release notes
           shell: bash
+          working-directory: ${{ github.action_path }}
           env:
               IS_PRERELEASE: ${{ inputs.is-prerelease }}
               CLEAN_VERSION: ${{ inputs.clean-version }}
-              CHANGELOG_PATH: CHANGELOG.md
-              ACTION_PATH: ${{ github.action_path }}
-          run: node "$ACTION_PATH/scripts/update-changelog.mts"
+              CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
+          run: node dist/update-changelog.mjs
 
         - name: Update changelog
           shell: bash

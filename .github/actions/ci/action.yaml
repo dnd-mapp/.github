@@ -14,6 +14,10 @@ runs:
           shell: bash
           run: pnpm lint
 
+        - name: Check built artifacts are up-to-date
+          shell: bash
+          run: pnpm build:check
+
         - name: Run tests
           shell: bash
           run: pnpm test
