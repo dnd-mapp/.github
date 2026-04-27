@@ -1,13 +1,9 @@
+import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
 import { appendFile, readFile } from 'fs/promises';
-import {
-    bumpVersion,
-    deriveReleaseBranchName,
-    writePackageVersion,
-} from '../../../../src/version-bumper/version-bumper.ts';
 
 const versionInput = process.env['VERSION']!;
 const prereleaseIdInput = process.env['PRERELEASE_ID']!;
-const manifestPath = 'package.json';
+const manifestPath = `${process.env['GITHUB_WORKSPACE']!}/package.json`;
 
 const manifest = JSON.parse(await readFile(manifestPath, 'utf-8')) as { version: string };
 const preid = prereleaseIdInput !== 'none' ? prereleaseIdInput : undefined;

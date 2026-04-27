@@ -3,7 +3,7 @@ import {
     extractStableNotes,
     insertOrUpdateWatermark,
     stampStableVersion,
-} from '../../../../src/changelog-manager/changelog-manager.ts';
+} from '@/changelog-manager';
 
 const isPrerelease = process.env['IS_PRERELEASE'] === 'true';
 const version = process.env['CLEAN_VERSION']!;

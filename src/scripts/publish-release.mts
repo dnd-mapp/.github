@@ -1,13 +1,15 @@
+import { extractPrereleaseDelta, extractStableNotes } from '@/changelog-manager';
+import { createGithubClient } from '@/github-client';
+import { publishRelease } from '@/release-publisher';
 import { appendFile, readFile } from 'fs/promises';
 import semver from 'semver';
-import { extractPrereleaseDelta, extractStableNotes } from '../../../../src/changelog-manager/changelog-manager.ts';
-import { createGithubClient } from '../../../../src/github-client/github-client.ts';
-import { publishRelease } from '../../../../src/release-publisher/release-publisher.ts';
 
 const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
 const changelogPath = process.env['CHANGELOG_PATH'] ?? 'CHANGELOG.md';
 
-const manifest = JSON.parse(await readFile('package.json', 'utf-8')) as { version: string };
+const manifest = JSON.parse(await readFile(`${process.env['GITHUB_WORKSPACE']!}/package.json`, 'utf-8')) as {
+    version: string;
+};
 const version = manifest.version;
 const isPrerelease = semver.prerelease(version) !== null;
 
