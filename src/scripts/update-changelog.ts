@@ -1,9 +1,4 @@
-import {
-    extractPrereleaseDelta,
-    extractStableNotes,
-    insertOrUpdateWatermark,
-    stampStableVersion,
-} from '@/changelog-manager';
+import { insertOrUpdateWatermark, stampStableVersion } from '@/changelog-manager';
 import { fileURLToPath } from 'url';
 
 export async function run(): Promise<void> {
@@ -12,10 +7,8 @@ export async function run(): Promise<void> {
     const changelogPath = process.env['CHANGELOG_PATH'] ?? 'CHANGELOG.md';
 
     if (isPrerelease) {
-        await extractPrereleaseDelta(changelogPath);
         await insertOrUpdateWatermark(changelogPath, `v${version}`);
     } else {
-        await extractStableNotes(changelogPath);
         await stampStableVersion(changelogPath, version);
     }
 }

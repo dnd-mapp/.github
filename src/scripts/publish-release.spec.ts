@@ -106,7 +106,7 @@ describe('publish-release script — stable version', () => {
     it('defaults changelogPath to CHANGELOG.md when CHANGELOG_PATH not set', async () => {
         await run();
 
-        expect(extractStableNotes).toHaveBeenCalledWith('CHANGELOG.md');
+        expect(extractStableNotes).toHaveBeenCalledWith('CHANGELOG.md', '1.2.3');
     });
 
     it('uses CHANGELOG_PATH when set', async () => {
@@ -114,7 +114,7 @@ describe('publish-release script — stable version', () => {
 
         await run();
 
-        expect(extractStableNotes).toHaveBeenCalledWith('custom/CHANGELOG.md');
+        expect(extractStableNotes).toHaveBeenCalledWith('custom/CHANGELOG.md', '1.2.3');
     });
 
     it('writes is-prerelease=false to GITHUB_OUTPUT', async () => {

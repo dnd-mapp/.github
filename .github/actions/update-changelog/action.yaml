@@ -1,5 +1,5 @@
 name: Update changelog
-description: Prepares release notes from the [Unreleased] section and commits the updated CHANGELOG.md
+description: Updates CHANGELOG.md by inserting/updating the prerelease watermark or stamping the stable version heading and resetting [Unreleased], then commits the result
 
 inputs:
     token:
