@@ -2090,8 +2090,25 @@ async function extractPrereleaseDelta(changelogPath) {
   }
   return body.trim();
 }
-async function extractStableNotes(changelogPath) {
-  return extractPrereleaseDelta(changelogPath);
+async function extractStableNotes(changelogPath, version) {
+  const content = await readFile(changelogPath, { encoding: "utf-8" });
+  const headerText = `## [${version}]`;
+  const start = content.indexOf(headerText);
+  if (start === -1) {
+    throw new Error(`No [${version}] section found in changelog.`);
+  }
+  const afterHeader = start + headerText.length;
+  const separatorIdx = content.indexOf("\n---", afterHeader);
+  const nextSectionIdx = content.indexOf("\n## [", afterHeader);
+  let end;
+  if (separatorIdx !== -1 && (nextSectionIdx === -1 || separatorIdx < nextSectionIdx)) {
+    end = separatorIdx;
+  } else if (nextSectionIdx !== -1) {
+    end = nextSectionIdx;
+  } else {
+    end = content.length;
+  }
+  return getSectionBody(content.slice(start, end)).trim();
 }
 
 // node_modules/.pnpm/universal-user-agent@7.0.3/node_modules/universal-user-agent/index.js
@@ -3279,10 +3296,10 @@ function paginateRest(octokit) {
 }
 paginateRest.VERSION = VERSION6;
 
-// node_modules/.pnpm/@octokit+plugin-rest-endpoi_88f1cfdccbcd12f9bd89a662a3d08bce/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/version.js
+// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.6/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/version.js
 var VERSION7 = "17.0.0";
 
-// node_modules/.pnpm/@octokit+plugin-rest-endpoi_88f1cfdccbcd12f9bd89a662a3d08bce/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/generated/endpoints.js
+// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.6/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/generated/endpoints.js
 var Endpoints = {
   actions: {
     addCustomLabelsToSelfHostedRunnerForOrg: [
@@ -5574,7 +5591,7 @@ var Endpoints = {
 };
 var endpoints_default = Endpoints;
 
-// node_modules/.pnpm/@octokit+plugin-rest-endpoi_88f1cfdccbcd12f9bd89a662a3d08bce/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/endpoints-to-methods.js
+// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.6/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/endpoints-to-methods.js
 var endpointMethodsMap = /* @__PURE__ */ new Map();
 for (const [scope, endpoints] of Object.entries(endpoints_default)) {
   for (const [methodName, endpoint2] of Object.entries(endpoints)) {
@@ -5697,7 +5714,7 @@ function decorate(octokit, scope, methodName, defaults, decorations) {
   return Object.assign(withDecorations, requestWithDefaults);
 }
 
-// node_modules/.pnpm/@octokit+plugin-rest-endpoi_88f1cfdccbcd12f9bd89a662a3d08bce/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/index.js
+// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.6/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/index.js
 function restEndpointMethods(octokit) {
   const api = endpointsToMethods(octokit);
   return {
@@ -5770,7 +5787,7 @@ async function run() {
   const manifest = JSON.parse(await readFile2(`${process.env["GITHUB_WORKSPACE"]}/package.json`, "utf-8"));
   const version = manifest.version;
   const isPrerelease = import_semver.default.prerelease(version) !== null;
-  const releaseNotes = isPrerelease ? await extractPrereleaseDelta(changelogPath) : await extractStableNotes(changelogPath);
+  const releaseNotes = isPrerelease ? await extractPrereleaseDelta(changelogPath) : await extractStableNotes(changelogPath, version);
   const octokit = createGithubClient(process.env["GH_TOKEN"]);
   await publishRelease(octokit, {
     owner,

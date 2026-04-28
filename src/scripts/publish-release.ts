@@ -17,7 +17,7 @@ export async function run(): Promise<void> {
 
     const releaseNotes = isPrerelease
         ? await extractPrereleaseDelta(changelogPath)
-        : await extractStableNotes(changelogPath);
+        : await extractStableNotes(changelogPath, version);
 
     const octokit = createGithubClient(process.env['GH_TOKEN']!);
 

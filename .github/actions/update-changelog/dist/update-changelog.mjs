@@ -43,19 +43,6 @@ async function insertOrUpdateWatermark(changelogPath, version) {
   }
   await writeFile(changelogPath, before + newSection + after, { encoding: "utf-8" });
 }
-async function extractPrereleaseDelta(changelogPath) {
-  const content = await readFile(changelogPath, { encoding: "utf-8" });
-  const { section } = splitChangelog(content);
-  const body = getSectionBody(section);
-  const watermarkIdx = body.search(WATERMARK_REGEX);
-  if (watermarkIdx !== -1) {
-    return body.slice(0, watermarkIdx).trim();
-  }
-  return body.trim();
-}
-async function extractStableNotes(changelogPath) {
-  return extractPrereleaseDelta(changelogPath);
-}
 async function stampStableVersion(changelogPath, version) {
   const content = await readFile(changelogPath, { encoding: "utf-8" });
   const { before, section, after } = splitChangelog(content);
@@ -77,10 +64,8 @@ async function run() {
   const version = process.env["CLEAN_VERSION"];
   const changelogPath = process.env["CHANGELOG_PATH"] ?? "CHANGELOG.md";
   if (isPrerelease) {
-    await extractPrereleaseDelta(changelogPath);
     await insertOrUpdateWatermark(changelogPath, `v${version}`);
   } else {
-    await extractStableNotes(changelogPath);
     await stampStableVersion(changelogPath, version);
   }
 }

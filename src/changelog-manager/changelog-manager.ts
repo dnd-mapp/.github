@@ -74,8 +74,29 @@ export async function extractPrereleaseDelta(changelogPath: string): Promise<str
     return body.trim();
 }
 
-export async function extractStableNotes(changelogPath: string): Promise<string> {
-    return extractPrereleaseDelta(changelogPath);
+export async function extractStableNotes(changelogPath: string, version: string): Promise<string> {
+    const content = await readFile(changelogPath, { encoding: 'utf-8' });
+    const headerText = `## [${version}]`;
+    const start = content.indexOf(headerText);
+
+    if (start === -1) {
+        throw new Error(`No [${version}] section found in changelog.`);
+    }
+    const afterHeader = start + headerText.length;
+    const separatorIdx = content.indexOf('\n---', afterHeader);
+    const nextSectionIdx = content.indexOf('\n## [', afterHeader);
+
+    let end: number;
+
+    if (separatorIdx !== -1 && (nextSectionIdx === -1 || separatorIdx < nextSectionIdx)) {
+        end = separatorIdx;
+    } else if (nextSectionIdx !== -1) {
+        end = nextSectionIdx;
+    } else {
+        end = content.length;
+    }
+
+    return getSectionBody(content.slice(start, end)).trim();
 }
 
 export async function stampStableVersion(changelogPath: string, version: string): Promise<void> {

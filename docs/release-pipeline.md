@@ -21,6 +21,7 @@ All shared logic lives in the [`dnd-mapp/.github`](https://github.com/dnd-mapp/.
 | `dnd-mapp`       | Docker image       |
 | `email-service`  | Docker image       |
 | `shared-backend` | npm package        |
+| `shared-domain`  | npm package        |
 | `shared-ui`      | npm package        |
 | `shared-utils`   | npm package        |
 
@@ -152,14 +153,14 @@ All actions are located in `.github/actions/` in the `dnd-mapp/.github` reposito
 
 The automation logic is implemented as TypeScript modules under `src/` in the `dnd-mapp/.github` repository. Entry-point scripts in `src/scripts/` import these modules and are bundled with esbuild into self-contained `.mjs` files committed to each composite action's `dist/` directory. Bundling inlines all source modules and npm dependencies so consumer repos need no `node_modules/` of their own to run the scripts.
 
-| Module              | Key exports                                                                               |
-|:--------------------|:------------------------------------------------------------------------------------------|
-| `branch-validator`  | `validateRelease()` — enforces all SemVer and branch-state rules                          |
-| `version-bumper`    | `bumpVersion()`, `deriveReleaseBranchName()`, `writePackageVersion()`                     |
-| `branch-manager`    | `createReleaseBranch()`, `mergeReleaseBranch()`, `deleteReleaseBranch()`, `commitFiles()` |
-| `changelog-manager` | `insertOrUpdateWatermark()`, `stampStableVersion()`, `extractPrereleaseDelta()`           |
-| `release-publisher` | `publishRelease()` — creates signed tag and GitHub Release via Octokit                    |
-| `github-client`     | `createGithubClient()` — thin Octokit wrapper                                             |
+| Module              | Key exports                                                                                                                                                                             |
+|:--------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `branch-validator`  | `validateRelease()` — enforces all SemVer and branch-state rules                                                                                                                        |
+| `version-bumper`    | `bumpVersion()`, `deriveReleaseBranchName()`, `writePackageVersion()`                                                                                                                   |
+| `branch-manager`    | `createReleaseBranch()`, `mergeReleaseBranch()`, `deleteReleaseBranch()`, `commitFiles()`                                                                                               |
+| `changelog-manager` | `insertOrUpdateWatermark()`, `stampStableVersion()`, `extractPrereleaseDelta()`, `extractStableNotes(changelogPath, version)` — extracts body from the versioned `## [version]` section |
+| `release-publisher` | `publishRelease()` — creates signed tag and GitHub Release via Octokit                                                                                                                  |
+| `github-client`     | `createGithubClient()` — thin Octokit wrapper                                                                                                                                           |
 
 ---
 

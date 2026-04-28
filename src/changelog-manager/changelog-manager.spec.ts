@@ -166,13 +166,18 @@ describe('extractStableNotes', () => {
         await unlink(tmpFile).catch(() => undefined);
     });
 
-    it('returns full unreleased content without watermark', async () => {
-        tmpFile = await createTempChangelog(CHANGELOG_WITH_WATERMARK);
+    it('returns the body of the versioned section', async () => {
+        tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
 
-        const notes = await extractStableNotes(tmpFile);
+        const notes = await extractStableNotes(tmpFile, '1.0.0');
 
-        expect(notes).toContain('New feature A');
-        expect(notes).not.toContain('<!-- prerelease:');
+        expect(notes).toContain('Initial release');
+    });
+
+    it('throws when the versioned section is not found', async () => {
+        tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
+
+        await expect(extractStableNotes(tmpFile, '9.9.9')).rejects.toThrow('No [9.9.9] section found in changelog.');
     });
 });
 
