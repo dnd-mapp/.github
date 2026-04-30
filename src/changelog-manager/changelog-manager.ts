@@ -8,6 +8,14 @@ interface SplitChangelogResult {
 
 const WATERMARK_REGEX = /<!-- prerelease: .+? -->/;
 
+function filterNaEntries(body: string): string {
+    let result = body.replace(/^- \(n\/a\)$/gm, '');
+    result = result.replace(/\n{3,}/g, '\n\n');
+    result = result.replace(/^### .+\n+(?=### )/gm, '');
+    result = result.replace(/\n*\n### [^\n]+\s*$/, '');
+    return result.trim();
+}
+
 function makeWatermark(version: string): string {
     return `<!-- prerelease: ${version} -->`;
 }
@@ -99,7 +107,11 @@ export async function extractStableNotes(changelogPath: string, version: string)
     return getSectionBody(content.slice(start, end)).trim();
 }
 
-export async function stampStableVersion(changelogPath: string, version: string): Promise<void> {
+export async function stampStableVersion(
+    changelogPath: string,
+    version: string,
+    unreleasedTemplate: string
+): Promise<void> {
     const content = await readFile(changelogPath, { encoding: 'utf-8' });
     const { before, section, after } = splitChangelog(content);
     const date = new Date().toISOString().slice(0, 10);
@@ -108,11 +120,11 @@ export async function stampStableVersion(changelogPath: string, version: string)
 
     body = body.replace(/\n?<!-- prerelease: .+? -->\n?/g, '\n');
     body = body.replace(/\n{3,}/g, '\n\n').trimEnd();
+    body = filterNaEntries(body);
 
     const versionedSection = `## [${version}] - ${date}${body ? '\n' + body : ''}`;
-    const freshUnreleased = '## [Unreleased]\n';
 
-    await writeFile(changelogPath, before + freshUnreleased + '\n---\n\n' + versionedSection + after, {
+    await writeFile(changelogPath, before + unreleasedTemplate + '\n' + versionedSection + '\n' + after, {
         encoding: 'utf-8',
     });
 }

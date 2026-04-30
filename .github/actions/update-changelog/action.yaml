@@ -25,6 +25,7 @@ runs:
               IS_PRERELEASE: ${{ inputs.is-prerelease }}
               CLEAN_VERSION: ${{ inputs.clean-version }}
               CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
+              RELEASE_NOTES_TEMPLATE_PATH: ${{ github.action_path }}/release-notes-template.md
           run: node dist/update-changelog.mjs
 
         - name: Update changelog

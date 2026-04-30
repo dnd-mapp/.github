@@ -1,4 +1,5 @@
 import { insertOrUpdateWatermark, stampStableVersion } from '@/changelog-manager';
+import { join } from 'path';
 import { run } from './update-changelog';
 
 vi.mock('@/changelog-manager', () => ({
@@ -11,6 +12,13 @@ beforeEach(() => {
     vi.mocked(insertOrUpdateWatermark).mockResolvedValue();
     vi.mocked(stampStableVersion).mockResolvedValue();
     process.env['CLEAN_VERSION'] = '2.0.0';
+    process.env['RELEASE_NOTES_TEMPLATE_PATH'] = join(
+        process.cwd(),
+        '.github',
+        'actions',
+        'update-changelog',
+        'release-notes-template.md'
+    );
     delete process.env['CHANGELOG_PATH'];
 });
 
@@ -18,6 +26,7 @@ afterEach(() => {
     delete process.env['IS_PRERELEASE'];
     delete process.env['CLEAN_VERSION'];
     delete process.env['CHANGELOG_PATH'];
+    delete process.env['RELEASE_NOTES_TEMPLATE_PATH'];
 });
 
 describe('update-changelog script — prerelease path', () => {
@@ -54,7 +63,7 @@ describe('update-changelog script — stable path', () => {
     it('calls stampStableVersion without v prefix', async () => {
         await run();
 
-        expect(stampStableVersion).toHaveBeenCalledWith('CHANGELOG.md', '2.0.0');
+        expect(stampStableVersion).toHaveBeenCalledWith('CHANGELOG.md', '2.0.0', expect.any(String));
     });
 
     it('does not call insertOrUpdateWatermark', async () => {
@@ -68,12 +77,12 @@ describe('update-changelog script — stable path', () => {
 
         await run();
 
-        expect(stampStableVersion).toHaveBeenCalledWith('custom/CHANGELOG.md', '2.0.0');
+        expect(stampStableVersion).toHaveBeenCalledWith('custom/CHANGELOG.md', '2.0.0', expect.any(String));
     });
 
     it('defaults changelogPath to CHANGELOG.md when CHANGELOG_PATH not set', async () => {
         await run();
 
-        expect(stampStableVersion).toHaveBeenCalledWith('CHANGELOG.md', '2.0.0');
+        expect(stampStableVersion).toHaveBeenCalledWith('CHANGELOG.md', '2.0.0', expect.any(String));
     });
 });

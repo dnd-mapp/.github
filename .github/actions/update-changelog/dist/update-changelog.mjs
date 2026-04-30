@@ -1,6 +1,13 @@
 // src/changelog-manager/changelog-manager.ts
 import { readFile, writeFile } from "fs/promises";
 var WATERMARK_REGEX = /<!-- prerelease: .+? -->/;
+function filterNaEntries(body) {
+  let result = body.replace(/^- \(n\/a\)$/gm, "");
+  result = result.replace(/\n{3,}/g, "\n\n");
+  result = result.replace(/^### .+\n+(?=### )/gm, "");
+  result = result.replace(/\n*\n### [^\n]+\s*$/, "");
+  return result.trim();
+}
 function makeWatermark(version) {
   return `<!-- prerelease: ${version} -->`;
 }
@@ -43,21 +50,22 @@ async function insertOrUpdateWatermark(changelogPath, version) {
   }
   await writeFile(changelogPath, before + newSection + after, { encoding: "utf-8" });
 }
-async function stampStableVersion(changelogPath, version) {
+async function stampStableVersion(changelogPath, version, unreleasedTemplate) {
   const content = await readFile(changelogPath, { encoding: "utf-8" });
   const { before, section, after } = splitChangelog(content);
   const date = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
   let body = getSectionBody(section);
   body = body.replace(/\n?<!-- prerelease: .+? -->\n?/g, "\n");
   body = body.replace(/\n{3,}/g, "\n\n").trimEnd();
+  body = filterNaEntries(body);
   const versionedSection = `## [${version}] - ${date}${body ? "\n" + body : ""}`;
-  const freshUnreleased = "## [Unreleased]\n";
-  await writeFile(changelogPath, before + freshUnreleased + "\n---\n\n" + versionedSection + after, {
+  await writeFile(changelogPath, before + unreleasedTemplate + "\n" + versionedSection + "\n" + after, {
     encoding: "utf-8"
   });
 }
 
 // src/scripts/update-changelog.ts
+import { readFile as readFile2 } from "fs/promises";
 import { fileURLToPath } from "url";
 async function run() {
   const isPrerelease = process.env["IS_PRERELEASE"] === "true";
@@ -66,7 +74,9 @@ async function run() {
   if (isPrerelease) {
     await insertOrUpdateWatermark(changelogPath, `v${version}`);
   } else {
-    await stampStableVersion(changelogPath, version);
+    const templatePath = process.env["RELEASE_NOTES_TEMPLATE_PATH"];
+    const unreleasedTemplate = await readFile2(templatePath, { encoding: "utf-8" });
+    await stampStableVersion(changelogPath, version, unreleasedTemplate);
   }
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

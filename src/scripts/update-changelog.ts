@@ -1,4 +1,5 @@
 import { insertOrUpdateWatermark, stampStableVersion } from '@/changelog-manager';
+import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 
 export async function run(): Promise<void> {
@@ -9,7 +10,10 @@ export async function run(): Promise<void> {
     if (isPrerelease) {
         await insertOrUpdateWatermark(changelogPath, `v${version}`);
     } else {
-        await stampStableVersion(changelogPath, version);
+        const templatePath = process.env['RELEASE_NOTES_TEMPLATE_PATH']!;
+        const unreleasedTemplate = await readFile(templatePath, { encoding: 'utf-8' });
+
+        await stampStableVersion(changelogPath, version, unreleasedTemplate);
     }
 }
 
