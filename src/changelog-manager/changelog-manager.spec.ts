@@ -7,6 +7,19 @@ import {
     stampStableVersion,
 } from './changelog-manager';
 
+const UNRELEASED_TEMPLATE = `## [Unreleased]
+
+### Added
+
+- (n/a)
+
+### Fixed
+
+- (n/a)
+
+---
+`;
+
 const CHANGELOG_WITH_CONTENT = `# Changelog
 
 ## [Unreleased]
@@ -191,7 +204,7 @@ describe('stampStableVersion', () => {
     it('replaces [Unreleased] heading with versioned entry', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_WITH_WATERMARK);
 
-        await stampStableVersion(tmpFile, '1.1.0');
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
 
         const result = await readFile(tmpFile, { encoding: 'utf-8' });
         const today = new Date().toISOString().slice(0, 10);
@@ -202,7 +215,7 @@ describe('stampStableVersion', () => {
     it('inserts a fresh [Unreleased] section at the top', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_WITH_WATERMARK);
 
-        await stampStableVersion(tmpFile, '1.1.0');
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
 
         const result = await readFile(tmpFile, { encoding: 'utf-8' });
         const unreleasedIdx = result.indexOf('## [Unreleased]');
@@ -215,7 +228,7 @@ describe('stampStableVersion', () => {
     it('removes watermark from the changelog', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_WITH_WATERMARK);
 
-        await stampStableVersion(tmpFile, '1.1.0');
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
 
         const result = await readFile(tmpFile, { encoding: 'utf-8' });
 
@@ -225,7 +238,7 @@ describe('stampStableVersion', () => {
     it('handles missing watermark on stable stamp', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
 
-        await expect(stampStableVersion(tmpFile, '1.1.0')).resolves.not.toThrow();
+        await expect(stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE)).resolves.not.toThrow();
 
         const result = await readFile(tmpFile, { encoding: 'utf-8' });
         const today = new Date().toISOString().slice(0, 10);
@@ -236,12 +249,64 @@ describe('stampStableVersion', () => {
     it('stamps stable version with empty unreleased section (no body)', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_EMPTY_UNRELEASED);
 
-        await stampStableVersion(tmpFile, '1.1.0');
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
 
         const result = await readFile(tmpFile, { encoding: 'utf-8' });
         const today = new Date().toISOString().slice(0, 10);
 
         expect(result).toContain(`## [1.1.0] - ${today}`);
         expect(result).toContain('## [Unreleased]');
+    });
+
+    it('uses the provided template for the fresh [Unreleased] section', async () => {
+        tmpFile = await createTempChangelog(CHANGELOG_WITH_WATERMARK);
+
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
+
+        const result = await readFile(tmpFile, { encoding: 'utf-8' });
+
+        expect(result).toMatch(/## \[Unreleased\][\s\S]+### Added[\s\S]+- \(n\/a\)/);
+    });
+
+    it('strips (n/a) placeholder entries from the versioned section', async () => {
+        const changelogWithNa = `# Changelog\n\n## [Unreleased]\n\n### Added\n\n- New feature\n\n### Fixed\n\n- (n/a)\n\n---\n\n## [1.0.0] - 2024-01-01\n`;
+        tmpFile = await createTempChangelog(changelogWithNa);
+
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
+
+        const result = await readFile(tmpFile, { encoding: 'utf-8' });
+        const versionedStart = result.indexOf('## [1.1.0]');
+        const nextSection = result.indexOf('\n---', versionedStart);
+        const versionedBody = result.slice(versionedStart, nextSection);
+
+        expect(versionedBody).toContain('New feature');
+        expect(versionedBody).not.toContain('(n/a)');
+        expect(versionedBody).not.toContain('### Fixed');
+    });
+
+    it('omits versioned body entirely when all entries are (n/a)', async () => {
+        const changelogAllNa = `# Changelog\n\n## [Unreleased]\n\n### Added\n\n- (n/a)\n\n### Fixed\n\n- (n/a)\n\n---\n`;
+        tmpFile = await createTempChangelog(changelogAllNa);
+
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
+
+        const result = await readFile(tmpFile, { encoding: 'utf-8' });
+        const today = new Date().toISOString().slice(0, 10);
+        const versionedStart = result.indexOf(`## [1.1.0] - ${today}`);
+        const nextSep = result.indexOf('\n---', versionedStart);
+        const versionedSection = result.slice(versionedStart, nextSep);
+
+        expect(versionedStart).toBeGreaterThanOrEqual(0);
+        expect(versionedSection.trim()).toBe(`## [1.1.0] - ${today}`);
+    });
+
+    it('separates the versioned section from the previous section with a blank line', async () => {
+        tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
+
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
+
+        const result = await readFile(tmpFile, { encoding: 'utf-8' });
+
+        expect(result).toMatch(/## \[1\.1\.0\][^\n]*\n[\s\S]+?\n\n---\n\n## \[1\.0\.0\]/);
     });
 });

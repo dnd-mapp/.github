@@ -14,7 +14,7 @@ runs:
     steps:
         - name: Configure git bot
           id: git-bot
-          uses: dnd-mapp/.github/.github/actions/configure-git-bot@7a78175a151094a5c117cecbf8c3fc244f6fe1b7
+          uses: dnd-mapp/.github/.github/actions/configure-git-bot@873eb1e47cb74b6e00891b8b48252885c17996b2
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
