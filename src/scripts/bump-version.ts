@@ -10,8 +10,8 @@ export async function run(): Promise<void> {
     const manifest = JSON.parse(await readFile(manifestPath, 'utf-8')) as { version: string };
     const preid = prereleaseIdInput !== 'none' ? prereleaseIdInput : undefined;
 
-    const newVersion = bumpVersion({ currentVersion: manifest.version, bumpType: versionInput, preid });
-    await writePackageVersion({ manifestPath, newVersion });
+    const newVersion = bumpVersion({ currentVersion: manifest.version, bumpType: versionInput, preid: preid });
+    await writePackageVersion({ manifestPath: manifestPath, newVersion: newVersion });
 
     const output = process.env['GITHUB_OUTPUT']!;
     await appendFile(output, `raw-version=v${newVersion}\n`);

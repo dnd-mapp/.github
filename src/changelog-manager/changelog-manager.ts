@@ -103,7 +103,6 @@ export async function extractStableNotes(changelogPath: string, version: string)
     } else {
         end = content.length;
     }
-
     return getSectionBody(content.slice(start, end)).trim();
 }
 
