@@ -121,7 +121,7 @@ export async function stampStableVersion(
     body = body.replace(/\n{3,}/g, '\n\n').trimEnd();
     body = filterNaEntries(body);
 
-    const versionedSection = `## [${version}] - ${date}${body ? '\n' + body : ''}`;
+    const versionedSection = `## [${version}] - ${date}${body ? '\n\n' + body : ''}`;
 
     await writeFile(changelogPath, before + unreleasedTemplate + '\n' + versionedSection + '\n' + after, {
         encoding: 'utf-8',
