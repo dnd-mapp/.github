@@ -300,6 +300,17 @@ describe('stampStableVersion', () => {
         expect(versionedSection.trim()).toBe(`## [1.1.0] - ${today}`);
     });
 
+    it('separates the version header from the body with a blank line', async () => {
+        tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
+
+        await stampStableVersion(tmpFile, '1.1.0', UNRELEASED_TEMPLATE);
+
+        const result = await readFile(tmpFile, { encoding: 'utf-8' });
+        const today = new Date().toISOString().slice(0, 10);
+
+        expect(result).toMatch(new RegExp(`## \\[1\\.1\\.0\\] - ${today}\n\n### `));
+    });
+
     it('separates the versioned section from the previous section with a blank line', async () => {
         tmpFile = await createTempChangelog(CHANGELOG_WITH_CONTENT);
 
