@@ -1,0 +1,25 @@
+name: Propagate SHA references
+description: Opens a PR in each sibling repo to update pinned dnd-mapp/.github SHA references to the latest commit
+
+inputs:
+    token:
+        description: GitHub token with write access to the sibling repos
+        required: true
+    sibling-repos:
+        description: Space-separated list of repos to update (e.g. "dnd-mapp/shared-backend")
+        required: true
+    new-sha:
+        description: The SHA to stamp into the sibling repos
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - name: Propagate SHA references
+          shell: bash
+          working-directory: ${{ github.action_path }}
+          env:
+              GH_TOKEN: ${{ inputs.token }}
+              SIBLING_REPOS: ${{ inputs.sibling-repos }}
+              NEW_SHA: ${{ inputs.new-sha }}
+          run: node dist/propagate-sha.mjs

@@ -30,4 +30,9 @@ await Promise.all([
         outdir: `${base}/update-changelog/dist`,
         entryPoints: ['src/scripts/update-changelog.ts'],
     }),
+    build({
+        ...shared,
+        outdir: `${base}/propagate-sha/dist`,
+        entryPoints: ['src/scripts/propagate-sha.ts'],
+    }),
 ]);
