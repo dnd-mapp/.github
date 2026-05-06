@@ -1,12 +1,13 @@
+import type { GithubClient } from '@/github-client';
 import { createGithubClient } from '@/github-client';
 import { propagateSha } from '@/sha-propagator';
-import { Octokit } from '@octokit/rest';
 import { run } from './propagate-sha';
 
 vi.mock('@/github-client', () => ({ createGithubClient: vi.fn() }));
 vi.mock('@/sha-propagator', () => ({ propagateSha: vi.fn() }));
+vi.mock('@actions/core', () => ({ info: vi.fn(), debug: vi.fn(), setFailed: vi.fn() }));
 
-const mockOctokit = {} as unknown as Octokit;
+const mockOctokit = {} as unknown as GithubClient;
 
 beforeEach(() => {
     vi.resetAllMocks();
