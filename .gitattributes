@@ -15,8 +15,21 @@
 
 *.md    text eol=lf
 
+*.editorconfig       text eol=lf
+*.gitattributes      text eol=lf
+*.gitignore          text eol=lf
+*.markdownlintignore text eol=lf
+*.npmrc              text eol=lf
+*.prettierignore     text eol=lf
+*.prettierrc         text eol=lf
+
+CODEOWNERS           text eol=lf
+LICENSE              text eol=lf
+
 *.png   binary
 *.jpg   binary
 *.jpeg  binary
 *.gif   binary
 *.pdf   binary
+
+.github/actions/**/*.mjs linguist-generated
