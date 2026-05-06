@@ -26,7 +26,7 @@ pnpm-*.yaml
 node_modules/
 
 coverage/
-dist/
 reports/
+**/dist/
 
 bruno/

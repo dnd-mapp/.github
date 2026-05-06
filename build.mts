@@ -6,8 +6,8 @@ const shared: BuildOptions = {
     bundle: true,
     platform: 'node',
     target: 'node24',
-    format: 'esm',
-    outExtension: { '.js': '.mjs' },
+    format: 'cjs',
+    outExtension: { '.js': '.cjs' },
 };
 
 await Promise.all([

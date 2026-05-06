@@ -8,6 +8,10 @@ inputs:
     app-private-key:
         description: The GitHub App private key for authentication
         required: true
+    repositories:
+        description: Newline-separated list of owner/repo to scope the token to
+        required: false
+        default: ''
 
 outputs:
     token:
@@ -17,12 +21,22 @@ outputs:
 runs:
     using: composite
     steps:
+        - name: Resolve repository names
+          id: repo-names
+          shell: bash
+          env:
+              REPOSITORIES: ${{ inputs.repositories }}
+          run: |
+              names=$(echo "$REPOSITORIES" | grep -v '^\s*$' | sed 's|[^/]*/||g' | paste -sd ',' -)
+              echo "names=$names" >> "$GITHUB_OUTPUT"
+
         - name: Generate app token
           id: app-token
           uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
           with:
               app-id: ${{ inputs.app-id }}
               private-key: ${{ inputs.app-private-key }}
+              repositories: ${{ steps.repo-names.outputs.names }}
 
         - name: Get bot user info
           id: bot-user

@@ -1,8 +1,6 @@
 import { createGithubClient } from '@/github-client';
 import { propagateSha } from '@/sha-propagator';
 import * as core from '@actions/core';
-import { fileURLToPath } from 'url';
-
 export async function run() {
     const siblingRepos = process.env['SIBLING_REPOS']!.split(/\s+/).filter(Boolean);
     const newSha = process.env['NEW_SHA']!;
@@ -21,11 +19,7 @@ export async function run() {
 }
 
 /* c8 ignore start */
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    try {
-        await run();
-    } catch (error) {
-        core.setFailed(error instanceof Error ? error.message : String(error));
-    }
+if (process.env['GITHUB_ACTIONS'] === 'true') {
+    run().catch((error) => core.setFailed(error instanceof Error ? error.message : String(error)));
 }
 /* c8 ignore stop */

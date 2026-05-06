@@ -1,8 +1,6 @@
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
 import * as core from '@actions/core';
 import { readFile } from 'fs/promises';
-import { fileURLToPath } from 'url';
-
 export async function run() {
     const versionInput = process.env['VERSION']!;
     const prereleaseIdInput = process.env['PRERELEASE_ID']!;
@@ -26,11 +24,7 @@ export async function run() {
 }
 
 /* c8 ignore start */
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    try {
-        await run();
-    } catch (error) {
-        core.setFailed(error instanceof Error ? error.message : String(error));
-    }
+if (process.env['GITHUB_ACTIONS'] === 'true') {
+    run().catch((error) => core.setFailed(error instanceof Error ? error.message : String(error)));
 }
 /* c8 ignore stop */

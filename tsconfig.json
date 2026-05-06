@@ -1,7 +1,7 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 {
     "references": [{ "path": "./tsconfig.spec.json" }],
-    "include": ["build.mts", "src/**/*.ts", ".github/actions/**/*.ts"],
+    "include": ["build.mts", "src/**/*.ts"],
     "exclude": ["node_modules/", "**/*.spec.ts"],
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,

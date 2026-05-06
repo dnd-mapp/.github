@@ -22,4 +22,4 @@ runs:
               GH_TOKEN: ${{ inputs.token }}
               SIBLING_REPOS: ${{ inputs.sibling-repos }}
               NEW_SHA: ${{ inputs.new-sha }}
-          run: node dist/propagate-sha.mjs
+          run: node dist/propagate-sha.cjs
