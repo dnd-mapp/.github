@@ -28,8 +28,8 @@ jobs:
               id: git-bot
               uses: ./.github/actions/configure-git-bot
               with:
-                  app-id: ${{ secrets.APP_ID }}
-                  app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
+                  app-id: ${{ secrets.AUTH_APP_ID }}
+                  app-private-key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
 
             - name: Propagate SHA references
               uses: ./.github/actions/propagate-sha
