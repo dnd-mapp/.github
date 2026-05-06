@@ -1,5 +1,12 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 import { propagateSha } from './sha-propagator';
+
+vi.mock('@actions/core', () => ({
+    startGroup: vi.fn(),
+    endGroup: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+}));
 
 const OLD_SHA = 'aaaa1111bbbb2222cccc3333dddd4444eeee5555';
 const NEW_SHA = 'ffff6666eeee7777dddd8888cccc9999bbbb0000';
@@ -27,10 +34,12 @@ function makeOctokit() {
     const createPr = vi.fn().mockResolvedValue({});
 
     const octokit = {
-        repos: { getContent, createOrUpdateFileContents },
-        git: { getRef, createRef },
-        pulls: { create: createPr },
-    } as unknown as Octokit;
+        rest: {
+            repos: { getContent, createOrUpdateFileContents },
+            git: { getRef, createRef },
+            pulls: { create: createPr },
+        },
+    } as unknown as GithubClient;
 
     return { octokit, getContent, createOrUpdateFileContents, getRef, createRef, createPr };
 }

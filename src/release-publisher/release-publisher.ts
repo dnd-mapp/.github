@@ -1,4 +1,5 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
+import * as core from '@actions/core';
 
 interface PublishReleaseParams {
     owner: string;
@@ -9,8 +10,10 @@ interface PublishReleaseParams {
     isPrerelease: boolean;
 }
 
-export async function publishRelease(octokit: Octokit, params: PublishReleaseParams): Promise<void> {
-    const { data: tagData } = await octokit.git.createTag({
+export async function publishRelease(octokit: GithubClient, params: PublishReleaseParams) {
+    core.debug(`Creating tag object: ${params.tagName}`);
+
+    const { data: tagData } = await octokit.rest.git.createTag({
         owner: params.owner,
         repo: params.repo,
         tag: params.tagName,
@@ -24,14 +27,18 @@ export async function publishRelease(octokit: Octokit, params: PublishReleasePar
         },
     });
 
-    await octokit.git.createRef({
+    core.debug(`Creating tag ref: refs/tags/${params.tagName}`);
+
+    await octokit.rest.git.createRef({
         owner: params.owner,
         repo: params.repo,
         ref: `refs/tags/${params.tagName}`,
         sha: tagData.sha,
     });
 
-    await octokit.repos.createRelease({
+    core.info(`Creating GitHub release: ${params.tagName}`);
+
+    await octokit.rest.repos.createRelease({
         owner: params.owner,
         repo: params.repo,
         tag_name: params.tagName,

@@ -1,18 +1,25 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 import { publishRelease } from './release-publisher';
+
+vi.mock('@actions/core', () => ({
+    debug: vi.fn(),
+    info: vi.fn(),
+}));
 
 const TAG_SHA = 'abc123tagobjectsha';
 
 const makeOctokit = () =>
     ({
-        git: {
-            createTag: vi.fn().mockResolvedValue({ data: { sha: TAG_SHA } }),
-            createRef: vi.fn().mockResolvedValue({}),
+        rest: {
+            git: {
+                createTag: vi.fn().mockResolvedValue({ data: { sha: TAG_SHA } }),
+                createRef: vi.fn().mockResolvedValue({}),
+            },
+            repos: {
+                createRelease: vi.fn().mockResolvedValue({}),
+            },
         },
-        repos: {
-            createRelease: vi.fn().mockResolvedValue({}),
-        },
-    }) as unknown as Octokit;
+    }) as unknown as GithubClient;
 
 const BASE_PARAMS = {
     owner: 'dnd-mapp',
@@ -33,8 +40,8 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, BASE_PARAMS);
 
-        expect(octokit.git.createTag).toHaveBeenCalledOnce();
-        expect(octokit.git.createTag).toHaveBeenCalledWith(
+        expect(octokit.rest.git.createTag).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.createTag).toHaveBeenCalledWith(
             expect.objectContaining({
                 owner: 'dnd-mapp',
                 repo: '.github',
@@ -50,8 +57,8 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, BASE_PARAMS);
 
-        expect(octokit.git.createRef).toHaveBeenCalledOnce();
-        expect(octokit.git.createRef).toHaveBeenCalledWith({
+        expect(octokit.rest.git.createRef).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.createRef).toHaveBeenCalledWith({
             owner: 'dnd-mapp',
             repo: '.github',
             ref: 'refs/tags/v2.0.0',
@@ -64,7 +71,7 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, { ...BASE_PARAMS, isPrerelease: false });
 
-        expect(octokit.repos.createRelease).toHaveBeenCalledWith(
+        expect(octokit.rest.repos.createRelease).toHaveBeenCalledWith(
             expect.objectContaining({
                 prerelease: false,
                 make_latest: 'true',
@@ -77,7 +84,7 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, { ...BASE_PARAMS, tagName: 'v2.0.0-alpha.1', isPrerelease: true });
 
-        expect(octokit.repos.createRelease).toHaveBeenCalledWith(
+        expect(octokit.rest.repos.createRelease).toHaveBeenCalledWith(
             expect.objectContaining({
                 prerelease: true,
                 make_latest: 'false',
@@ -90,7 +97,7 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, BASE_PARAMS);
 
-        expect(octokit.repos.createRelease).toHaveBeenCalledWith(
+        expect(octokit.rest.repos.createRelease).toHaveBeenCalledWith(
             expect.objectContaining({
                 body: BASE_PARAMS.releaseNotes,
             })
@@ -102,8 +109,8 @@ describe('publishRelease', () => {
 
         await publishRelease(octokit, BASE_PARAMS);
 
-        expect(octokit.git.createTag).toHaveBeenCalledOnce();
-        expect(octokit.git.createRef).toHaveBeenCalledOnce();
-        expect(octokit.repos.createRelease).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.createTag).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.createRef).toHaveBeenCalledOnce();
+        expect(octokit.rest.repos.createRelease).toHaveBeenCalledOnce();
     });
 });
