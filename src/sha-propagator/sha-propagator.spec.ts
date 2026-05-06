@@ -37,7 +37,9 @@ function makeOctokit() {
 
 function setupDirectoryThenFile(getContent: ReturnType<typeof vi.fn>, fileContent: string): void {
     getContent
-        .mockResolvedValueOnce({ data: [{ name: 'release.yaml', path: '.github/workflows/release.yaml', type: 'file' }] })
+        .mockResolvedValueOnce({
+            data: [{ name: 'release.yaml', path: '.github/workflows/release.yaml', type: 'file' }],
+        })
         .mockResolvedValueOnce({ data: { content: toBase64(fileContent), sha: FILE_BLOB_SHA } });
 }
 

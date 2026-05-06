@@ -21,7 +21,9 @@ function replaceShAReferences(content: string, newSha: string): string {
 async function getWorkflowFiles(octokit: Octokit, owner: string, repo: string): Promise<WorkflowFile[]> {
     const { data: items } = await octokit.repos.getContent({ owner, repo, path: '.github/workflows' });
     const entries = items as { name: string; path: string; type: string }[];
-    const yamlEntries = entries.filter((e) => e.type === 'file' && (e.name.endsWith('.yaml') || e.name.endsWith('.yml')));
+    const yamlEntries = entries.filter(
+        (e) => e.type === 'file' && (e.name.endsWith('.yaml') || e.name.endsWith('.yml'))
+    );
 
     return Promise.all(
         yamlEntries.map(async (entry) => {
