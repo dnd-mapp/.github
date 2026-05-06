@@ -26,7 +26,7 @@ runs:
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
-          run: node dist/publish-release.mjs
+          run: node dist/publish-release.cjs
 
         - name: Merge release branch
           if: startsWith(github.ref_name, 'release/') && steps.publish-release.outputs.is-prerelease == 'false'
@@ -35,4 +35,4 @@ runs:
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               RELEASE_BRANCH: ${{ github.ref_name }}
-          run: node dist/merge-release-branch.mjs
+          run: node dist/merge-release-branch.cjs

@@ -34,7 +34,7 @@ runs:
               GITHUB_TOKEN: ${{ github.token }}
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
-          run: node dist/validate-branch.mjs
+          run: node dist/validate-branch.cjs
 
         - name: Configure git bot
           id: git-bot
@@ -50,7 +50,7 @@ runs:
           env:
               VERSION: ${{ inputs.version }}
               PRERELEASE_ID: ${{ inputs.prerelease-id }}
-          run: node dist/bump-version.mjs
+          run: node dist/bump-version.cjs
 
         - name: Create release branch
           id: create-release-branch
@@ -60,7 +60,7 @@ runs:
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
               RELEASE_BRANCH_NAME: ${{ steps.bump-version.outputs.release-branch-name }}
-          run: node dist/create-release-branch.mjs
+          run: node dist/create-release-branch.cjs
 
         - name: Update changelog
           uses: dnd-mapp/.github/.github/actions/update-changelog@5cc66cbaee842f81ce996c31fd7c8e7b9be81651

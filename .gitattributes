@@ -1,35 +1,35 @@
-*       text=auto eol=lf
+*                           text=auto
 
-*.yaml  text eol=lf
-*.yml   text eol=lf
-*.json  text eol=lf
+*.yaml                      text eol=lf
+*.yml                       text eol=lf
+*.json                      text eol=lf
 
-*.ts    text eol=lf
-*.mts   text eol=lf
-*.cts   text eol=lf
-*.js    text eol=lf
-*.mjs   text eol=lf
-*.cjs   text eol=lf
+*.ts                        text eol=lf
+*.mts                       text eol=lf
+*.cts                       text eol=lf
+*.js                        text eol=lf
+*.mjs                       text eol=lf
+*.cjs                       text eol=lf
 
-*.xml   text eol=lf
+*.xml                       text eol=lf
 
-*.md    text eol=lf
+*.md                        text eol=lf
 
-*.editorconfig       text eol=lf
-*.gitattributes      text eol=lf
-*.gitignore          text eol=lf
-*.markdownlintignore text eol=lf
-*.npmrc              text eol=lf
-*.prettierignore     text eol=lf
-*.prettierrc         text eol=lf
+*.editorconfig              text eol=lf
+*.gitattributes             text eol=lf
+*.gitignore                 text eol=lf
+*.markdownlintignore        text eol=lf
+*.npmrc                     text eol=lf
+*.prettierignore            text eol=lf
+*.prettierrc                text eol=lf
 
-CODEOWNERS           text eol=lf
-LICENSE              text eol=lf
+CODEOWNERS                  text eol=lf
+LICENSE                     text eol=lf
 
-*.png   binary
-*.jpg   binary
-*.jpeg  binary
-*.gif   binary
-*.pdf   binary
+*.png                       binary
+*.jpg                       binary
+*.jpeg                      binary
+*.gif                       binary
+*.pdf                       binary
 
-.github/actions/**/*.mjs linguist-generated
+.github/actions/**/*.cjs    linguist-generated

@@ -16,10 +16,31 @@ jobs:
             - name: CI
               uses: ./.github/actions/ci
 
+    check-dist-changes:
+        name: Check dist changes
+        runs-on: ubuntu-22.04
+        outputs:
+            changed: ${{ steps.check.outputs.changed }}
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  fetch-depth: 2
+
+            - name: Detect dist file changes
+              id: check
+              run: |
+                  if git diff --name-only HEAD^1 HEAD | grep -qE '\.github/actions/.+/dist/'; then
+                      echo "changed=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "changed=false" >> "$GITHUB_OUTPUT"
+                  fi
+
     propagate-sha:
         name: Propagate SHA
         runs-on: ubuntu-22.04
-        needs: ci
+        needs: [ci, check-dist-changes]
+        if: needs.check-dist-changes.outputs.changed == 'true'
         steps:
             - name: Checkout repository
               uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -30,6 +51,14 @@ jobs:
               with:
                   app-id: ${{ secrets.AUTH_APP_ID }}
                   app-private-key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
+                  repositories: |
+                      dnd-mapp/dnd-mapp
+                      dnd-mapp/auth-server
+                      dnd-mapp/email-service
+                      dnd-mapp/shared-backend
+                      dnd-mapp/shared-domain
+                      dnd-mapp/shared-ui
+                      dnd-mapp/shared-utils
 
             - name: Propagate SHA references
               uses: ./.github/actions/propagate-sha
