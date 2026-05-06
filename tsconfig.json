@@ -27,6 +27,7 @@
             "@/changelog-manager": ["./src/changelog-manager/index.ts"],
             "@/github-client": ["./src/github-client/index.ts"],
             "@/release-publisher": ["./src/release-publisher/index.ts"],
+            "@/sha-propagator": ["./src/sha-propagator/index.ts"],
             "@/version-bumper": ["./src/version-bumper/index.ts"]
         },
         "skipDefaultLibCheck": true,

@@ -13,6 +13,7 @@ export default defineConfig({
             '@/changelog-manager': resolve(__dirname, 'src/changelog-manager/index.ts'),
             '@/github-client': resolve(__dirname, 'src/github-client/index.ts'),
             '@/release-publisher': resolve(__dirname, 'src/release-publisher/index.ts'),
+            '@/sha-propagator': resolve(__dirname, 'src/sha-propagator/index.ts'),
             '@/version-bumper': resolve(__dirname, 'src/version-bumper/index.ts'),
         },
     },

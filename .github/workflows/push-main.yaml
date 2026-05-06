@@ -15,3 +15,25 @@ jobs:
 
             - name: CI
               uses: ./.github/actions/ci
+
+    propagate-sha:
+        name: Propagate SHA
+        runs-on: ubuntu-22.04
+        needs: ci
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+            - name: Configure git bot
+              id: git-bot
+              uses: ./.github/actions/configure-git-bot
+              with:
+                  app-id: ${{ secrets.APP_ID }}
+                  app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+            - name: Propagate SHA references
+              uses: ./.github/actions/propagate-sha
+              with:
+                  token: ${{ steps.git-bot.outputs.token }}
+                  sibling-repos: dnd-mapp/shared-backend
+                  new-sha: ${{ github.sha }}
