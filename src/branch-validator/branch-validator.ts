@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 
 // --- Constants ---
 
@@ -53,7 +53,7 @@ function parseSemVer(version: string): ParsedVersion {
     return { major: major!, minor: minor!, patch: patch!, prerelease: prereleasePart ? prereleasePart.split('.') : [] };
 }
 
-function isPrereleaseVersion(parsed: ParsedVersion): boolean {
+function isPrereleaseVersion(parsed: ParsedVersion) {
     return parsed.prerelease.length > 0;
 }
 
@@ -64,14 +64,14 @@ function getPrereleaseTrack(parsed: ParsedVersion): PrereleaseTrack {
     return 'prepatch';
 }
 
-function getPrereleaseId(parsed: ParsedVersion): string | null {
+function getPrereleaseId(parsed: ParsedVersion) {
     for (const segment of parsed.prerelease) {
         if (Number.isNaN(Number(segment))) return segment;
     }
     return null;
 }
 
-function validateEnum(value: string, allowed: string[], inputName: string): void {
+function validateEnum(value: string, allowed: string[], inputName: string) {
     if (!allowed.includes(value)) {
         throw new Error(`Invalid ${inputName} "${value}". Must be one of: ${allowed.join(', ')}.`);
     }
@@ -79,7 +79,7 @@ function validateEnum(value: string, allowed: string[], inputName: string): void
 
 // --- Input-shape validation (Rules 1–9) ---
 
-function validateInputShape(params: ValidateInputShapeParams): void {
+function validateInputShape(params: ValidateInputShapeParams) {
     const { versionInput, prereleaseIdInput, currentVersion } = params;
 
     validateEnum(versionInput, ALLOWED_VERSIONS, 'version');
@@ -148,17 +148,14 @@ function validateInputShape(params: ValidateInputShapeParams): void {
 
 // --- Public API ---
 
-export async function validateRelease(
-    octokit: Octokit,
-    params: ValidateReleaseParams
-): Promise<{ isPrerelease: boolean }> {
+export async function validateRelease(octokit: GithubClient, params: ValidateReleaseParams) {
     validateInputShape({
         versionInput: params.versionInput,
         prereleaseIdInput: params.prereleaseIdInput,
         currentVersion: params.currentVersion,
     });
 
-    const { data: branches } = await octokit.repos.listBranches({
+    const { data: branches } = await octokit.rest.repos.listBranches({
         owner: params.owner,
         repo: params.repo,
         per_page: 100,

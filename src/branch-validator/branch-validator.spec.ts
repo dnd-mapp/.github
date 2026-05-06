@@ -1,14 +1,16 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 import { validateRelease } from './branch-validator';
 
 const makeOctokit = (branches: string[] = []) =>
     ({
-        repos: {
-            listBranches: vi.fn().mockResolvedValue({
-                data: branches.map((name) => ({ name })),
-            }),
+        rest: {
+            repos: {
+                listBranches: vi.fn().mockResolvedValue({
+                    data: branches.map((name) => ({ name })),
+                }),
+            },
         },
-    }) as unknown as Octokit;
+    }) as unknown as GithubClient;
 
 const BASE_PARAMS = {
     owner: 'dnd-mapp',
