@@ -1,8 +1,9 @@
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
-import { appendFile, readFile } from 'fs/promises';
+import * as core from '@actions/core';
+import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 
-export async function run(): Promise<void> {
+export async function run() {
     const versionInput = process.env['VERSION']!;
     const prereleaseIdInput = process.env['PRERELEASE_ID']!;
     const manifestPath = `${process.env['GITHUB_WORKSPACE']!}/package.json`;
@@ -11,14 +12,25 @@ export async function run(): Promise<void> {
     const preid = prereleaseIdInput !== 'none' ? prereleaseIdInput : undefined;
 
     const newVersion = bumpVersion({ currentVersion: manifest.version, bumpType: versionInput, preid: preid });
+
+    core.info(`Bumping version: ${manifest.version} → ${newVersion}`);
+
     await writePackageVersion({ manifestPath: manifestPath, newVersion: newVersion });
 
-    const output = process.env['GITHUB_OUTPUT']!;
-    await appendFile(output, `raw-version=v${newVersion}\n`);
-    await appendFile(output, `clean-version=${newVersion}\n`);
-    await appendFile(output, `release-branch-name=${deriveReleaseBranchName(newVersion) ?? ''}\n`);
+    const rawVersion = `v${newVersion}`;
+    const releaseBranchName = deriveReleaseBranchName(newVersion) ?? '';
+
+    core.setOutput('raw-version', rawVersion);
+    core.setOutput('clean-version', newVersion);
+    core.setOutput('release-branch-name', releaseBranchName);
 }
 
+/* c8 ignore start */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    await run();
+    try {
+        await run();
+    } catch (error) {
+        core.setFailed(error instanceof Error ? error.message : String(error));
+    }
 }
+/* c8 ignore stop */

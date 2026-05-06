@@ -1,5 +1,8 @@
-import { Octokit } from '@octokit/rest';
+import { getOctokit } from '@actions/github';
+import { GitHub } from '@actions/github/lib/utils';
 
-export function createGithubClient(token: string): Octokit {
-    return new Octokit({ auth: token });
+export type GithubClient = InstanceType<typeof GitHub>;
+
+export function createGithubClient(token: string) {
+    return getOctokit(token);
 }

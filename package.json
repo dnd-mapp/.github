@@ -8,13 +8,13 @@
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "build": "node build.mts",
-    "test": "pnpm exec vitest run",
-    "test:development": "pnpm exec vitest --ui --watch",
+    "test": "vitest run",
+    "test:development": "vitest --ui --watch",
     "lint": "pnpm lint:eslint && pnpm lint:markdownlint",
-    "lint:eslint": "pnpm exec eslint \"**/*\" --cache",
-    "lint:markdownlint": "pnpm exec markdownlint \"**/*.md\"",
-    "format:check": "pnpm exec prettier -l .",
-    "format:write": "pnpm exec prettier -w ."
+    "lint:eslint": "eslint \"**/*\" --cache",
+    "lint:markdownlint": "markdownlint \"**/*.md\"",
+    "format:check": "prettier -l .",
+    "format:write": "prettier -w ."
   },
   "engines": {
     "node": "~24.15"
@@ -34,16 +34,17 @@
     ]
   },
   "dependencies": {
-    "@octokit/rest": "~22.0.1",
+    "@actions/core": "~3.0.1",
+    "@actions/github": "~9.1.1",
     "semver": "~7.7.1"
   },
   "devDependencies": {
     "@eslint/js": "~10.0.1",
-    "esbuild": "~0.28.0",
     "@types/node": "~24.12.2",
     "@types/semver": "~7.7.0",
     "@vitest/coverage-v8": "~4.1.4",
     "@vitest/ui": "~4.1.4",
+    "esbuild": "~0.28.0",
     "eslint": "~10.2.0",
     "eslint-config-prettier": "~10.1.8",
     "globals": "~17.5.0",

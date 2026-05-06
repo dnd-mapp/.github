@@ -6,7 +6,7 @@ inputs:
         description: GitHub token with write access to the sibling repos
         required: true
     sibling-repos:
-        description: Space-separated list of repos to update (e.g. "dnd-mapp/shared-backend")
+        description: Whitespace-separated list of repos to update (one per line or space-separated)
         required: true
     new-sha:
         description: The SHA to stamp into the sibling repos

@@ -35,5 +35,12 @@ jobs:
               uses: ./.github/actions/propagate-sha
               with:
                   token: ${{ steps.git-bot.outputs.token }}
-                  sibling-repos: dnd-mapp/shared-backend
                   new-sha: ${{ github.sha }}
+                  sibling-repos: |
+                      dnd-mapp/dnd-mapp
+                      dnd-mapp/auth-server
+                      dnd-mapp/email-service
+                      dnd-mapp/shared-backend
+                      dnd-mapp/shared-domain
+                      dnd-mapp/shared-ui
+                      dnd-mapp/shared-utils

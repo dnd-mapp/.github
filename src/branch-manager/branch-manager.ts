@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 
 interface CreateReleaseBranchParams {
     owner: string;
@@ -25,14 +25,14 @@ interface DeleteReleaseBranchParams {
     branch: string;
 }
 
-export async function createReleaseBranch(octokit: Octokit, params: CreateReleaseBranchParams): Promise<void> {
-    const { data: ref } = await octokit.git.getRef({
+export async function createReleaseBranch(octokit: GithubClient, params: CreateReleaseBranchParams) {
+    const { data: ref } = await octokit.rest.git.getRef({
         owner: params.owner,
         repo: params.repo,
         ref: 'heads/main',
     });
 
-    await octokit.git.createRef({
+    await octokit.rest.git.createRef({
         owner: params.owner,
         repo: params.repo,
         ref: `refs/heads/${params.branchName}`,
@@ -40,9 +40,9 @@ export async function createReleaseBranch(octokit: Octokit, params: CreateReleas
     });
 }
 
-export async function commitFiles(octokit: Octokit, params: CommitFilesParams): Promise<void> {
+export async function commitFiles(octokit: GithubClient, params: CommitFilesParams) {
     for (const file of params.files) {
-        const { data } = await octokit.repos.getContent({
+        const { data } = await octokit.rest.repos.getContent({
             owner: params.owner,
             repo: params.repo,
             path: file.path,
@@ -51,7 +51,7 @@ export async function commitFiles(octokit: Octokit, params: CommitFilesParams): 
 
         const fileSha = (data as { sha: string }).sha;
 
-        await octokit.repos.createOrUpdateFileContents({
+        await octokit.rest.repos.createOrUpdateFileContents({
             owner: params.owner,
             repo: params.repo,
             path: file.path,
@@ -63,9 +63,9 @@ export async function commitFiles(octokit: Octokit, params: CommitFilesParams): 
     }
 }
 
-export async function mergeReleaseBranch(octokit: Octokit, params: MergeReleaseBranchParams): Promise<void> {
+export async function mergeReleaseBranch(octokit: GithubClient, params: MergeReleaseBranchParams) {
     try {
-        await octokit.repos.merge({
+        await octokit.rest.repos.merge({
             owner: params.owner,
             repo: params.repo,
             base: 'main',
@@ -83,8 +83,8 @@ export async function mergeReleaseBranch(octokit: Octokit, params: MergeReleaseB
     }
 }
 
-export async function deleteReleaseBranch(octokit: Octokit, params: DeleteReleaseBranchParams): Promise<void> {
-    await octokit.git.deleteRef({
+export async function deleteReleaseBranch(octokit: GithubClient, params: DeleteReleaseBranchParams) {
+    await octokit.rest.git.deleteRef({
         owner: params.owner,
         repo: params.repo,
         ref: `heads/${params.branch}`,

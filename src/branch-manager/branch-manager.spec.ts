@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit/rest';
+import type { GithubClient } from '@/github-client';
 import { commitFiles, createReleaseBranch, deleteReleaseBranch, mergeReleaseBranch } from './branch-manager';
 
 const MAIN_SHA = 'abc123mainshadef456';
@@ -6,17 +6,19 @@ const TAG_SHA = 'def456tagsha789';
 
 const makeOctokit = () =>
     ({
-        git: {
-            getRef: vi.fn().mockResolvedValue({ data: { object: { sha: MAIN_SHA } } }),
-            createRef: vi.fn().mockResolvedValue({}),
-            deleteRef: vi.fn().mockResolvedValue({}),
+        rest: {
+            git: {
+                getRef: vi.fn().mockResolvedValue({ data: { object: { sha: MAIN_SHA } } }),
+                createRef: vi.fn().mockResolvedValue({}),
+                deleteRef: vi.fn().mockResolvedValue({}),
+            },
+            repos: {
+                getContent: vi.fn().mockResolvedValue({ data: { sha: TAG_SHA } }),
+                createOrUpdateFileContents: vi.fn().mockResolvedValue({}),
+                merge: vi.fn().mockResolvedValue({ data: { sha: 'mergesha' } }),
+            },
         },
-        repos: {
-            getContent: vi.fn().mockResolvedValue({ data: { sha: TAG_SHA } }),
-            createOrUpdateFileContents: vi.fn().mockResolvedValue({}),
-            merge: vi.fn().mockResolvedValue({ data: { sha: 'mergesha' } }),
-        },
-    }) as unknown as Octokit;
+    }) as unknown as GithubClient;
 
 const OWNER = 'dnd-mapp';
 const REPO = '.github';
@@ -31,10 +33,10 @@ describe('createReleaseBranch', () => {
 
         await createReleaseBranch(octokit, { owner: OWNER, repo: REPO, branchName: 'release/v2.0.0' });
 
-        expect(octokit.git.getRef).toHaveBeenCalledOnce();
-        expect(octokit.git.getRef).toHaveBeenCalledWith({ owner: OWNER, repo: REPO, ref: 'heads/main' });
-        expect(octokit.git.createRef).toHaveBeenCalledOnce();
-        expect(octokit.git.createRef).toHaveBeenCalledWith({
+        expect(octokit.rest.git.getRef).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.getRef).toHaveBeenCalledWith({ owner: OWNER, repo: REPO, ref: 'heads/main' });
+        expect(octokit.rest.git.createRef).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.createRef).toHaveBeenCalledWith({
             owner: OWNER,
             repo: REPO,
             ref: 'refs/heads/release/v2.0.0',
@@ -53,10 +55,10 @@ describe('commitFiles', () => {
 
         await commitFiles(octokit, { owner: OWNER, repo: REPO, branch: 'release/v2.0.0', files });
 
-        expect(octokit.repos.getContent).toHaveBeenCalledTimes(2);
-        expect(octokit.repos.createOrUpdateFileContents).toHaveBeenCalledTimes(2);
+        expect(octokit.rest.repos.getContent).toHaveBeenCalledTimes(2);
+        expect(octokit.rest.repos.createOrUpdateFileContents).toHaveBeenCalledTimes(2);
 
-        expect(octokit.repos.createOrUpdateFileContents).toHaveBeenCalledWith(
+        expect(octokit.rest.repos.createOrUpdateFileContents).toHaveBeenCalledWith(
             expect.objectContaining({
                 path: 'package.json',
                 branch: 'release/v2.0.0',
@@ -73,8 +75,8 @@ describe('mergeReleaseBranch', () => {
 
         await mergeReleaseBranch(octokit, { owner: OWNER, repo: REPO, releaseBranch: 'release/v2.0.0' });
 
-        expect(octokit.repos.merge).toHaveBeenCalledOnce();
-        expect(octokit.repos.merge).toHaveBeenCalledWith({
+        expect(octokit.rest.repos.merge).toHaveBeenCalledOnce();
+        expect(octokit.rest.repos.merge).toHaveBeenCalledWith({
             owner: OWNER,
             repo: REPO,
             base: 'main',
@@ -86,7 +88,7 @@ describe('mergeReleaseBranch', () => {
     it('throws a descriptive error on merge conflict (status 409)', async () => {
         const octokit = makeOctokit();
 
-        (octokit.repos.merge as ReturnType<typeof vi.fn>).mockRejectedValue({ status: 409 });
+        (octokit.rest.repos.merge as ReturnType<typeof vi.fn>).mockRejectedValue({ status: 409 });
 
         await expect(
             mergeReleaseBranch(octokit, { owner: OWNER, repo: REPO, releaseBranch: 'release/v2.0.0' })
@@ -96,7 +98,7 @@ describe('mergeReleaseBranch', () => {
     it('rethrows non-conflict errors', async () => {
         const octokit = makeOctokit();
 
-        (octokit.repos.merge as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Network error'));
+        (octokit.rest.repos.merge as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Network error'));
 
         await expect(
             mergeReleaseBranch(octokit, { owner: OWNER, repo: REPO, releaseBranch: 'release/v2.0.0' })
@@ -110,8 +112,8 @@ describe('deleteReleaseBranch', () => {
 
         await deleteReleaseBranch(octokit, { owner: OWNER, repo: REPO, branch: 'release/v2.0.0' });
 
-        expect(octokit.git.deleteRef).toHaveBeenCalledOnce();
-        expect(octokit.git.deleteRef).toHaveBeenCalledWith({
+        expect(octokit.rest.git.deleteRef).toHaveBeenCalledOnce();
+        expect(octokit.rest.git.deleteRef).toHaveBeenCalledWith({
             owner: OWNER,
             repo: REPO,
             ref: 'heads/release/v2.0.0',

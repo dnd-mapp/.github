@@ -14,7 +14,7 @@ interface WritePackageVersionParams {
     newVersion: string;
 }
 
-export function bumpVersion(params: BumpVersionParams): string {
+export function bumpVersion(params: BumpVersionParams) {
     let result: string | null;
 
     if (params.preid) result = inc(params.currentVersion, params.bumpType as ReleaseType, params.preid);
@@ -26,7 +26,7 @@ export function bumpVersion(params: BumpVersionParams): string {
     return result;
 }
 
-export function deriveReleaseBranchName(newVersion: string): string | null {
+export function deriveReleaseBranchName(newVersion: string) {
     const parsed = parse(newVersion);
 
     if (!parsed) {
@@ -38,7 +38,7 @@ export function deriveReleaseBranchName(newVersion: string): string | null {
     return null;
 }
 
-export async function writePackageVersion(params: WritePackageVersionParams): Promise<void> {
+export async function writePackageVersion(params: WritePackageVersionParams) {
     const raw = await readFile(params.manifestPath, { encoding: 'utf-8' });
     const manifest = JSON.parse(raw) as Record<string, unknown>;
 

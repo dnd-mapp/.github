@@ -1,12 +1,14 @@
 import { extractPrereleaseDelta, extractStableNotes } from '@/changelog-manager';
 import { createGithubClient } from '@/github-client';
 import { publishRelease } from '@/release-publisher';
-import { appendFile, readFile } from 'fs/promises';
+import * as core from '@actions/core';
+import { context } from '@actions/github';
+import { readFile } from 'fs/promises';
 import semver from 'semver';
 import { fileURLToPath } from 'url';
 
-export async function run(): Promise<void> {
-    const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
+export async function run() {
+    const { owner, repo } = context.repo;
     const changelogPath = process.env['CHANGELOG_PATH'] ?? 'CHANGELOG.md';
 
     const manifest = JSON.parse(await readFile(`${process.env['GITHUB_WORKSPACE']!}/package.json`, 'utf-8')) as {
@@ -15,6 +17,9 @@ export async function run(): Promise<void> {
     const version = manifest.version;
     const isPrerelease = semver.prerelease(version) !== null;
 
+    core.info(`Publishing release v${version}`);
+    core.debug(`Prerelease: ${isPrerelease}`);
+
     const releaseNotes = isPrerelease
         ? await extractPrereleaseDelta(changelogPath)
         : await extractStableNotes(changelogPath, version);
@@ -22,18 +27,23 @@ export async function run(): Promise<void> {
     const octokit = createGithubClient(process.env['GH_TOKEN']!);
 
     await publishRelease(octokit, {
-        owner: owner!,
-        repo: repo!,
+        owner,
+        repo,
         tagName: `v${version}`,
-        commitSha: process.env['GITHUB_SHA']!,
+        commitSha: context.sha,
         releaseNotes,
         isPrerelease,
     });
 
-    const output = process.env['GITHUB_OUTPUT']!;
-    await appendFile(output, `is-prerelease=${isPrerelease}\n`);
+    core.setOutput('is-prerelease', isPrerelease);
 }
 
+/* c8 ignore start */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    await run();
+    try {
+        await run();
+    } catch (error) {
+        core.setFailed(error instanceof Error ? error.message : String(error));
+    }
 }
+/* c8 ignore stop */

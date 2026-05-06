@@ -1,6 +1,6 @@
 import { createReleaseBranch } from '@/branch-manager';
+import type { GithubClient } from '@/github-client';
 import { createGithubClient } from '@/github-client';
-import { Octokit } from '@octokit/rest';
 import { run } from './create-release-branch';
 
 vi.mock('@/branch-manager', () => ({
@@ -11,25 +11,33 @@ vi.mock('@/github-client', () => ({
     createGithubClient: vi.fn(),
 }));
 
-const mockOctokit = {} as unknown as Octokit;
+vi.mock('@actions/github', () => ({
+    context: { repo: { owner: 'dnd-mapp', repo: '.github' } },
+}));
+
+vi.mock('@actions/core', () => ({
+    info: vi.fn(),
+    debug: vi.fn(),
+    setFailed: vi.fn(),
+}));
+
+const mockOctokit = {} as unknown as GithubClient;
 
 beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(createGithubClient).mockReturnValue(mockOctokit);
     vi.mocked(createReleaseBranch).mockResolvedValue(undefined as never);
-    process.env['GITHUB_REPOSITORY'] = 'dnd-mapp/.github';
     process.env['GH_TOKEN'] = 'gh-token-123';
     process.env['RELEASE_BRANCH_NAME'] = 'release/v2.0.0';
 });
 
 afterEach(() => {
-    delete process.env['GITHUB_REPOSITORY'];
     delete process.env['GH_TOKEN'];
     delete process.env['RELEASE_BRANCH_NAME'];
 });
 
 describe('create-release-branch script', () => {
-    it('splits GITHUB_REPOSITORY to pass owner and repo separately', async () => {
+    it('passes context owner and repo to createReleaseBranch', async () => {
         await run();
 
         expect(createReleaseBranch).toHaveBeenCalledWith(
