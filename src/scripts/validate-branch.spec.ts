@@ -1,12 +1,12 @@
 import { validateRelease } from '@/branch-validator';
+import type { GithubClient } from '@/github-client';
 import { createGithubClient } from '@/github-client';
-import { Octokit } from '@octokit/rest';
-import { appendFile, readFile } from 'fs/promises';
+import * as core from '@actions/core';
+import { readFile } from 'fs/promises';
 import { run } from './validate-branch';
 
 vi.mock('fs/promises', () => ({
     readFile: vi.fn(),
-    appendFile: vi.fn(),
 }));
 
 vi.mock('@/branch-validator', () => ({
@@ -17,31 +17,37 @@ vi.mock('@/github-client', () => ({
     createGithubClient: vi.fn(),
 }));
 
-const mockOctokit = {} as unknown as Octokit;
+vi.mock('@actions/github', () => ({
+    context: { repo: { owner: 'dnd-mapp', repo: '.github' } },
+}));
+
+vi.mock('@actions/core', () => ({
+    info: vi.fn(),
+    debug: vi.fn(),
+    setOutput: vi.fn(),
+    setFailed: vi.fn(),
+}));
+
+const mockOctokit = {} as unknown as GithubClient;
 
 beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(readFile).mockResolvedValue('{"version":"1.0.0"}');
     vi.mocked(validateRelease).mockResolvedValue({ isPrerelease: false });
     vi.mocked(createGithubClient).mockReturnValue(mockOctokit);
-    vi.mocked(appendFile).mockResolvedValue();
-    process.env['GITHUB_REPOSITORY'] = 'dnd-mapp/.github';
     process.env['GITHUB_WORKSPACE'] = '/workspace';
     process.env['GITHUB_TOKEN'] = 'github-token-123';
     process.env['GITHUB_REF_NAME'] = 'main';
     process.env['VERSION'] = 'minor';
     process.env['PRERELEASE_ID'] = 'none';
-    process.env['GITHUB_OUTPUT'] = '/output';
 });
 
 afterEach(() => {
-    delete process.env['GITHUB_REPOSITORY'];
     delete process.env['GITHUB_WORKSPACE'];
     delete process.env['GITHUB_TOKEN'];
     delete process.env['GITHUB_REF_NAME'];
     delete process.env['VERSION'];
     delete process.env['PRERELEASE_ID'];
-    delete process.env['GITHUB_OUTPUT'];
 });
 
 describe('validate-branch script', () => {
@@ -57,7 +63,7 @@ describe('validate-branch script', () => {
         expect(createGithubClient).toHaveBeenCalledWith('github-token-123');
     });
 
-    it('passes all env vars to validateRelease', async () => {
+    it('passes context repo and env vars to validateRelease', async () => {
         process.env['GITHUB_REF_NAME'] = 'release/v2.0.0';
         process.env['VERSION'] = 'prerelease';
         process.env['PRERELEASE_ID'] = 'beta';
@@ -77,19 +83,19 @@ describe('validate-branch script', () => {
         );
     });
 
-    it('writes is-prerelease=true when validateRelease returns isPrerelease: true', async () => {
+    it('sets is-prerelease output to true when validateRelease returns isPrerelease: true', async () => {
         vi.mocked(validateRelease).mockResolvedValue({ isPrerelease: true });
 
         await run();
 
-        expect(appendFile).toHaveBeenCalledWith('/output', 'is-prerelease=true\n');
+        expect(core.setOutput).toHaveBeenCalledWith('is-prerelease', true);
     });
 
-    it('writes is-prerelease=false when validateRelease returns isPrerelease: false', async () => {
+    it('sets is-prerelease output to false when validateRelease returns isPrerelease: false', async () => {
         vi.mocked(validateRelease).mockResolvedValue({ isPrerelease: false });
 
         await run();
 
-        expect(appendFile).toHaveBeenCalledWith('/output', 'is-prerelease=false\n');
+        expect(core.setOutput).toHaveBeenCalledWith('is-prerelease', false);
     });
 });

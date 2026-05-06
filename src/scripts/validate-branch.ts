@@ -1,26 +1,38 @@
 import { validateRelease } from '@/branch-validator';
 import { createGithubClient } from '@/github-client';
-import { appendFile, readFile } from 'fs/promises';
+import * as core from '@actions/core';
+import { context } from '@actions/github';
+import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 
-export async function run(): Promise<void> {
-    const [owner, repo] = process.env['GITHUB_REPOSITORY']!.split('/');
+export async function run() {
+    const { owner, repo } = context.repo;
+    const currentBranch = process.env['GITHUB_REF_NAME']!;
     const manifest = JSON.parse(await readFile(`${process.env['GITHUB_WORKSPACE']!}/package.json`, 'utf-8')) as {
         version: string;
     };
 
+    core.info('Validating release configuration');
+    core.debug(`Branch: ${currentBranch}, version input: ${process.env['VERSION']}`);
+
     const { isPrerelease } = await validateRelease(createGithubClient(process.env['GITHUB_TOKEN']!), {
-        owner: owner!,
-        repo: repo!,
-        currentBranch: process.env['GITHUB_REF_NAME']!,
+        owner,
+        repo,
+        currentBranch,
         versionInput: process.env['VERSION']!,
         prereleaseIdInput: process.env['PRERELEASE_ID']!,
         currentVersion: manifest.version,
     });
 
-    await appendFile(process.env['GITHUB_OUTPUT']!, `is-prerelease=${isPrerelease}\n`);
+    core.setOutput('is-prerelease', isPrerelease);
 }
 
+/* c8 ignore start */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    await run();
+    try {
+        await run();
+    } catch (error) {
+        core.setFailed(error instanceof Error ? error.message : String(error));
+    }
 }
+/* c8 ignore stop */
