@@ -42,6 +42,7 @@ runs:
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
+              repositories: ${{ github.repository }}
 
         - name: Bump version
           id: bump-version

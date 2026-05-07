@@ -18,6 +18,7 @@ runs:
           with:
               app-id: ${{ inputs.app-id }}
               app-private-key: ${{ inputs.app-private-key }}
+              repositories: ${{ github.repository }}
 
         - name: Publish release
           id: publish-release
