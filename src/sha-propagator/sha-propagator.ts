@@ -4,7 +4,6 @@ import * as core from '@actions/core';
 interface WorkflowFile {
     path: string;
     content: string;
-    sha: string;
 }
 
 interface PropagateShaParams {
@@ -13,26 +12,62 @@ interface PropagateShaParams {
     newSha: string;
 }
 
+interface DirEntry {
+    name: string;
+    path: string;
+    type: string;
+}
+
 const SHA_REF_REGEX = /(dnd-mapp\/\.github\/[^\s@]+@)[0-9a-f]{40}/g;
 
 function replaceShAReferences(content: string, newSha: string) {
     return content.replace(SHA_REF_REGEX, `$1${newSha}`);
 }
 
-async function getWorkflowFiles(octokit: GithubClient, owner: string, repo: string): Promise<WorkflowFile[]> {
-    const { data: items } = await octokit.rest.repos.getContent({ owner, repo, path: '.github/workflows' });
-    const entries = items as { name: string; path: string; type: string }[];
-    const yamlEntries = entries.filter(
-        (e) => e.type === 'file' && (e.name.endsWith('.yaml') || e.name.endsWith('.yml'))
-    );
+function isYaml(name: string) {
+    return name.endsWith('.yaml') || name.endsWith('.yml');
+}
+
+async function getYamlFiles(octokit: GithubClient, owner: string, repo: string): Promise<WorkflowFile[]> {
+    const entries: DirEntry[] = [];
+
+    const { data: workflowItems } = await octokit.rest.repos.getContent({
+        owner: owner,
+        repo: repo,
+        path: '.github/workflows',
+    });
+    entries.push(...(workflowItems as DirEntry[]).filter((entry) => entry.type === 'file' && isYaml(entry.name)));
+
+    try {
+        const { data: actionItems } = await octokit.rest.repos.getContent({
+            owner: owner,
+            repo: repo,
+            path: '.github/actions',
+        });
+
+        const subdirs = (actionItems as DirEntry[]).filter((e) => e.type === 'dir');
+        const subEntries = await Promise.all(
+            subdirs.map(async (sub) => {
+                const { data: subItems } = await octokit.rest.repos.getContent({
+                    owner: owner,
+                    repo: repo,
+                    path: sub.path,
+                });
+
+                return (subItems as DirEntry[]).filter((entry) => entry.type === 'file' && isYaml(entry.name));
+            })
+        );
+        entries.push(...subEntries.flat());
+    } catch {
+        // .github/actions doesn't exist in this repo — skip
+    }
 
     return Promise.all(
-        yamlEntries.map(async (entry) => {
-            const { data } = await octokit.rest.repos.getContent({ owner, repo, path: entry.path });
+        entries.map(async (entry) => {
+            const { data } = await octokit.rest.repos.getContent({ owner: owner, repo: repo, path: entry.path });
             const { content: encoded, sha } = data as { content: string; sha: string };
             const content = Buffer.from(encoded.replace(/\n/g, ''), 'base64').toString('utf-8');
-
-            return { path: entry.path, content, sha };
+            return { path: entry.path, content };
         })
     );
 }
@@ -42,7 +77,7 @@ export async function propagateSha(octokit: GithubClient, params: PropagateShaPa
 
     core.startGroup(`${owner}/${repo}`);
 
-    const files = await getWorkflowFiles(octokit, owner, repo);
+    const files = await getYamlFiles(octokit, owner, repo);
 
     core.debug(`Found ${files.length} workflow file(s)`);
 
@@ -55,7 +90,6 @@ export async function propagateSha(octokit: GithubClient, params: PropagateShaPa
         core.endGroup();
         return;
     }
-
     const shortSha = newSha.slice(0, 7);
     const branchName = `ci/update-sha-references-${shortSha}`;
 
@@ -81,19 +115,35 @@ export async function propagateSha(octokit: GithubClient, params: PropagateShaPa
         throw error;
     }
 
-    for (const file of updates) {
-        await octokit.rest.repos.createOrUpdateFileContents({
-            owner,
-            repo,
-            path: file.path,
-            message: `ci: update .github SHA references to ${shortSha}`,
-            content: Buffer.from(file.updatedContent).toString('base64'),
-            sha: file.sha,
-            branch: branchName,
-        });
+    const { data: headCommit } = await octokit.rest.git.getCommit({
+        owner,
+        repo,
+        commit_sha: mainRef.object.sha,
+    });
 
-        core.debug(`Committed ${file.path}`);
-    }
+    const { data: newTree } = await octokit.rest.git.createTree({
+        owner,
+        repo,
+        base_tree: headCommit.tree.sha,
+        tree: updates.map((file) => ({ path: file.path, mode: '100644', type: 'blob', content: file.updatedContent })),
+    });
+
+    const { data: newCommit } = await octokit.rest.git.createCommit({
+        owner,
+        repo,
+        message: `ci: update .github SHA references to ${shortSha}`,
+        tree: newTree.sha,
+        parents: [mainRef.object.sha],
+    });
+
+    await octokit.rest.git.updateRef({
+        owner,
+        repo,
+        ref: `heads/${branchName}`,
+        sha: newCommit.sha,
+    });
+
+    core.debug(`Committed ${updates.length} file(s)`);
 
     await octokit.rest.pulls.create({
         owner,
