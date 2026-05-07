@@ -59,6 +59,7 @@ jobs:
                       dnd-mapp/shared-domain
                       dnd-mapp/shared-ui
                       dnd-mapp/shared-utils
+                      dnd-mapp/.github
 
             - name: Propagate SHA references
               uses: ./.github/actions/propagate-sha
@@ -73,3 +74,4 @@ jobs:
                       dnd-mapp/shared-domain
                       dnd-mapp/shared-ui
                       dnd-mapp/shared-utils
+                      dnd-mapp/.github
