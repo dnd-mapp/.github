@@ -26,6 +26,8 @@ runs:
           working-directory: ${{ github.action_path }}
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
+              BOT_NAME: ${{ steps.git-bot.outputs.name }}
+              BOT_EMAIL: ${{ steps.git-bot.outputs.email }}
               CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
           run: node dist/publish-release.cjs
 

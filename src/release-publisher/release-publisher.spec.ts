@@ -28,6 +28,8 @@ const BASE_PARAMS = {
     commitSha: 'deadbeefcafe1234',
     releaseNotes: '## What changed\n\n- Feature A\n- Fix B',
     isPrerelease: false,
+    taggerName: 'my-app[bot]',
+    taggerEmail: '12345+my-app[bot]@users.noreply.github.com',
 };
 
 beforeEach(() => {
@@ -48,6 +50,21 @@ describe('publishRelease', () => {
                 tag: 'v2.0.0',
                 object: 'deadbeefcafe1234',
                 type: 'commit',
+            })
+        );
+    });
+
+    it('uses the provided bot identity as the tagger', async () => {
+        const octokit = makeOctokit();
+
+        await publishRelease(octokit, BASE_PARAMS);
+
+        expect(octokit.rest.git.createTag).toHaveBeenCalledWith(
+            expect.objectContaining({
+                tagger: expect.objectContaining({
+                    name: 'my-app[bot]',
+                    email: '12345+my-app[bot]@users.noreply.github.com',
+                }),
             })
         );
     });

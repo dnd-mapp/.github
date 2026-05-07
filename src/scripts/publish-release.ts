@@ -5,6 +5,7 @@ import * as core from '@actions/core';
 import { context } from '@actions/github';
 import { readFile } from 'fs/promises';
 import semver from 'semver';
+
 export async function run() {
     const { owner, repo } = context.repo;
     const changelogPath = process.env['CHANGELOG_PATH'] ?? 'CHANGELOG.md';
@@ -25,12 +26,14 @@ export async function run() {
     const octokit = createGithubClient(process.env['GH_TOKEN']!);
 
     await publishRelease(octokit, {
-        owner,
-        repo,
+        owner: owner,
+        repo: repo,
         tagName: `v${version}`,
         commitSha: context.sha,
-        releaseNotes,
-        isPrerelease,
+        releaseNotes: releaseNotes,
+        isPrerelease: isPrerelease,
+        taggerName: process.env['BOT_NAME']!,
+        taggerEmail: process.env['BOT_EMAIL']!,
     });
 
     core.setOutput('is-prerelease', isPrerelease);

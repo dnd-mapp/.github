@@ -17,6 +17,12 @@ outputs:
     token:
         description: The generated GitHub App installation token
         value: ${{ steps.app-token.outputs.token }}
+    name:
+        description: The bot user's display name (e.g. my-app[bot])
+        value: ${{ steps.bot-user.outputs.name }}
+    email:
+        description: The bot user's noreply email address
+        value: ${{ steps.bot-user.outputs.email }}
 
 runs:
     using: composite
