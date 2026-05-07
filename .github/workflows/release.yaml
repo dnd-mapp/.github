@@ -21,10 +21,10 @@ jobs:
               uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
             - name: Set up tools
-              uses: dnd-mapp/.github/.github/actions/setup-tools@009a3203e96cba5d053d75f944d5f6ffe4294c76
+              uses: dnd-mapp/.github/.github/actions/setup-tools@4109ace0c26fd5f0e60c763d024619902f1efa26
 
             - name: Bump version
-              uses: dnd-mapp/.github/.github/actions/bump-version@009a3203e96cba5d053d75f944d5f6ffe4294c76
+              uses: dnd-mapp/.github/.github/actions/bump-version@4109ace0c26fd5f0e60c763d024619902f1efa26
               with:
                   app-id: ${{ secrets.app-id }}
                   app-private-key: ${{ secrets.app-private-key }}
