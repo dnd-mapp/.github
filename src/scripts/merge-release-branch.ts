@@ -2,6 +2,7 @@ import { deleteReleaseBranch, mergeReleaseBranch } from '@/branch-manager';
 import { createGithubClient } from '@/github-client';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
+
 export async function run() {
     const { owner, repo } = context.repo;
     const releaseBranch = process.env['RELEASE_BRANCH']!;

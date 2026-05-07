@@ -1,6 +1,7 @@
 import { bumpVersion, deriveReleaseBranchName, writePackageVersion } from '@/version-bumper';
 import * as core from '@actions/core';
 import { readFile } from 'fs/promises';
+
 export async function run() {
     const versionInput = process.env['VERSION']!;
     const prereleaseIdInput = process.env['PRERELEASE_ID']!;

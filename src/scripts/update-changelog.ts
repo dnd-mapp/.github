@@ -1,6 +1,7 @@
 import { insertOrUpdateWatermark, stampStableVersion } from '@/changelog-manager';
 import * as core from '@actions/core';
 import { readFile } from 'fs/promises';
+
 export async function run() {
     const isPrerelease = process.env['IS_PRERELEASE'] === 'true';
     const version = process.env['CLEAN_VERSION']!;

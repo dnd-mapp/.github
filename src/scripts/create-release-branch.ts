@@ -2,6 +2,7 @@ import { createReleaseBranch } from '@/branch-manager';
 import { createGithubClient } from '@/github-client';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
+
 export async function run() {
     const { owner, repo } = context.repo;
     const branchName = process.env['RELEASE_BRANCH_NAME']!;

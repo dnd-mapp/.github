@@ -1,6 +1,7 @@
 import { createGithubClient } from '@/github-client';
 import { propagateSha } from '@/sha-propagator';
 import * as core from '@actions/core';
+
 export async function run() {
     const siblingRepos = process.env['SIBLING_REPOS']!.split(/\s+/).filter(Boolean);
     const newSha = process.env['NEW_SHA']!;
