@@ -25744,8 +25744,8 @@ async function publishRelease(octokit, params) {
     object: params.commitSha,
     type: "commit",
     tagger: {
-      name: "github-actions[bot]",
-      email: "41898282+github-actions[bot]@users.noreply.github.com",
+      name: params.taggerName,
+      email: params.taggerEmail,
       date: (/* @__PURE__ */ new Date()).toISOString()
     }
   });
@@ -25786,7 +25786,9 @@ async function run() {
     tagName: `v${version}`,
     commitSha: context2.sha,
     releaseNotes,
-    isPrerelease
+    isPrerelease,
+    taggerName: process.env["BOT_NAME"],
+    taggerEmail: process.env["BOT_EMAIL"]
   });
   setOutput("is-prerelease", isPrerelease);
 }

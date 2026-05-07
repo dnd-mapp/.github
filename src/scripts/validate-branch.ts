@@ -3,6 +3,7 @@ import { createGithubClient } from '@/github-client';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
 import { readFile } from 'fs/promises';
+
 export async function run() {
     const { owner, repo } = context.repo;
     const currentBranch = process.env['GITHUB_REF_NAME']!;

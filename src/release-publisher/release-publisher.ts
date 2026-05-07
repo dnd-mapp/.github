@@ -8,6 +8,8 @@ interface PublishReleaseParams {
     commitSha: string;
     releaseNotes: string;
     isPrerelease: boolean;
+    taggerName: string;
+    taggerEmail: string;
 }
 
 export async function publishRelease(octokit: GithubClient, params: PublishReleaseParams) {
@@ -21,8 +23,8 @@ export async function publishRelease(octokit: GithubClient, params: PublishRelea
         object: params.commitSha,
         type: 'commit',
         tagger: {
-            name: 'github-actions[bot]',
-            email: '41898282+github-actions[bot]@users.noreply.github.com',
+            name: params.taggerName,
+            email: params.taggerEmail,
             date: new Date().toISOString(),
         },
     });

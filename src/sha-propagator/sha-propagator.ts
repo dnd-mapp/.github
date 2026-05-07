@@ -65,7 +65,7 @@ async function getYamlFiles(octokit: GithubClient, owner: string, repo: string):
     return Promise.all(
         entries.map(async (entry) => {
             const { data } = await octokit.rest.repos.getContent({ owner: owner, repo: repo, path: entry.path });
-            const { content: encoded, sha } = data as { content: string; sha: string };
+            const { content: encoded } = data as { content: string; sha: string };
             const content = Buffer.from(encoded.replace(/\n/g, ''), 'base64').toString('utf-8');
             return { path: entry.path, content };
         })
