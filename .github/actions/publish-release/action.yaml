@@ -20,14 +20,21 @@ runs:
               app-private-key: ${{ inputs.app-private-key }}
               repositories: ${{ github.repository }}
 
+        - name: Resolve bot identity
+          id: bot-identity
+          shell: bash
+          run: |
+              echo "name=$(git config user.name)" >> "$GITHUB_OUTPUT"
+              echo "email=$(git config user.email)" >> "$GITHUB_OUTPUT"
+
         - name: Publish release
           id: publish-release
           shell: bash
           working-directory: ${{ github.action_path }}
           env:
               GH_TOKEN: ${{ steps.git-bot.outputs.token }}
-              BOT_NAME: ${{ steps.git-bot.outputs.name }}
-              BOT_EMAIL: ${{ steps.git-bot.outputs.email }}
+              BOT_NAME: ${{ steps.bot-identity.outputs.name }}
+              BOT_EMAIL: ${{ steps.bot-identity.outputs.email }}
               CHANGELOG_PATH: ${{ github.workspace }}/CHANGELOG.md
           run: node dist/publish-release.cjs
 

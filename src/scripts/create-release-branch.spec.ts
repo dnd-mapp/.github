@@ -26,7 +26,7 @@ const mockOctokit = {} as unknown as GithubClient;
 beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(createGithubClient).mockReturnValue(mockOctokit);
-    vi.mocked(createReleaseBranch).mockResolvedValue(undefined as never);
+    vi.mocked(createReleaseBranch).mockResolvedValue(undefined);
     process.env['GH_TOKEN'] = 'gh-token-123';
     process.env['RELEASE_BRANCH_NAME'] = 'release/v2.0.0';
 });

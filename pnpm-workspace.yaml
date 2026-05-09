@@ -1,6 +1,9 @@
 packages:
-    - '!dist/**/*'
+  - '!dist/**/*'
+allowBuilds:
+  esbuild: true
 blockExoticSubdeps: true
+engineStrict: true
 ignoreDepScripts: true
 managePackageManagerVersions: false
 minimumReleaseAge: 2880
