@@ -41,15 +41,19 @@ beforeEach(() => {
     vi.mocked(createGithubClient).mockReturnValue(mockOctokit);
     vi.mocked(extractPrereleaseDelta).mockResolvedValue('prerelease notes');
     vi.mocked(extractStableNotes).mockResolvedValue('stable notes');
-    vi.mocked(publishRelease).mockResolvedValue(undefined as never);
+    vi.mocked(publishRelease).mockResolvedValue(undefined);
     process.env['GITHUB_WORKSPACE'] = '/workspace';
     process.env['GH_TOKEN'] = 'gh-token-123';
+    process.env['BOT_NAME'] = 'dnd-mapp[bot]';
+    process.env['BOT_EMAIL'] = '208279662+dnd-mapp[bot]@users.noreply.github.com';
     delete process.env['CHANGELOG_PATH'];
 });
 
 afterEach(() => {
     delete process.env['GITHUB_WORKSPACE'];
     delete process.env['GH_TOKEN'];
+    delete process.env['BOT_NAME'];
+    delete process.env['BOT_EMAIL'];
     delete process.env['CHANGELOG_PATH'];
 });
 
@@ -91,6 +95,24 @@ describe('publish-release script — prerelease version', () => {
         expect(publishRelease).toHaveBeenCalledWith(
             expect.anything(),
             expect.objectContaining({ commitSha: 'deadbeefcafe' })
+        );
+    });
+
+    it('passes BOT_NAME as taggerName to publishRelease', async () => {
+        await run();
+
+        expect(publishRelease).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ taggerName: 'dnd-mapp[bot]' })
+        );
+    });
+
+    it('passes BOT_EMAIL as taggerEmail to publishRelease', async () => {
+        await run();
+
+        expect(publishRelease).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ taggerEmail: '208279662+dnd-mapp[bot]@users.noreply.github.com' })
         );
     });
 });
