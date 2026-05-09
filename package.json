@@ -5,7 +5,6 @@
   "author": "NoNamer777",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "build": "node build.mts",
     "test": "vitest run",
@@ -19,6 +18,7 @@
   "engines": {
     "node": "~24.15"
   },
+  "packageManager": "pnpm@11.0.8",
   "devEngines": {
     "runtime": {
       "name": "node",
@@ -28,7 +28,7 @@
     "packageManager": [
       {
         "name": "pnpm",
-        "version": "10.33.0",
+        "version": "11.0.8",
         "onFail": "error"
       }
     ]
@@ -36,25 +36,25 @@
   "dependencies": {
     "@actions/core": "~3.0.1",
     "@actions/github": "~9.1.1",
-    "semver": "~7.7.1"
+    "semver": "~7.7.4"
   },
   "devDependencies": {
     "@eslint/js": "~10.0.1",
     "@types/node": "~24.12.2",
-    "@types/semver": "~7.7.0",
-    "@vitest/coverage-v8": "~4.1.4",
-    "@vitest/ui": "~4.1.4",
+    "@types/semver": "~7.7.1",
+    "@vitest/coverage-v8": "~4.1.5",
+    "@vitest/ui": "~4.1.5",
     "esbuild": "~0.28.0",
-    "eslint": "~10.2.0",
+    "eslint": "~10.3.0",
     "eslint-config-prettier": "~10.1.8",
-    "globals": "~17.5.0",
+    "globals": "~17.6.0",
     "markdownlint": "~0.40.0",
     "markdownlint-cli": "~0.48.0",
     "prettier": "~3.8.3",
     "prettier-plugin-organize-imports": "~4.3.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "~8.58.2",
-    "vite": "~8.0.8",
-    "vitest": "~4.1.4"
+    "typescript-eslint": "~8.59.2",
+    "vite": "~8.0.11",
+    "vitest": "~4.1.5"
   }
 }
