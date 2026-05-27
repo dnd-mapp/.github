@@ -1,0 +1,46 @@
+name: Epic
+description: A large body of work grouping related Stories toward a single feature or goal.
+body:
+    - type: textarea
+      id: goal
+      attributes:
+          label: Goal
+          description: "What outcome are we driving toward?"
+          placeholder: "So that [users can do X], we will [build Y]."
+      validations:
+          required: true
+
+    - type: textarea
+      id: acceptance-criteria
+      attributes:
+          label: Acceptance Criteria
+          description: High-level conditions that must be true for this Epic to be considered done.
+          placeholder: |
+              - [ ]
+              - [ ]
+      validations:
+          required: true
+
+    - type: textarea
+      id: background
+      attributes:
+          label: Background
+          description: Context or motivation beyond the Goal.
+      validations:
+          required: false
+
+    - type: textarea
+      id: out-of-scope
+      attributes:
+          label: Out of Scope
+          description: Explicitly what this Epic will NOT cover.
+      validations:
+          required: false
+
+    - type: textarea
+      id: references
+      attributes:
+          label: References
+          description: Links to Figma, docs, RFCs, or other relevant resources.
+      validations:
+          required: false
