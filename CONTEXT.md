@@ -92,6 +92,27 @@ A defect or unintended behavior in the application. Bugs are standalone work ite
 
 Canceled Bugs are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
 
+### Spike
+
+A time-boxed investigation into an unknown or risk that is blocking or informing future work. A Spike produces a concrete artifact — a written findings document, a decision, or a proof-of-concept.
+
+**Issue Type color:** orange — configured at the GitHub organization level, not per repository
+
+**Required fields:** Question (what the Spike is trying to answer), Deliverable (what concrete artifact will be produced)
+**Optional fields:** References
+**Project fields:** Priority (P0–P3), Time Box (days)
+
+**Spikes are standalone** — they are not required to be children of an Epic or Story. A Spike may optionally reference a parent Epic in its References field.
+
+**Statuses:**
+
+- `Backlog` — exists but not yet groomed or actionable
+- `Ready` — Question and Deliverable are clearly defined; can be picked up
+- `In Progress` — investigation actively underway
+- `Done` — closed; close reason (Completed / Not Planned / Duplicate) carries the nuance
+
+Canceled Spikes are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
+
 ### Priority
 
 The relative urgency of a work item, used for ordering and triage. Applied to Epic, Story, and Bug. Not applicable to Task — the parent Story owns priority.

@@ -1,0 +1,29 @@
+name: Spike
+description: A time-boxed investigation into an unknown or risk that is blocking or informing future work.
+type: Spike
+body:
+    - type: textarea
+      id: question
+      attributes:
+          label: Question
+          description: What are we trying to answer? A well-formed Question has a clear answer at the end.
+          placeholder: "e.g. Is Postgres full-text search fast enough for our query volume, or do we need Elasticsearch?"
+      validations:
+          required: true
+
+    - type: textarea
+      id: deliverable
+      attributes:
+          label: Deliverable
+          description: What concrete artifact will this Spike produce when it is done?
+          placeholder: "e.g. A findings doc with benchmarks and a go/no-go recommendation."
+      validations:
+          required: true
+
+    - type: textarea
+      id: references
+      attributes:
+          label: References
+          description: Links to the parent Epic, related issues, docs, or other relevant resources.
+      validations:
+          required: false
