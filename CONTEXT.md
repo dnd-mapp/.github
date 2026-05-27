@@ -10,7 +10,8 @@ A large unit of work that groups related Stories toward a single feature or goal
 
 **Required fields:** Goal (outcome statement), Acceptance Criteria (bullet checklist)
 **Optional fields:** Background, Out of Scope, References
-**Project fields:** Priority (P0 – P3), Target Quarter (Q1 YYYY format)
+**Organization fields:** Priority (P0 – P3)
+**Project fields:** Target Quarter (Iteration field — configured per project with a start date and duration in weeks or days)
 **Child issues:** tracked via GitHub native sub-issues
 **Dependencies:** tracked via GitHub native "blocked by" / "blocking" relationships
 
@@ -32,7 +33,7 @@ A user-facing unit of work that delivers a single slice of value to a specific p
 
 **Required fields:** User Story (the formatted sentence), Acceptance Criteria (bullet checklist)
 **Optional fields:** References
-**Project fields:** Priority (P0–P3), Story Points (1, 2, 3, 5, 8, 13)
+**Organization fields:** Priority (P0–P3), Story Points (1, 2, 3, 5, 8, 13)
 
 **Statuses:**
 
@@ -52,7 +53,7 @@ A concrete, implementation-level unit of work that is always a child of a Story.
 
 **Required fields:** Description (what to do and relevant technical context)
 **Optional fields:** References
-**Project fields:** none — the parent Story owns priority and estimation
+**Organization fields:** none — the parent Story owns priority and estimation
 
 **Statuses:**
 
@@ -71,7 +72,7 @@ A defect or unintended behavior in the application. Bugs are standalone work ite
 
 **Required fields:** Steps to Reproduce, Expected Behavior, Actual Behavior, Environment / Version
 **Optional fields:** Severity (S0–S3), Logs / Screenshots, References
-**Project fields:** Priority (P0–P3)
+**Organization fields:** Priority (P0–P3), Severity (S0–S3)
 
 **Severity scale:**
 
@@ -100,7 +101,7 @@ A time-boxed investigation into an unknown or risk that is blocking or informing
 
 **Required fields:** Question (what the Spike is trying to answer), Deliverable (what concrete artifact will be produced)
 **Optional fields:** References
-**Project fields:** Priority (P0–P3), Time Box (days)
+**Organization fields:** Priority (P0–P3), Time Box (days)
 
 **Spikes are standalone** — they are not required to be children of an Epic or Story. A Spike may optionally reference a parent Epic in its References field.
 
