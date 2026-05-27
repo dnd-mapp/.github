@@ -24,7 +24,7 @@ Canceled Epics are closed as "Not planned" and move to `Done`. There is no separ
 
 ### Story
 
-A user-facing unit of work that delivers a single slice of value to a specific persona. Stories are child issues of an Epic, tracked via GitHub native sub-issues.
+A user-facing unit of work that delivers a single slice of value to a specific persona. Stories are typically child issues of an Epic, tracked via GitHub native sub-issues. A Story without a parent Epic is allowed as an exception — if orphan Stories become frequent, it is a signal that a new Epic is needed.
 
 **Issue Type color:** yellow — configured at the GitHub organization level, not per repository
 
