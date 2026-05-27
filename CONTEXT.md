@@ -63,12 +63,52 @@ A concrete, implementation-level unit of work that is always a child of a Story.
 
 Canceled Tasks are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
 
+### Bug
+
+A defect or unintended behavior in the application. Bugs are standalone work items — they are not required to be children of a Story or Epic, though they may reference related issues in their References field.
+
+**Issue Type color:** red — configured at the GitHub organization level, not per repository
+
+**Required fields:** Steps to Reproduce, Expected Behavior, Actual Behavior, Environment / Version
+**Optional fields:** Severity (S0–S3), Logs / Screenshots, References
+**Project fields:** Priority (P0–P3)
+
+**Severity scale:**
+
+| Level  | Meaning                                                               |
+|:------:|:----------------------------------------------------------------------|
+| **S0** | Data loss, corruption, or complete feature failure with no workaround |
+| **S1** | Core flow broken; workaround exists but is painful                    |
+| **S2** | Degraded experience; reasonable workaround available                  |
+| **S3** | Cosmetic or minor issue; does not impact functionality                |
+
+**Statuses:**
+
+- `Backlog` — reported but not yet triaged or reproduced; not actionable
+- `Ready` — triaged, reproduced, and understood; can be picked up
+- `In Progress` — actively being fixed
+- `In Review` — fix complete; PR open and under review
+- `Done` — closed; close reason (Completed / Not Planned / Duplicate) carries the nuance
+
+Canceled Bugs are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
+
+### Priority
+
+The relative urgency of a work item, used for ordering and triage. Applied to Epic, Story, and Bug. Not applicable to Task — the parent Story owns priority.
+
+| Level  | Meaning                                                     |
+|:------:|:------------------------------------------------------------|
+| **P0** | Drop everything — blocking critical path or a live incident |
+| **P1** | High priority — must be addressed this quarter              |
+| **P2** | Normal priority — planned and scheduled                     |
+| **P3** | Low priority — nice to have, no firm commitment             |
+
 ### Story Points
 
 A relative measure of **complexity, effort, and uncertainty** for a Story. Points are not time estimates — a 2 is twice as complex/uncertain as a 1, not "2 hours."
 
 | Points | Meaning                                                            |
-|--------|--------------------------------------------------------------------|
+|:------:|:-------------------------------------------------------------------|
 | **1**  | Trivial — well-understood, no unknowns, minimal work               |
 | **2**  | Simple — clear solution, little effort, no surprises expected      |
 | **3**  | Moderate — some thought required, solution is mostly known         |
