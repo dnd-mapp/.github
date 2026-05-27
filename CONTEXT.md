@@ -2,6 +2,8 @@
 
 ## Glossary
 
+> **Organization fields** must be explicitly added to each project before they can be used as project fields (e.g., for filtering, grouping, or sum-based Insights charts).
+
 ### Epic
 
 A large unit of work that groups related Stories toward a single feature or goal. An Epic is considered **done** when all its child issues are closed. Epics are tracked as GitHub Issues using the "Epic" Issue Type.
@@ -33,7 +35,7 @@ A user-facing unit of work that delivers a single slice of value to a specific p
 
 **Required fields:** User Story (the formatted sentence), Acceptance Criteria (bullet checklist)
 **Optional fields:** References
-**Organization fields:** Priority (P0–P3), Story Points (1, 2, 3, 5, 8, 13)
+**Organization fields:** Priority (P0–P3), Story Points (number field)
 
 **Statuses:**
 
@@ -138,4 +140,4 @@ A relative measure of **complexity, effort, and uncertainty** for a Story. Point
 | **8**  | Complex — multiple components involved, notable uncertainty        |
 | **13** | Very complex — large scope or high uncertainty; consider splitting |
 
-Valid values: 1, 2, 3, 5, 8, 13. A Story estimated at 13 is a signal it should be split, not a commitment to deliver it as-is.
+Recommended values: 1, 2, 3, 5, 8, 13 (Fibonacci). The field is a free-form number — the Fibonacci scale is a convention, not enforced. A Story estimated at 13 is a signal it should be split, not a commitment to deliver it as-is.
