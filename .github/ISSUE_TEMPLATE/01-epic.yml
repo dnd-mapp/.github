@@ -1,6 +1,8 @@
 name: Epic
 description: A large body of work grouping related Stories toward a single feature or goal.
 type: Epic
+projects:
+    - dnd-mapp/7
 body:
     - type: textarea
       id: goal

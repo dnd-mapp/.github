@@ -1,6 +1,8 @@
 name: Bug
 description: A defect or unintended behaviour in the application.
 type: Bug
+projects:
+    - dnd-mapp/7
 body:
     - type: textarea
       id: steps-to-reproduce

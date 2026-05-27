@@ -1,6 +1,8 @@
 name: Story
 description: A user-facing unit of work that delivers a single slice of value to a specific persona.
 type: Story
+projects:
+    - dnd-mapp/7
 body:
     - type: textarea
       id: user-story

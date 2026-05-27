@@ -1,6 +1,8 @@
 name: Task
 description: A concrete, implementation-level unit of work that is a child of a Story.
 type: Task
+projects:
+    - dnd-mapp/7
 body:
     - type: textarea
       id: description

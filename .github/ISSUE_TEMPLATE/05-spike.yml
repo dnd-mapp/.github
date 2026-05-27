@@ -1,6 +1,8 @@
 name: Spike
 description: A time-boxed investigation into an unknown or risk that is blocking or informing future work.
 type: Spike
+projects:
+    - dnd-mapp/7
 body:
     - type: textarea
       id: question
