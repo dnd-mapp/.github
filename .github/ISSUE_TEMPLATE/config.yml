@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Discussions
+      url: https://github.com/orgs/dnd-mapp/discussions
+      about: Browse or start a conversation on the organisation discussion board.
+    - name: Project Board
+      url: https://github.com/orgs/dnd-mapp/projects/7
+      about: View the project board to see what is planned and in progress.
+    - name: Discord
+      url: https://discord.com/B9m6usp4qx
+      about: Join our Discord server for questions and discussion.
