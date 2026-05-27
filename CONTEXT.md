@@ -6,6 +6,8 @@
 
 A large unit of work that groups related Stories toward a single feature or goal. An Epic is considered **done** when all its child issues are closed. Epics are tracked as GitHub Issues using the "Epic" Issue Type.
 
+**Issue Type color:** purple — configured at the GitHub organization level, not per repository
+
 **Required fields:** Goal (outcome statement), Acceptance Criteria (bullet checklist)
 **Optional fields:** Background, Out of Scope, References
 **Project fields:** Priority (P0 – P3), Target Quarter (Q1 YYYY format)
@@ -23,6 +25,8 @@ Canceled Epics are closed as "Not planned" and move to `Done`. There is no separ
 ### Story
 
 A user-facing unit of work that delivers a single slice of value to a specific persona. Stories are child issues of an Epic, tracked via GitHub native sub-issues.
+
+**Issue Type color:** yellow — configured at the GitHub organization level, not per repository
 
 **Format:** "As a [persona], I want [goal], so that [reason]."
 
