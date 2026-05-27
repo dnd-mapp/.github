@@ -1,0 +1,19 @@
+name: Task
+description: A concrete, implementation-level unit of work that is a child of a Story.
+type: Task
+body:
+    - type: textarea
+      id: description
+      attributes:
+          label: Description
+          description: What needs to be done? Include any relevant technical context.
+      validations:
+          required: true
+
+    - type: textarea
+      id: references
+      attributes:
+          label: References
+          description: Links to PRs, docs, designs, or other relevant resources.
+      validations:
+          required: false

@@ -44,6 +44,25 @@ A user-facing unit of work that delivers a single slice of value to a specific p
 
 Canceled Stories are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
 
+### Task
+
+A concrete, implementation-level unit of work that is always a child of a Story. Tasks are technical steps taken by a developer to fulfil a Story — they are not user-facing and do not deliver value on their own.
+
+**Issue Type color:** blue — configured at the GitHub organization level, not per repository
+
+**Required fields:** Description (what to do and relevant technical context)
+**Optional fields:** References
+**Project fields:** none — the parent Story owns priority and estimation
+
+**Statuses:**
+
+- `Backlog` — created but not yet being worked on
+- `In Progress` — actively being implemented
+- `In Review` — implementation complete; PR open and under review
+- `Done` — closed; close reason (Completed / Not Planned / Duplicate) carries the nuance
+
+Canceled Tasks are closed as "Not planned" and move to `Done`. There is no separate Canceled status.
+
 ### Story Points
 
 A relative measure of **complexity, effort, and uncertainty** for a Story. Points are not time estimates — a 2 is twice as complex/uncertain as a 1, not "2 hours."
