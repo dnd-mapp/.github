@@ -1,6 +1,6 @@
 # Contributing
 
-dnd-mapp is a platform for managing D&D campaigns.
+dnd-mapp is a platform for Dungeon Masters and Players to manage their Dungeons & Dragons 5th Edition campaigns.
 
 ## This is a closed project
 
