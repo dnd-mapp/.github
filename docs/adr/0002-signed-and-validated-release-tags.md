@@ -1,0 +1,7 @@
+# Release tags are signed and validated before any release step runs
+
+Every `dnd-mapp` repo that cuts releases pushes an immutable, signed `vX.Y.Z` tag to trigger its own `release.yml`. Signing is required platform-wide, enforced the same way commit signing to `main` already is, by a repository tag ruleset rather than by anything in the workflow itself: GitHub rejects an unsigned tag push outright, before any workflow runs.
+
+Each repo's `release.yml` runs a `validate` job on every `vX.Y.Z` tag push, checking that the tagged commit is reachable from `main` (merged, not tagged off an unmerged branch) and that the tag, its leading `v` stripped, matches `package.json`'s `version` field. Repos also validate the tag has a matching `CHANGELOG.md` section before release creation proceeds. Only once `validate` passes does a repo's own release-creation step run, gated per [ADR 0003](0003-gate-release-creation-behind-required-reviewer-environment.md).
+
+This ADR covers the shared tag-signing and validate-stage shape only. A separate, GitHub-Actions-specific convention, a floating `v1` tag and SHA-pinned `uses:` consumption, applies to repos consumed as composite actions; it doesn't apply to `tsconfig` (consumed as an npm package), and stays documented in `action-setup-workspace`'s own [ADR 0001](https://github.com/dnd-mapp/action-setup-workspace/blob/main/docs/adr/0001-manual-tags-with-floating-major-version.md).
