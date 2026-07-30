@@ -10,3 +10,7 @@ D&D Mapp is a tool for players and Dungeon Masters running Dungeons & Dragons 5t
 ## Wiki
 
 Docs and project info: [wiki.dndmapp.nl.eu.org](https://wiki.dndmapp.nl.eu.org)
+
+## Discussions
+
+Questions, ideas, and general chat happen in [Discussions](https://github.com/orgs/dnd-mapp/discussions).
