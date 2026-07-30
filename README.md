@@ -15,3 +15,7 @@ Docs and project info: [wiki.dndmapp.nl.eu.org](https://wiki.dndmapp.nl.eu.org)
 ## Discussions
 
 Org-wide discussions: [github.com/orgs/dnd-mapp/discussions](https://github.com/orgs/dnd-mapp/discussions)
+
+## Discord
+
+Community chat: [Discord](https://discord.gg/B9m6usp4qx)
