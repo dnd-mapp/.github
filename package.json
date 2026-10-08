@@ -15,6 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/dnd-mapp/.github.git"
   },
+  "scripts": {
+    "format": "prettier -w .",
+    "format-check": "prettier -c ."
+  },
   "devEngines": {
     "runtime": {
       "name": "node",
@@ -26,5 +30,12 @@
       "version": "12.8.2",
       "onFail": "error"
     }
+  },
+  "devDependencies": {
+    "@dnd-mapp/config-prettier": "catalog:prettier",
+    "@types/node": "catalog:",
+    "prettier": "catalog:prettier",
+    "prettier-plugin-organize-imports": "catalog:prettier",
+    "typescript": "catalog:"
   }
 }

@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "format",
+            "detail": "Formats the repository with Prettier",
+            "type": "shell",
+            "command": "pnpm run format",
+            "problemMatcher": []
+        },
+        {
+            "label": "format-check",
+            "detail": "Checks the formatting of the repository with Prettier",
+            "type": "shell",
+            "command": "pnpm run format-check",
+            "problemMatcher": []
+        }
+    ]
+}

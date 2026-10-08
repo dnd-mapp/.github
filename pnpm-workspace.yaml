@@ -18,3 +18,12 @@ sideEffectsCache: false
 # Other Settings
 catalogMode: "strict"
 savePrefix: "~"
+
+catalog:
+  "@types/node": ~24.19.1
+  typescript: ~6.0.3
+catalogs:
+  prettier:
+    "@dnd-mapp/config-prettier": ~1.1.0
+    prettier: ~3.9.9
+    prettier-plugin-organize-imports: ~4.3.0
