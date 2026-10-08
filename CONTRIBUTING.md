@@ -37,13 +37,15 @@ The pre-commit hooks only check files. Run `pnpm run format` to fix formatting i
 
 ## Project layout
 
-| Path                               | Purpose                                                                      |
-|:-----------------------------------|:-----------------------------------------------------------------------------|
-| `profile/README.md`                | The organization profile that GitHub shows on the organization page          |
-| `.github/PULL_REQUEST_TEMPLATE.md` | The default pull request template for every D&D Mapp repository              |
-| `.github/FUNDING.yml`              | The default funding file that adds the Sponsor button to every repository    |
-| `.github/actions/ci/action.yaml`   | The checks that the pull request and push workflows run                      |
-| `.github/actionlint.yaml`          | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet |
+| Path                                    | Purpose                                                                         |
+|:----------------------------------------|:--------------------------------------------------------------------------------|
+| `profile/README.md`                     | The organization profile that GitHub shows on the organization page             |
+| `.github/PULL_REQUEST_TEMPLATE.md`      | The default pull request template for every D&D Mapp repository                 |
+| `.github/FUNDING.yml`                   | The default funding file that adds the Sponsor button to every repository       |
+| `.github/DISCUSSION_TEMPLATE/ideas.yml` | The default discussion form for the Ideas category of every D&D Mapp repository |
+| `.github/DISCUSSION_TEMPLATE/q-a.yml`   | The default discussion form for the Q&A category of every D&D Mapp repository   |
+| `.github/actions/ci/action.yaml`        | The checks that the pull request and push workflows run                         |
+| `.github/actionlint.yaml`               | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet    |
 
 ## Checking the repository
 
