@@ -23,6 +23,9 @@ catalog:
   "@types/node": ~24.19.1
   typescript: ~6.0.3
 catalogs:
+  markdown:
+    "@dnd-mapp/config-markdown": ~1.0.0
+    markdownlint-cli2: ~0.23.3
   prettier:
     "@dnd-mapp/config-prettier": ~1.1.0
     prettier: ~3.9.9

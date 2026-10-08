@@ -17,7 +17,8 @@
   },
   "scripts": {
     "format": "prettier -w .",
-    "format-check": "prettier -c ."
+    "format-check": "prettier -c .",
+    "lint-md": "markdownlint-cli2"
   },
   "devEngines": {
     "runtime": {
@@ -32,8 +33,10 @@
     }
   },
   "devDependencies": {
+    "@dnd-mapp/config-markdown": "catalog:markdown",
     "@dnd-mapp/config-prettier": "catalog:prettier",
     "@types/node": "catalog:",
+    "markdownlint-cli2": "catalog:markdown",
     "prettier": "catalog:prettier",
     "prettier-plugin-organize-imports": "catalog:prettier",
     "typescript": "catalog:"

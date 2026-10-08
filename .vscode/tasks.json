@@ -14,6 +14,13 @@
             "type": "shell",
             "command": "pnpm run format-check",
             "problemMatcher": []
+        },
+        {
+            "label": "lint-md",
+            "detail": "Lints the Markdown files of the repository with markdownlint",
+            "type": "shell",
+            "command": "pnpm run lint-md",
+            "problemMatcher": []
         }
     ]
 }
