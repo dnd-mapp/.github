@@ -1,0 +1,23 @@
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Ask how to use a D&D Mapp project. Report bugs as issues instead. Search the answered questions first. If it concerns one repository, ask in the Discussions of that repository.
+    - type: textarea
+      id: question
+      attributes:
+          label: What do you want to do?
+          description: The goal, what you expected, and what happens instead.
+      validations:
+          required: true
+    - type: textarea
+      id: tried
+      attributes:
+          label: What have you tried?
+          description: The steps, configuration, or code so far, and the documentation you read.
+    - type: input
+      id: version
+      attributes:
+          label: Project and version
+          description: The package or action and its version.
+          placeholder: "@dnd-mapp/ui 1.2.0"
