@@ -37,11 +37,12 @@ The pre-commit hooks only check files. Run `pnpm run format` to fix formatting i
 
 ## Project layout
 
-| Path                             | Purpose                                                                      |
-|:---------------------------------|:-----------------------------------------------------------------------------|
-| `profile/README.md`              | The organization profile that GitHub shows on the organization page          |
-| `.github/actions/ci/action.yaml` | The checks that the pull request and push workflows run                      |
-| `.github/actionlint.yaml`        | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet |
+| Path                               | Purpose                                                                      |
+|:-----------------------------------|:-----------------------------------------------------------------------------|
+| `profile/README.md`                | The organization profile that GitHub shows on the organization page          |
+| `.github/PULL_REQUEST_TEMPLATE.md` | The default pull request template for every D&D Mapp repository              |
+| `.github/actions/ci/action.yaml`   | The checks that the pull request and push workflows run                      |
+| `.github/actionlint.yaml`          | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet |
 
 ## Checking the repository
 
@@ -102,6 +103,7 @@ Write the description in the imperative mood, such as "add the contact email to 
 - Keep each pull request to one change.
 - Link the issue it addresses.
 - Use a title that follows the commit convention.
+- Fill in the pull request template. Its hints say what each section is for.
 - If you have write access, turn on auto-merge once the pull request is open, with `gh pr merge <number> --auto --merge` or the "Enable auto-merge" button. It then merges as soon as it is approved and the checks pass.
 - If auto-merge is off, the author merges the pull request once it is approved and the checks pass. A maintainer merges pull requests opened by a contributor without write access.
 - Renovate merges its own minor and patch pull requests once the checks pass. A maintainer approves a major update from Renovate and turns on auto-merge for it.
