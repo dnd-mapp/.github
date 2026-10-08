@@ -1,0 +1,25 @@
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Share an idea or feature request. Search the existing discussions and issues first. If it concerns one repository, open it in the Discussions of that repository. A maintainer shapes an accepted idea into an issue.
+    - type: textarea
+      id: why
+      attributes:
+          label: Why
+          description: The problem or opportunity, and who runs into it.
+          placeholder: As a Dungeon Master I cannot ..., so ...
+      validations:
+          required: true
+    - type: textarea
+      id: what
+      attributes:
+          label: What
+          description: The change you picture, as concretely as you can.
+      validations:
+          required: true
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Alternatives considered
+          description: Other approaches, workarounds, or prior art, with links.
