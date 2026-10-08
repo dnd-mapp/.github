@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.schemastore.org/package.json",
+  "name": "dot-github",
+  "description": "The organization profile of D&D Mapp on GitHub.",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "author": "D&D Mapp",
+  "homepage": "https://github.com/dnd-mapp/.github#readme",
+  "bugs": {
+    "url": "https://github.com/dnd-mapp/.github/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnd-mapp/.github.git"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.2",
+      "onFail": "error"
+    }
+  }
+}
