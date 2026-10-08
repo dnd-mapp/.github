@@ -13,6 +13,8 @@ strictPeerDependencies: true
 engineStrict: true
 
 # Build Settings
+allowBuilds:
+  lefthook: true
 sideEffectsCache: false
 
 # Other Settings
@@ -23,6 +25,10 @@ catalog:
   "@types/node": ~24.19.1
   typescript: ~6.0.3
 catalogs:
+  commitlint:
+    "@commitlint/cli": ~21.2.3
+    "@dnd-mapp/config-commitlint": ~1.1.0
+    lefthook: ~2.1.16
   markdown:
     "@dnd-mapp/config-markdown": ~1.0.0
     markdownlint-cli2: ~0.23.3
