@@ -86,15 +86,15 @@ Write commit messages that follow [Conventional Commits](https://www.conventiona
 
 Use one of these types.
 
-| Type       | Use for                                                |
-|:-----------|:-------------------------------------------------------|
-| `feat`     | New content on the organization profile                |
-| `fix`      | A correction to existing content                       |
-| `docs`     | Changes to the documentation of this repository        |
-| `refactor` | Changes that do not alter what GitHub shows            |
-| `ci`       | Changes to the workflows of this repository            |
-| `build`    | Changes to dependencies or tooling                     |
-| `chore`    | Other maintenance that does not fit above              |
+| Type       | Use for                                                                             |
+|:-----------|:------------------------------------------------------------------------------------|
+| `feat`     | New content on the organization profile, or a new default file for the organization |
+| `fix`      | A correction to existing content                                                    |
+| `docs`     | Changes to the documentation of this repository                                     |
+| `refactor` | Changes that do not alter what GitHub shows                                         |
+| `ci`       | Changes to the workflows of this repository                                         |
+| `build`    | Changes to dependencies or tooling                                                  |
+| `chore`    | Other maintenance that does not fit above                                           |
 
 Write the description in the imperative mood, such as "add the contact email to the profile".
 
