@@ -229,6 +229,7 @@ Write the description in the imperative mood, such as "add the button". Mark a b
 
 ## Pull requests
 
+- Follow the [governance](https://github.com/dnd-mapp/.github/blob/main/GOVERNANCE.md) for who opens and reviews pull requests, and for pull requests that an agent writes.
 - Keep each pull request to one change.
 - Link the issue it addresses, with `Closes #<number>` for an issue it resolves.
 - Use a title that follows the commit convention.

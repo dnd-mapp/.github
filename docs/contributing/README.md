@@ -13,6 +13,7 @@ This repository holds the organization profile and the default community health 
 | `SECURITY.md`                            | The default security policy for every D&D Mapp repository                       |
 | `SUPPORT.md`                             | The default support file for every D&D Mapp repository                          |
 | `CODE_OF_CONDUCT.md`                     | The default code of conduct for every D&D Mapp repository                       |
+| `GOVERNANCE.md`                          | The roles and decision model of D&D Mapp, which GitHub does not inherit         |
 | `.github/PULL_REQUEST_TEMPLATE.md`       | The default pull request template for every D&D Mapp repository                 |
 | `.github/FUNDING.yml`                    | The default funding file that adds the Sponsor button to every repository       |
 | `.github/DISCUSSION_TEMPLATE/ideas.yml`  | The default discussion form for the Ideas category of every D&D Mapp repository |
