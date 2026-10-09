@@ -202,19 +202,19 @@ Write commit messages that follow [Conventional Commits](https://www.conventiona
 
 Keep the header and every line of the body at or under 72 characters. Use one of these types.
 
-| Type       | Use for                                                      |
-|:-----------|:-------------------------------------------------------------|
-| `feat`     | A new feature or capability for the users of the repository  |
-| `fix`      | A correction to existing behavior or content                 |
-| `docs`     | Changes to documentation only                                |
-| `style`    | Changes to formatting only, which do not alter the meaning   |
-| `refactor` | Changes to the code that neither fix a bug nor add a feature |
-| `perf`     | Changes that improve performance                             |
-| `test`     | Changes to tests only                                        |
-| `build`    | Changes to the build, packaging, dependencies, or tooling    |
-| `ci`       | Changes to the CI workflows and actions                      |
-| `chore`    | Other maintenance that does not fit above                    |
-| `revert`   | A commit that reverts an earlier commit                      |
+| Type       | Use for                                                                                |
+|:-----------|:---------------------------------------------------------------------------------------|
+| `feat`     | A new feature or capability for the users of the repository                            |
+| `fix`      | A correction to behavior that differs from what its docs or an earlier release promise |
+| `docs`     | Changes to documentation only                                                          |
+| `style`    | Changes to formatting only, which do not alter the meaning                             |
+| `refactor` | Changes to the code that neither fix a bug nor add a feature                           |
+| `perf`     | Changes that improve performance                                                       |
+| `test`     | Changes to tests only                                                                  |
+| `build`    | Changes to the build, packaging, dependencies, or tooling                              |
+| `ci`       | Changes to the CI workflows and actions                                                |
+| `chore`    | Other maintenance that does not fit above                                              |
+| `revert`   | A commit that reverts an earlier commit                                                |
 
 Write the description in the imperative mood, such as "add the button". Mark a breaking change with `!` after the type or scope, such as `feat!: drop the legacy config`. Add a `BREAKING CHANGE:` footer that explains what users must do.
 
