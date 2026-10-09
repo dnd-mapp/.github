@@ -10,6 +10,7 @@ This repository holds the organization profile and the default community health 
 |:----------------------------------------|:--------------------------------------------------------------------------------|
 | `profile/README.md`                     | The organization profile that GitHub shows on the organization page             |
 | `CONTRIBUTING.md`                       | The shared contributing guide for every D&D Mapp repository                     |
+| `SECURITY.md`                           | The default security policy for every D&D Mapp repository                       |
 | `.github/PULL_REQUEST_TEMPLATE.md`      | The default pull request template for every D&D Mapp repository                 |
 | `.github/FUNDING.yml`                   | The default funding file that adds the Sponsor button to every repository       |
 | `.github/DISCUSSION_TEMPLATE/ideas.yml` | The default discussion form for the Ideas category of every D&D Mapp repository |
