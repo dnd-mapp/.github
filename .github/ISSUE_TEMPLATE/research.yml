@@ -1,0 +1,39 @@
+name: Research
+description: A question to answer before work can start. Ends in a decision on the issue, not a pull request. Meant for maintainers.
+type: Research
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Use this form when planned work waits on an answer. Ask how to use a project in the [Q&A category](https://github.com/orgs/dnd-mapp/discussions/categories/q-a) of Discussions, and suggest ideas in [Ideas](https://github.com/orgs/dnd-mapp/discussions/categories/ideas).
+    - type: textarea
+      id: why
+      attributes:
+          label: Why
+          description: Which decision or piece of work waits on the answer, and what would a wrong guess cost?
+      validations:
+          required: true
+    - type: textarea
+      id: questions
+      attributes:
+          label: Questions
+          description: What should the research answer? Give each question its own line.
+      validations:
+          required: true
+    - type: textarea
+      id: approach
+      attributes:
+          label: Approach
+          description: Where should the answer come from, such as sources, the history of the org, or a prototype? When should the research stop and report?
+    - type: textarea
+      id: done
+      attributes:
+          label: Done when
+          description: Where should the answer be recorded, who approves it, and which issues should exist afterward?
+      validations:
+          required: true
+    - type: textarea
+      id: urgency
+      attributes:
+          label: Urgency
+          description: What happens if the answer waits? Is there a date it has to be ready by?

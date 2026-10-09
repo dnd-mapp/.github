@@ -1,0 +1,44 @@
+name: Epic
+description: A larger outcome split into sub-issues. Meant for maintainers.
+type: Epic
+body:
+    - type: markdown
+      attributes:
+          value: |
+              An Epic is split into sub-issues. Report one change as a Feature, Bug, or Task instead.
+    - type: textarea
+      id: why
+      attributes:
+          label: Why
+          description: What problem does this solve, and who runs into it?
+      validations:
+          required: true
+    - type: textarea
+      id: what
+      attributes:
+          label: What
+          description: What should be true once all the work is done?
+      validations:
+          required: true
+    - type: textarea
+      id: scope
+      attributes:
+          label: Scope
+          description: Which repositories or areas does it touch, and what stays out?
+    - type: textarea
+      id: plan
+      attributes:
+          label: Plan
+          description: How could the work split into steps or one issue per repository?
+    - type: textarea
+      id: done
+      attributes:
+          label: Done when
+          description: How will you check that the outcome is reached?
+      validations:
+          required: true
+    - type: textarea
+      id: urgency
+      attributes:
+          label: Urgency
+          description: What happens if this waits? Is there a date it has to be done by, and why?
