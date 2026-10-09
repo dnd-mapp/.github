@@ -6,20 +6,20 @@ This repository holds the organization profile and the default community health 
 
 ## Project layout
 
-| Path                                    | Purpose                                                                         |
-|:----------------------------------------|:--------------------------------------------------------------------------------|
-| `profile/README.md`                     | The organization profile that GitHub shows on the organization page             |
-| `CONTRIBUTING.md`                       | The shared contributing guide for every D&D Mapp repository                     |
-| `SECURITY.md`                           | The default security policy for every D&D Mapp repository                       |
-| `SUPPORT.md`                            | The default support file for every D&D Mapp repository                          |
-| `.github/PULL_REQUEST_TEMPLATE.md`      | The default pull request template for every D&D Mapp repository                 |
-| `.github/FUNDING.yml`                   | The default funding file that adds the Sponsor button to every repository       |
-| `.github/DISCUSSION_TEMPLATE/ideas.yml` | The default discussion form for the Ideas category of every D&D Mapp repository |
-| `.github/DISCUSSION_TEMPLATE/q-a.yml`   | The default discussion form for the Q&A category of every D&D Mapp repository   |
-| `.github/ISSUE_TEMPLATE/<type>.yml`     | The default issue form for each issue type of every D&D Mapp repository         |
-| `.github/ISSUE_TEMPLATE/config.yml`     | Disables blank issues and links to Discussions and the security policy          |
-| `.github/actions/ci/action.yaml`        | The checks that the pull request and push workflows run                         |
-| `.github/actionlint.yaml`               | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet    |
+| Path                                     | Purpose                                                                         |
+|:-----------------------------------------|:--------------------------------------------------------------------------------|
+| `profile/README.md`                      | The organization profile that GitHub shows on the organization page             |
+| `CONTRIBUTING.md`                        | The shared contributing guide for every D&D Mapp repository                     |
+| `SECURITY.md`                            | The default security policy for every D&D Mapp repository                       |
+| `SUPPORT.md`                             | The default support file for every D&D Mapp repository                          |
+| `.github/PULL_REQUEST_TEMPLATE.md`       | The default pull request template for every D&D Mapp repository                 |
+| `.github/FUNDING.yml`                    | The default funding file that adds the Sponsor button to every repository       |
+| `.github/DISCUSSION_TEMPLATE/ideas.yml`  | The default discussion form for the Ideas category of every D&D Mapp repository |
+| `.github/DISCUSSION_TEMPLATE/q-a.yml`    | The default discussion form for the Q&A category of every D&D Mapp repository   |
+| `.github/ISSUE_TEMPLATE/<NN>-<type>.yml` | The default issue form per issue type, listed in the order of `<NN>`            |
+| `.github/ISSUE_TEMPLATE/config.yml`      | Disables blank issues and links to Discussions and the security policy          |
+| `.github/actions/ci/action.yaml`         | The checks that the pull request and push workflows run                         |
+| `.github/actionlint.yaml`                | Declares the `ubuntu-26.04` runner label, which actionlint does not know yet    |
 
 ## Changing the shared contributing guide
 
