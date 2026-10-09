@@ -14,6 +14,7 @@ This repository holds the organization profile and the default community health 
 | `SUPPORT.md`                             | The default support file for every D&D Mapp repository                          |
 | `CODE_OF_CONDUCT.md`                     | The default code of conduct for every D&D Mapp repository                       |
 | `GOVERNANCE.md`                          | The roles and decision model of D&D Mapp, which GitHub does not inherit         |
+| `docs/new-repository.md`                 | The checklist that maintainers follow after creating a repository               |
 | `.github/PULL_REQUEST_TEMPLATE.md`       | The default pull request template for every D&D Mapp repository                 |
 | `.github/FUNDING.yml`                    | The default funding file that adds the Sponsor button to every repository       |
 | `.github/DISCUSSION_TEMPLATE/ideas.yml`  | The default discussion form for the Ideas category of every D&D Mapp repository |
@@ -28,6 +29,10 @@ This repository holds the organization profile and the default community health 
 GitHub shows the root `CONTRIBUTING.md` in every repository without a guide of its own, but it renders the file from this repository. A relative link in it resolves against `dnd-mapp/.github`, so use absolute links only. Refer to the files of other repositories in prose, such as `docs/contributing/README.md`.
 
 Keep the guide to the rules that every repository shares. A rule that only some repositories follow goes in a short conditional section, such as the one for repositories with Docker, or in the `docs/contributing/README.md` of each repository.
+
+## Creating a repository
+
+Every D&D Mapp repository shares settings that a new repository does not get from the organization, such as its rulesets and the access of the GitHub Apps. Follow the [checklist for new repositories](https://github.com/dnd-mapp/.github/blob/main/docs/new-repository.md) after creating one, and update it in the same pull request as a change to the shared settings.
 
 ## Checks
 
