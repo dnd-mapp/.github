@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Ideas and feature requests
+      url: https://github.com/orgs/dnd-mapp/discussions/categories/ideas
+      about: Suggest an idea or a new feature in the Ideas category of Discussions.
+    - name: Questions
+      url: https://github.com/orgs/dnd-mapp/discussions/categories/q-a
+      about: Ask how to use a D&D Mapp project in the Q&A category of Discussions.
+    - name: Security reports
+      url: https://github.com/dnd-mapp/.github/blob/main/SECURITY.md
+      about: Report a vulnerability privately, as the security policy describes.
