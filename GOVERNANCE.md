@@ -14,6 +14,7 @@ The maintainers:
 - Cut releases.
 - Triage the issues on the [D&D Mapp project](https://github.com/orgs/dnd-mapp/projects/10).
 - Manage the organization settings and the membership of its teams.
+- Create new repositories, following the [checklist for new repositories](docs/new-repository.md).
 
 ### Contributors
 
