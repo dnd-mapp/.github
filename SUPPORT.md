@@ -11,7 +11,7 @@ This page applies to every [D&D Mapp repository](https://github.com/dnd-mapp) wi
 | A bug                              | An issue in the repository it concerns                                                                 |
 | An idea or a feature request       | The Ideas category in the Discussions of that repository, or of the organization when it spans several |
 | A vulnerability                    | The [security policy](https://github.com/dnd-mapp/.github/blob/main/SECURITY.md), never a public post  |
-| A private matter                   | An email to [info@dndmapp.nl.eu.org](mailto:info@dndmapp.nl.eu.org)                                    |
+| A private matter                   | An email to [support@dndmapp.nl.eu.org](mailto:support@dndmapp.nl.eu.org)                              |
 
 Search the existing issues and discussions before you open a new one. Your question may already have an answer.
 
