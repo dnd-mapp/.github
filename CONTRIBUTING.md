@@ -113,6 +113,15 @@ Within one Priority, Severity puts the worse Bug first. Among items that tie on 
 
 To move a Bug up or down the order, raise or lower its Priority rather than its Severity.
 
+The project has two board views, each with WIP limits on its columns:
+
+| View       | Holds                                      | WIP limits                       |
+|:-----------|:-------------------------------------------|:---------------------------------|
+| Work items | Features, Bugs, Tasks, and Research issues | 2 in In progress, 2 in In review |
+| Epics      | Epics                                      | 2 in In progress                 |
+
+A rollout counts as one item. Its pilot counts against the limits, and the copies that follow once the pilot merges may pass them together. GitHub only warns when a column passes its limit, so keep to the limits by hand.
+
 ## The guide of each repository
 
 Each repository keeps everything that this guide leaves out in `docs/contributing/README.md`. That file is the entry point for:
