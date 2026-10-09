@@ -10,14 +10,108 @@ Only the maintainers of D&D Mapp open pull requests. A pull request from a fork 
 
 Everyone is welcome to take part in other ways:
 
-- Report a bug or propose a change by opening an issue in the repository it concerns.
+- Report a bug by opening an issue with the Bug form in the repository it concerns.
 - Ask questions and share ideas in the Discussions of that repository, or in the [organization discussions](https://github.com/orgs/dnd-mapp/discussions) when they span repositories.
+- Report a vulnerability privately, as the [security policy](https://github.com/dnd-mapp/.github/blob/main/SECURITY.md) describes.
 
 The rest of this guide is written for maintainers.
 
-## Before you start
+## Issues
 
-Open an issue to discuss any change beyond a typo fix before you open a pull request. This avoids work on changes that do not fit the goals of the repository. The [D&D Mapp project](https://github.com/orgs/dnd-mapp/projects/10) tracks the issues of every repository.
+The [D&D Mapp project](https://github.com/orgs/dnd-mapp/projects/10) tracks the issues of every repository. Every issue has one of the five issue types of the organization, and the triager sets its issue fields.
+
+### When to open an issue
+
+Open an issue before you start on a Feature, a Bug, or any work that takes more than one sitting. This avoids work on changes that do not fit the goals of the repository, and the issue records why the change was made. A Task that fits one sitting and one pull request may go without an issue, as may a typo fix.
+
+### Issue types
+
+Pick the type by the kind of work. When it is unclear which type fits, the commit type of the main change decides.
+
+| Type     | Use for                                                                                                        | Commit types                    |
+|:---------|:---------------------------------------------------------------------------------------------------------------|:--------------------------------|
+| Epic     | A larger outcome split into sub-issues, such as one change rolled out to several repositories                  | None of its own                 |
+| Feature  | New or changed behavior that the users of a package, action, or application notice                             | `feat`                          |
+| Bug      | Something that works differently from what its documentation or an earlier release promises                    | `fix`                           |
+| Task     | Work that the users of a release do not notice, such as CI, documentation, tooling, performance, or a refactor | Every type but `feat` and `fix` |
+| Research | A question to answer before work can start, which ends in a decision on the issue rather than a pull request   | None                            |
+
+A vulnerability gets no public issue: report it as the security policy describes, and its fix flows as a Bug. Ideas and questions go to Discussions until a maintainer accepts an idea as a Feature.
+
+GitHub does not limit which types may have sub-issues, so triage keeps these rules:
+
+- Only an Epic has sub-issues. When an issue of another type turns out to need sub-issues, change its type to Epic.
+- An Epic holds Features, Bugs, Tasks, and Research issues from any repository, such as one sub-issue per repository for a rollout. Epics do not nest.
+- An Epic never closes through a pull request. Close it by hand once its sub-issues are closed and its Done when checks pass.
+- A Research issue ends with the answer in a comment on the issue. A decision that changes how the repositories work then lands in a document through a follow-up Task, which the Done when section names.
+
+### Issue forms
+
+The "New issue" page of every repository without issue templates of its own offers one [issue form](https://github.com/dnd-mapp/.github/tree/main/.github/ISSUE_TEMPLATE) per type, and blank issues are disabled. The Bug form is meant for everyone, and the other four forms are meant for maintainers.
+
+Each label of a form becomes a `###` heading in the issue body. Give an issue written by hand, such as one filed with `gh issue create`, the same `###` headings in the same order, so every body reads the same. The triager adds the sections in italics below and deletes the optional sections that hold `_No response_`.
+
+| Type     | Body sections                                                                                                                               |
+|:---------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| Epic     | Why, What, Scope, Plan, Done when, Urgency                                                                                                  |
+| Feature  | Why, What, Alternatives considered, _Out of scope_, Done when, Urgency                                                                      |
+| Bug      | What happened, Expected behavior, Steps to reproduce, Project and version, Last version that worked, Environment, Impact, Logs, _Done when_ |
+| Task     | Why, What, _Decisions_, Open questions, Manual steps, Done when, Urgency                                                                    |
+| Research | Why, Questions, Approach, _Out of scope_, Done when, Urgency                                                                                |
+
+### Issue fields
+
+Issue forms cannot set issue fields, so no form asks for them. The triager sets them instead, guided by the Urgency answer of a form, or by the Impact answer of the Bug form.
+
+| Field       | Pinned to                          | Meaning                                                                   |
+|:------------|:-----------------------------------|:--------------------------------------------------------------------------|
+| Priority    | Epic, Feature, Bug, Task, Research | How soon the work should start, judged by its value to users and the org  |
+| Severity    | Bug                                | How badly a bug breaks the project                                        |
+| Target date | Epic, Feature, Task, Research      | The date the work has to be done by, set only when an outside date exists |
+
+Priority means the same for every type, so all types rank against each other in one Ready column.
+
+| Priority | Meaning                                                                   |
+|:---------|:--------------------------------------------------------------------------|
+| Urgent   | Needed now: a release, an outside user, or most planned work waits on it. |
+| High     | Needed soon: it unblocks planned work or answers a user's request.        |
+| Medium   | Planned: worth doing once more pressing work is done.                     |
+| Low      | Nice to have: done when nothing more valuable waits.                      |
+
+| Severity | Meaning                                                                                           |
+|:---------|:--------------------------------------------------------------------------------------------------|
+| Blocker  | The project cannot do its main job and has no workaround, or data is lost or corrupted.           |
+| Critical | A feature is broken, and the only workaround is unacceptably complex, such as pinning a release.  |
+| Major    | A feature is broken or gives wrong results, and a workaround exists.                              |
+| Minor    | An inconvenience or a cosmetic fault, such as a misleading message, while the results stay right. |
+
+### Triage exit criteria
+
+A new issue starts in Triage. These criteria are written rules that the triager checks, and no automation enforces them.
+
+An issue moves to Backlog once its type is confirmed and its body holds the required sections of its form in order. A maintainer must also reproduce a Bug on the latest release or `main`. An issue that waits for answers from its reporter stays in Triage.
+
+An issue moves to Ready once every issue that blocks it is closed, and Target date is set when an outside date exists. Each type adds its own checks:
+
+| Type     | Fields that must be filled | Body checks                                                                                                                                                                                                      |
+|:---------|:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Epic     | Priority                   | Scope and Plan are written, and the first sub-issue (or the sub-issues of the first gate) exists with its blocked-by links.                                                                                      |
+| Feature  | Priority                   | The approach in What is settled, the Done when checks can be run, and the work fits one pull request in one repository.                                                                                          |
+| Bug      | Severity, Priority         | Done when is added, and the fix fits one pull request in one repository.                                                                                                                                         |
+| Task     | Priority                   | The open questions are answered and moved into Decisions, the Done when checks can be run, and each manual step names who does it. The work fits one pull request in one repository, or one sitting without one. |
+| Research | Priority                   | Each question names the decision it feeds, and Done when says where the answer goes and who approves it. The waiting issues are blocked by it, and the work fits one sitting.                                    |
+
+### Pull order
+
+Pull the next item from the top of Ready, sorted by Priority and then by Severity. Three rules fold the urgent cases into Priority:
+
+- A Blocker Bug is always Urgent. An Urgent Blocker is the one item that may pass the WIP limit of In progress.
+- A Task that blocks every merge or every release is Urgent, such as a broken required check.
+- A Research issue has at least the Priority of the most urgent issue it blocks, since that issue cannot start before the answer.
+
+Within one Priority, Severity puts the worse Bug first. Among items that tie on both fields, pull the one that has waited longest. An Epic is never pulled itself: its sub-issues are, each by its own Priority.
+
+To move a Bug up or down the order, raise or lower its Priority rather than its Severity.
 
 ## The guide of each repository
 
