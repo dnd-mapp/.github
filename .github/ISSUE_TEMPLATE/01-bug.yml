@@ -1,0 +1,59 @@
+name: Bug
+description: Something works differently from what its docs or an earlier release promise. Report vulnerabilities privately.
+type: Bug
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Search the existing issues first. Ask how to use a project in the [Q&A category](https://github.com/orgs/dnd-mapp/discussions/categories/q-a) of Discussions. Never report a vulnerability here; follow the [security policy](https://github.com/dnd-mapp/.github/blob/main/SECURITY.md) instead.
+    - type: textarea
+      id: actual
+      attributes:
+          label: What happened
+          description: What did you see? Include the full error message, if there is one.
+      validations:
+          required: true
+    - type: textarea
+      id: expected
+      attributes:
+          label: Expected behavior
+          description: What did you expect instead? Link the docs or release notes that say so, if you can.
+      validations:
+          required: true
+    - type: textarea
+      id: steps
+      attributes:
+          label: Steps to reproduce
+          description: Which steps make it happen, starting from a fresh install? Link a minimal repository or snippet if you have one.
+      validations:
+          required: true
+    - type: input
+      id: version
+      attributes:
+          label: Project and version
+          description: Which package or action, and which version? For an application, which commit?
+      validations:
+          required: true
+    - type: input
+      id: last-working
+      attributes:
+          label: Last version that worked
+          description: Did this work in an earlier version? Which one?
+    - type: textarea
+      id: environment
+      attributes:
+          label: Environment
+          description: Which Node.js version, package manager, operating system, or browser do you use?
+    - type: textarea
+      id: impact
+      attributes:
+          label: Impact
+          description: What can you no longer do? Is any data lost or wrong, and how do you work around it today?
+      validations:
+          required: true
+    - type: textarea
+      id: logs
+      attributes:
+          label: Logs
+          description: Paste any log output that shows the problem. It is formatted as code.
+          render: shell

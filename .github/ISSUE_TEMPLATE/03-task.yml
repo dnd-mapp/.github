@@ -1,0 +1,44 @@
+name: Task
+description: Work that users of a release do not notice, such as CI, docs, tooling, or a refactor. Meant for maintainers.
+type: Task
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Use this form for work that users of a release do not notice. Report a broken promise as a Bug, and suggest new behavior in the [Ideas category](https://github.com/orgs/dnd-mapp/discussions/categories/ideas) of Discussions.
+    - type: textarea
+      id: why
+      attributes:
+          label: Why
+          description: What problem or risk does this remove, and what does it cost today?
+      validations:
+          required: true
+    - type: textarea
+      id: what
+      attributes:
+          label: What
+          description: What should change? Name the files, workflows, or settings if you know them, and say whether the changelog needs an entry.
+      validations:
+          required: true
+    - type: textarea
+      id: questions
+      attributes:
+          label: Open questions
+          description: What still needs deciding before the work can start?
+    - type: textarea
+      id: manual
+      attributes:
+          label: Manual steps
+          description: Does anything need doing outside the pull request, such as a secret, a setting, or a follow-up issue?
+    - type: textarea
+      id: done
+      attributes:
+          label: Done when
+          description: How will you check that it is done? Give a command, a workflow run, or a setting to look at.
+      validations:
+          required: true
+    - type: textarea
+      id: urgency
+      attributes:
+          label: Urgency
+          description: What happens if this waits? Is there a date it has to be done by, such as an end of support?

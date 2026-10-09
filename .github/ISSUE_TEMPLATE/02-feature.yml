@@ -1,0 +1,39 @@
+name: Feature
+description: New or changed behavior that users notice. Meant for maintainers; suggest ideas in Discussions.
+type: Feature
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Use this form for an accepted idea. Suggest a new idea in the [Ideas category](https://github.com/orgs/dnd-mapp/discussions/categories/ideas) of Discussions.
+    - type: textarea
+      id: why
+      attributes:
+          label: Why
+          description: What problem does this solve, who runs into it, and how do they cope today?
+      validations:
+          required: true
+    - type: textarea
+      id: what
+      attributes:
+          label: What
+          description: What should users be able to do once this is done? Describe the behavior, not the code.
+      validations:
+          required: true
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Alternatives considered
+          description: Which other approaches or workarounds did you weigh, and why not those?
+    - type: textarea
+      id: done
+      attributes:
+          label: Done when
+          description: How will you check that it works? Give an example and the result you expect.
+      validations:
+          required: true
+    - type: textarea
+      id: urgency
+      attributes:
+          label: Urgency
+          description: What happens if this waits? Is there a date it has to be done by, and why?
