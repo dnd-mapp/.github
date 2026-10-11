@@ -70,21 +70,26 @@ Every repository has the same three discussion categories: Announcements for the
 
 Push the first commit straight to `main`, before the [rulesets](#9-add-the-core-rulesets) require pull requests. Copy these files from the repository named for each, and change only what the table says:
 
-| File                                         | Copy from                                                                                                                     | Change                                                                            |
-|:---------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------|
-| `.github/workflows/issue-opened.yaml`        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Nothing                                                                           |
-| `.github/workflows/issue-closed.yaml`        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Nothing                                                                           |
-| `.github/workflows/pull-request.yaml`        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Add the jobs of the repository                                                    |
-| `.github/workflows/push-main.yaml`           | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Copy it from `config-markdown` instead in a repository that [releases](#releases) |
-| `.github/actions/ci/action.yaml`             | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/actions/ci)                                                 | Add the checks of the repository                                                  |
-| `.github/actionlint.yaml`                    | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github)                                                            | Nothing                                                                           |
-| `.github/CODEOWNERS`                         | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github)                                                            | Nothing                                                                           |
-| `renovate.json`                              | [`config-markdown`](https://github.com/dnd-mapp/config-markdown)                                                              | Add rules that only this repository needs                                         |
-| `lefthook.yaml`                              | [`.github`](https://github.com/dnd-mapp/.github), or [`config-eslint`](https://github.com/dnd-mapp/config-eslint) with ESLint | Nothing                                                                           |
-| `commitlint.config.ts`                       | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
-| `.editorconfig`, `.gitattributes`, `LICENSE` | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
-| `.prettierrc.ts`, `.markdownlint-cli2.yaml`  | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
-| `docs/contributing/README.md`                | The repository of the same kind, such as `config-markdown` for an npm package                                                 | Write it for this repository                                                      |
+| File                                                                                         | Copy from                                                                                                                     | Change                                                                            |
+|:---------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------|
+| `.github/workflows/issue-opened.yaml`                                                        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Nothing                                                                           |
+| `.github/workflows/issue-closed.yaml`                                                        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Nothing                                                                           |
+| `.github/workflows/pull-request.yaml`                                                        | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Add the jobs of the repository                                                    |
+| `.github/workflows/push-main.yaml`                                                           | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/workflows)                                                  | Copy it from `config-markdown` instead in a repository that [releases](#releases) |
+| `.github/actions/ci/action.yaml`                                                             | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github/actions/ci)                                                 | Add the checks of the repository                                                  |
+| `.github/actionlint.yaml`                                                                    | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github)                                                            | Nothing                                                                           |
+| `.github/CODEOWNERS`                                                                         | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.github)                                                            | Nothing                                                                           |
+| `renovate.json`                                                                              | [`config-markdown`](https://github.com/dnd-mapp/config-markdown)                                                              | Add rules that only this repository needs                                         |
+| `lefthook.yaml`                                                                              | [`.github`](https://github.com/dnd-mapp/.github), or [`config-eslint`](https://github.com/dnd-mapp/config-eslint) with ESLint | Nothing                                                                           |
+| `commitlint.config.ts`                                                                       | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
+| `.editorconfig`, `.gitattributes`, `LICENSE`                                                 | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
+| `.prettierrc.ts`, `.markdownlint-cli2.yaml`                                                  | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Nothing                                                                           |
+| `.gitignore`, `.prettierignore`                                                              | [`.github`](https://github.com/dnd-mapp/.github)                                                                              | Add the build output and generated files of the repository                        |
+| `.claude/settings.json`                                                                      | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.claude)                                                            | Nothing                                                                           |
+| `.idea/prettier.xml`, `.idea/markdown.xml`                                                   | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.idea)                                                              | Nothing                                                                           |
+| The `format`, `format_check`, and `lint_md` run configurations in `.idea/runConfigurations/` | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.idea/runConfigurations)                                            | Nothing                                                                           |
+| `.vscode/settings.json`, `.vscode/extensions.json`, `.vscode/tasks.json`                     | [`.github`](https://github.com/dnd-mapp/.github/tree/main/.vscode)                                                            | Add the tools and tasks of the repository's stack                                 |
+| `README.md`, `AGENTS.md`, `docs/contributing/README.md`                                      | The repository of the same kind, such as `config-markdown` for an npm package                                                 | Write them for this repository                                                    |
 
 The checks and the Git hooks also need the `format`, `format-check`, and `lint-md` scripts, and the devDependencies they run. Copy them from the `package.json` of `.github`, and their versions from the `commitlint`, `markdown`, and `prettier` catalogs in its `pnpm-workspace.yaml`.
 
@@ -115,6 +120,12 @@ gh api --method PUT "orgs/dnd-mapp/actions/variables/GH_APP_CLIENT_ID/repositori
 
 ### 9. Add the core rulesets
 
+Finish [step 7](#7-give-the-apps-access) first. The Default branch reviews ruleset names the Renovate app as a bypass actor, and GitHub rejects the ruleset until Renovate has access to the repository:
+
+```text
+Actor Renovate integration must be part of the ruleset source or owner organization
+```
+
 Copy the two rulesets of `.github`, which protect the default branch:
 
 | Ruleset                | Rules                                                                                                                                                                           |
@@ -141,7 +152,7 @@ gh api "repos/dnd-mapp/$repo/code-security-configuration" --jq '{status, name: .
 
 When it is missing, attach it on the [code security configurations page](https://github.com/organizations/dnd-mapp/settings/security_products) of the organization.
 
-Default setup starts once the first commit holds code in a language that CodeQL supports. The organization recommends the extended query suite for it. Check that default setup is configured with that suite:
+The configuration turns on default setup when the repository is created, before it holds any code. Default setup runs no analysis until the default branch holds code in a language that CodeQL supports. The workflows of [step 6](#6-push-the-shared-files) count as GitHub Actions code, so the first analysis runs on the first push. The organization recommends the extended query suite for default setup. Check that default setup is configured with that suite:
 
 ```bash
 gh api "repos/dnd-mapp/$repo/code-scanning/default-setup" --jq '{state, query_suite}'
