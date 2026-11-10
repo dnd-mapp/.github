@@ -1,0 +1,10 @@
+# Store text with LF and check it out with LF on every OS, whatever core.autocrlf says.
+*           text=auto eol=lf
+
+# Images
+*.gif       binary
+*.ico       binary
+*.jpeg      binary
+*.jpg       binary
+*.png       binary
+*.webp      binary
